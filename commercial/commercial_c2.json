@@ -1,0 +1,29 @@
+{
+    "type": "Feature", 
+    "properties": {
+        "OID_": 0, 
+        "Name": "c2", 
+        "FolderPath": "commercial.kml/commercial", 
+        "SymbolID": 0, 
+        "AltMode": 0, 
+        "Base": 0.0, 
+        "Clamped": -1, 
+        "Extruded": 0, 
+        "Snippet": null, 
+        "PopupInfo": null, 
+        "Shape_Leng": 0.00172664449039, 
+        "Shape_Area": 1.68295831135e-07
+    }, 
+    "geometry": {
+        "type": "Polygon", 
+        "coordinates": [
+            [
+                [73.18668038300007, 33.61998783300004, 0.0], 
+                [73.18664531200005, 33.620290874000034, 0.0],
+                [73.18721272400006, 33.62034877200006, 0.0], 
+                [73.18723690300004, 33.62005970000007, 0.0], 
+                [73.18668038300007, 33.61998783300004, 0.0]
+            ]
+        ]
+    }
+}

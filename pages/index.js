@@ -4,15 +4,14 @@ import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 import { useRouter } from "next/router"
 import { FaRegEnvelope } from "react-icons/fa"
-import { MdLockOutline } from "react-icons/md"
+import { stringify } from 'circular-json'
 
 export default function Home() {
 
   const [web3Api, setWeb3Api] = useState({
     web3: null,
     provider: null,
-    userStorage: null,
-    userController: null
+    landToken: null
   })
 
   const [address, setAddress] = useState(null)
@@ -108,20 +107,18 @@ export default function Home() {
     setIsRegistered(data.isRegistered)
 
     if(isRegistered === "2") {
-      router.push("pagetwo")
+      router.push({
+        pathname: "pagetwo",
+        query: {
+          web3: web3Api.web3,
+          provider: web3Api.provider,
+          landToken: web3Api.landToken,
+          address
+        }
+      })
     }
 
   }
-  
-  useEffect(() => {
-    const redirect = () => {
-      if(isRegistered === "2") {
-        router.push("pagetwo")
-      }
-    }
-
-    redirect()
-  }, [])
 
   useEffect(() => {
     ethereum.on("accountsChanged", (accounts) => {
@@ -140,15 +137,13 @@ export default function Home() {
   useEffect(() => {
     const loadProvider = async () => {
       const provider = await detectEthereumProvider()
-      const userStorage = await loadContract("UserStorage", provider)
-      const userController = await loadContract("UserController", provider)
+      const landToken = await loadContract("LandToken", provider)
       
       if(provider) {
         setWeb3Api({
           web3: new Web3(provider),
           provider,
-          userStorage,
-          userController
+          landToken
         })
       }
     }
@@ -187,6 +182,15 @@ export default function Home() {
           
           const registerData = await registerResponse.json()
           setIsRegistered(registerData.isRegistered)
+
+          if(isRegistered === "2") {
+            router.push({
+              pathname: "pagetwo",
+              query: {
+                address
+              }
+            })
+          }
           
         }
       }
