@@ -4,7 +4,7 @@ export default async function handler(req, res) {
 
     const { address } = req.body
     
-    const checkQuery = await conn.query(`Select is_registered from users where address = $1`, [address])
+    const checkQuery = await conn.query(`Select is_registered from users where address = $1`, [address.toLowerCase()])
     
     if(checkQuery.rows.length > 0) {
         res.json({
