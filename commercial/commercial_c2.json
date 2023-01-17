@@ -1,16 +1,12 @@
 {
     "type": "Feature", 
     "properties": {
-        "OID_": 0, 
+        "Land_ID": 2, 
         "Name": "c2", 
+        "Type": "Commercial",
+        "Status": "0",
         "FolderPath": "commercial.kml/commercial", 
         "SymbolID": 0, 
-        "AltMode": 0, 
-        "Base": 0.0, 
-        "Clamped": -1, 
-        "Extruded": 0, 
-        "Snippet": null, 
-        "PopupInfo": null, 
         "Shape_Leng": 0.00172664449039, 
         "Shape_Area": 1.68295831135e-07
     }, 

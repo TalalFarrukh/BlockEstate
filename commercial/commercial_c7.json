@@ -1,1 +1,25 @@
-{"type": "Feature", "properties": {"OID_": 0, "Name": "c7", "FolderPath": "commercial.kml/commercial", "SymbolID": 0, "AltMode": 0, "Base": 0.0, "Clamped": -1, "Extruded": 0, "Snippet": null, "PopupInfo": null, "Shape_Leng": 0.00110959843472, "Shape_Area": 7.6608148567e-08}, "geometry": {"type": "Polygon", "coordinates": [[[73.18606328400006, 33.61967557600008, 0.0], [73.18602597800003, 33.619941029000074, 0.0], [73.18630763800007, 33.61995972700004, 0.0], [73.18634814400008, 33.61968863900006, 0.0], [73.18606328400006, 33.61967557600008, 0.0]]]}}
+{
+    "type": "Feature", 
+    "properties": {
+        "Land_ID": 7, 
+        "Name": "c7",
+        "FolderPath": "commercial.kml/commercial", 
+        "Type": "Commercial",
+        "Status": "0",
+        "SymbolID": 0, 
+        "Shape_Leng": 0.00110959843472, 
+        "Shape_Area": 7.6608148567e-08
+    }, 
+    "geometry": {
+        "type": "Polygon", 
+        "coordinates": [
+            [
+                [73.18606328400006, 33.61967557600008, 0.0], 
+                [73.18602597800003, 33.619941029000074, 0.0], 
+                [73.18630763800007, 33.61995972700004, 0.0], 
+                [73.18634814400008, 33.61968863900006, 0.0], 
+                [73.18606328400006, 33.61967557600008, 0.0]
+            ]
+        ]
+    }
+}

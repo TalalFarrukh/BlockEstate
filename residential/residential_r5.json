@@ -1,1 +1,25 @@
-{"type": "Feature", "properties": {"OID_": 0, "Name": "r5", "FolderPath": "residential.kml/residential", "SymbolID": 0, "AltMode": 0, "Base": 0.0, "Clamped": -1, "Extruded": 0, "Snippet": null, "PopupInfo": null, "Shape_Leng": 0.00147713455672, "Shape_Area": 1.34855067736e-07}, "geometry": {"type": "Polygon", "coordinates": [[[73.18460876200004, 33.62065697000003, 0.0], [73.18495641100003, 33.62068018400004, 0.0], [73.18498547100006, 33.62027758900007, 0.0], [73.18466864300007, 33.62025402900008, 0.0], [73.18460876200004, 33.62065697000003, 0.0]]]}}
+{
+    "type": "Feature", 
+    "properties": {
+        "Land_ID": 12, 
+        "Name": "r5", 
+        "FolderPath": "residential.kml/residential", 
+        "Type": "Residential",
+        "Status": "0",
+        "SymbolID": 0, 
+        "Shape_Leng": 0.00147713455672, 
+        "Shape_Area": 1.34855067736e-07
+    }, 
+    "geometry": {
+        "type": "Polygon", 
+        "coordinates": [
+            [
+                [73.18460876200004, 33.62065697000003, 0.0], 
+                [73.18495641100003, 33.62068018400004, 0.0], 
+                [73.18498547100006, 33.62027758900007, 0.0], 
+                [73.18466864300007, 33.62025402900008, 0.0], 
+                [73.18460876200004, 33.62065697000003, 0.0]
+            ]
+        ]
+    }
+}
