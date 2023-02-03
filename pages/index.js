@@ -97,7 +97,7 @@ export default function Home() {
 
     const response = await fetch("api/registerDetails", {
       method: "POST",
-      body: JSON.stringify({ address, firstName, lastName, email, contact }),
+      body: JSON.stringify({ address, firstName, lastName, email, contact}),
       headers: {
         'Content-Type': 'application/json'
       }
