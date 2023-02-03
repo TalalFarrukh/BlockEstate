@@ -24,13 +24,17 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
+    "run": "^1.4.0",
     "uuidv4": "^6.2.13",
     "web3": "^1.8.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
+<<<<<<< HEAD
     "prisma": "^4.9.0",
+=======
+>>>>>>> 9d69eed4fd708a80406660e369b74c0675690626
     "tailwindcss": "^3.2.4"
   }
 }
