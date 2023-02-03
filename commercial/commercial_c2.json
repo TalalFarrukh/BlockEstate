@@ -5,7 +5,7 @@
         "Name": "c2", 
         "Type": "Commercial",
         "Status": "0",
-        "FolderPath": "commercial.kml/commercial", 
+        "UserCnic": "",
         "SymbolID": 0, 
         "Shape_Leng": 0.00172664449039, 
         "Shape_Area": 1.68295831135e-07

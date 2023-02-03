@@ -17,6 +17,11 @@ const pagetwo = () => {
     landToken: null
   })
 
+  const [landExists, setLandExists] = useState(false)
+  const [landExistsId, setLandExistsId] = useState(null)
+  const [land, setLand] = useState(null)
+  const [landTokenExists, setLandTokenExists] = useState(false)
+
   useEffect(() => {
     const loadProvider = async () => {
       const provider = await detectEthereumProvider()
@@ -42,12 +47,15 @@ const pagetwo = () => {
     e.preventDefault()
     
     const { landToken, web3 } = web3Api
+    
+    const landJsonString = JSON.stringify(land)
+    const landTokenContract = await landToken.safeMint(address, landExistsId, landJsonString, {from:address})
 
-    const c1String = JSON.stringify(c2)
-    const landTokenContract = await landToken.safeMint(address, c1String, {from:address})
-
-    console.log(landTokenContract)
-
+    if(landTokenContract) {
+      console.log(landTokenContract)
+      setLandTokenExists(true)
+    }
+    
   }
 
   const getToken = async (e) => {
@@ -62,21 +70,79 @@ const pagetwo = () => {
     console.log(JSON.parse(landTokenContract.toString()))
   }
 
+  const checkLandExists = async (e) => {
+    e.preventDefault()
+
+    const landId = parseInt(e.target.landId.value)
+    const cnic = e.target.cnic.value
+
+    const response = await fetch("api/checkLandExists", {
+      method: "POST",
+      body: JSON.stringify({ landId, cnic }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const data = await response.json()
+    
+    if(data.status) {
+      setLandExists(data.status)
+      setLandExistsId(landId)
+      setLand(data.landJson)
+    }
+    else {
+      //throw error
+    }
+
+  }
+
+  const verifyNewLand = async (e) => {
+    e.preventDefault()
+
+    setLandExists(false)
+    setLandExistsId(null)
+    setLand(null)
+    setLandTokenExists(false)
+  }
+
   return (
     <>
       <div>
         Details have been registered and you have been redirected!!!
       </div>
 
-      <div>
-        Mint Token
-        <button onClick={mintToken}>Mint Token</button>
-      </div>
+      {!landExists && !landTokenExists ?
+        <>
+          <div>
+            <form onSubmit={checkLandExists}>
+              <input type="text" name="landId" placeholder="Land ID" required />
+              <input type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required />
+              <button type="submit">Check Land</button>
+            </form>
+          </div>
+        </>
+      : landExists && !landTokenExists ?
+        <>
+          <div>
+            Mint Token
+            <button onClick={mintToken}>Generate Token</button>
+          </div>
+        </>
+      : 
+        <>
+          <div>
+            <button onClick={verifyNewLand}>Verfiy new land</button>
+          </div>
+        </>
+      }
+
 
       <div>
         Token json file
         <button onClick={getToken}>Get Token</button>
       </div>
+
     </>
   )
 }

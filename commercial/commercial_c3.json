@@ -3,9 +3,9 @@
     "properties": {
         "Land_ID": 3, 
         "Name": "c3", 
-        "FolderPath": "commercial.kml/commercial", 
         "Type": "Commercial",
         "Status": "0",
+        "UserCnic": "",
         "SymbolID": 0,  
         "Shape_Leng": 0.00178516584461, 
         "Shape_Area": 1.96382612603e-07

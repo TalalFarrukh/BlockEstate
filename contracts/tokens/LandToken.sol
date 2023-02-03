@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "../Utils.sol";
 
 contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
@@ -24,24 +23,18 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
     }
     mapping(bytes32 => TokenSharedOwnerStruct) TokenSharedOwner;
 
-    using Counters for Counters.Counter;
-
-    Counters.Counter private _tokenIdCounter;
-
     constructor() ERC721("LandToken", "LTT") {}
 
-    function safeMint(address to, string memory uri) public {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();  _safeMint(to, tokenId);  _setTokenURI(tokenId, uri);
+    function safeMint(address to, uint256 tokenId, string memory uri) public {
+         _safeMint(to,tokenId);  _setTokenURI(tokenId,uri);
         
         address[] memory emptyArray;
         bytes32 ownerToken = hashTokenAddress(to,tokenId);
         TokenOwner[ownerToken] = TokenOwnerStruct(tokenId,false,emptyArray);
     }
 
-    function safeMint(address to, string memory uri, address[] memory sharedOwners) public {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();  _safeMint(to, tokenId);  _setTokenURI(tokenId, uri);
+    function safeMintShared(address to, uint256 tokenId, string memory uri, address[] memory sharedOwners) public {
+        _safeMint(to,tokenId);  _setTokenURI(tokenId,uri);
 
         bytes32 ownerToken = hashTokenAddress(to,tokenId);
         TokenOwner[ownerToken] = TokenOwnerStruct(tokenId,true,sharedOwners);
@@ -71,11 +64,11 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
 
         for(uint i=0; i<sharedOwners.length; i++) {
             bytes32 sharedToken = hashTokenAddress(sharedOwners[i],tokenId);
-            TokenSharedOwner[sharedToken] = TokenSharedOwnerStruct(696969696,false,address(0));
+            TokenSharedOwner[sharedToken] = TokenSharedOwnerStruct(10000000000,false,address(0));
         }
 
         address[] memory emptyArray;
-        TokenOwner[ownerToken] = TokenOwnerStruct(6969696969696,false,emptyArray);
+        TokenOwner[ownerToken] = TokenOwnerStruct(10000000000,false,emptyArray);
 
         super._burn(tokenId);
     }
@@ -105,17 +98,17 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
 
         for(uint i=0; i<sharedOwners.length; i++) {
             bytes32 sharedToken = hashTokenAddress(sharedOwners[i],tokenId);
-            TokenSharedOwner[sharedToken] = TokenSharedOwnerStruct(696969696,false,address(0));
+            TokenSharedOwner[sharedToken] = TokenSharedOwnerStruct(10000000000,false,address(0));
         }
 
         address[] memory emptyArray;
-        TokenOwner[ownerToken] = TokenOwnerStruct(6969696969696,false,emptyArray);
+        TokenOwner[ownerToken] = TokenOwnerStruct(10000000000,false,emptyArray);
 
         bytes32 newOwnerToken = hashTokenAddress(to,tokenId);
         TokenOwner[newOwnerToken] = TokenOwnerStruct(tokenId,false,emptyArray);
     }
 
-    function transferFrom(address from, address to, uint256 tokenId, address[] memory _sharedOwners) public {
+    function transferFromShared(address from, address to, uint256 tokenId, address[] memory _sharedOwners) public {
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner or approved");
         _transfer(from, to, tokenId);
 
@@ -124,11 +117,11 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
 
         for(uint i=0; i<sharedOwners.length; i++) {
             bytes32 sharedToken = hashTokenAddress(sharedOwners[i],tokenId);
-            TokenSharedOwner[sharedToken] = TokenSharedOwnerStruct(696969696,false,address(0));
+            TokenSharedOwner[sharedToken] = TokenSharedOwnerStruct(10000000000,false,address(0));
         }
 
         address[] memory emptyArray;
-        TokenOwner[ownerToken] = TokenOwnerStruct(6969696969696,false,emptyArray);
+        TokenOwner[ownerToken] = TokenOwnerStruct(10000000000,false,emptyArray);
 
         bytes32 newOwnerToken = hashTokenAddress(to,tokenId);
         TokenOwner[newOwnerToken] = TokenOwnerStruct(tokenId,true,_sharedOwners);

@@ -3,9 +3,9 @@
     "properties": {
         "Land_ID": 13,
         "Name": "r6", 
-        "FolderPath": "residential.kml/residential", 
         "Type": "Residential",
         "Status": "0",
+        "UserCnic": "",
         "SymbolID": 0, 
         "Shape_Leng": 0.00160194127881, 
         "Shape_Area": 1.51345574245e-07
