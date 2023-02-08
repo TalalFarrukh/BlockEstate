@@ -5,9 +5,10 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "../Utils.sol";
 
-contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
+contract LandToken is ERC721, ERC721URIStorage, ERC721Enumerable, ERC721Burnable, Ownable, Utils {
 
     struct TokenOwnerStruct {
         uint256 tokenId;
@@ -23,7 +24,16 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
     }
     mapping(bytes32 => TokenSharedOwnerStruct) TokenSharedOwner;
 
+
     constructor() ERC721("LandToken", "LTT") {}
+
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal override(ERC721, ERC721Enumerable) {
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
 
     function safeMint(address to, uint256 tokenId, string memory uri) public {
          _safeMint(to,tokenId);  _setTokenURI(tokenId,uri);
@@ -89,7 +99,7 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable, Utils {
         }
     }
 
-    function transferFrom(address from, address to, uint256 tokenId) public override {
+    function transferFrom(address from, address to, uint256 tokenId) public override(ERC721, IERC721) {
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner or approved");
         _transfer(from, to, tokenId);
 
