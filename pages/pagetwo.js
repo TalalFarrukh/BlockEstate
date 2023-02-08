@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
-import c2 from "../commercial/commercial_c2.json"
 
 const pagetwo = () => {
 
@@ -58,17 +57,15 @@ const pagetwo = () => {
     
   }
 
-  const getToken = async (e) => {
-    e.preventDefault()
+  // const getToken = async (e) => {
+  //   e.preventDefault()
 
-    const { landToken, web3 } = web3Api
+  //   const { landToken, web3 } = web3Api
 
-    const landTokenContract = await landToken.tokenURI(1)
+  //   const landTokenURI = await landToken.tokenURI(1)
 
-    // const c1Ascii = JSON.parse(web3.utils.hexToUtf8(c1Hex))
-
-    console.log(JSON.parse(landTokenContract.toString()))
-  }
+  //   console.log(JSON.parse(landTokenURI.toString()))
+  // }
 
   const checkLandExists = async (e) => {
     e.preventDefault()
@@ -106,6 +103,33 @@ const pagetwo = () => {
     setLandTokenExists(false)
   }
 
+  const getListOfAllTokens = async (e) => {
+    e.preventDefault()
+
+    const { landToken, web3 } = web3Api
+
+    // const events = await landToken.getPastEvents('Transfer', {
+    //   filter: {
+    //     'from': '0x0000000000000000000000000000000000000000',
+    //   },
+    //   fromBlock: 0,
+    //   toBlock: 'latest'
+    // })
+
+    const events = await landToken.getPastEvents('Transfer', {
+      filter: {
+        'to': address
+      },
+      fromBlock: 0,
+      toBlock: 'latest'
+    })
+    
+    // events.forEach(event => {
+    //   console.log(typeof(event.returnValues.tokenId))
+    // })
+    console.log(events)
+  }
+
   return (
     <>
       <div>
@@ -139,8 +163,10 @@ const pagetwo = () => {
 
 
       <div>
-        Token json file
-        <button onClick={getToken}>Get Token</button>
+        <form onSubmit={getListOfAllTokens}>
+          {/* <input type="text" name="landId" placeholder="Land ID" required /> */}
+          <button type="submit">Get Token List</button>
+        </form>
       </div>
 
     </>

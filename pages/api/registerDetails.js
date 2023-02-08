@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
     const { address, firstName, lastName, email, contact } = req.body
     
-    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM users WHERE address = ${address.toLowerCase()}`)//, [address.toLowerCase()] )
+    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM users WHERE address = ${address.toLowerCase()}`)
 
     if(checkQuery[0].is_registered === "1" && checkQuery.length>0) {
         
