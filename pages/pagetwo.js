@@ -57,15 +57,15 @@ const pagetwo = () => {
     
   }
 
-  // const getToken = async (e) => {
-  //   e.preventDefault()
+  const getToken = async (e) => {
+    e.preventDefault()
 
-  //   const { landToken, web3 } = web3Api
+    const { landToken, web3 } = web3Api
 
-  //   const landTokenURI = await landToken.tokenURI(1)
+    const landTokenURI = await landToken.tokenURI(1)
 
-  //   console.log(JSON.parse(landTokenURI.toString()))
-  // }
+    console.log(JSON.parse(landTokenURI.toString()))
+  }
 
   const checkLandExists = async (e) => {
     e.preventDefault()
@@ -82,7 +82,7 @@ const pagetwo = () => {
     })
 
     const data = await response.json()
-    
+    console.log(data.landJson)
     if(data.status) {
       setLandExists(data.status)
       setLandExistsId(landId)

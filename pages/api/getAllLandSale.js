@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
 
-    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM land_sale `)
+    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM land_sale`)
 
     if(getQuery.length>0) {
         res.json({

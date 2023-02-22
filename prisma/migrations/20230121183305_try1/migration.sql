@@ -23,8 +23,20 @@ CREATE TABLE "users" (
     "is_Registered" TEXT
 );
 
+-- CreateTable
+CREATE TABLE "land_sale" (
+    "id" SERIAL NOT NULL,
+    "land_id" INTEGER,
+    "address" TEXT,
+    "usercnic" TEXT,
+    "status" TEXT,
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "sessions_id_key" ON "sessions"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_id_key" ON "users"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_id_key" ON "land_sale"("id");
