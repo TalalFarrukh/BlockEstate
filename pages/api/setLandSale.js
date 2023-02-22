@@ -6,26 +6,43 @@ export default async function handler(req, res) {
 
     const { landId, address, cnic, status } = req.body
 
-    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM land_sale WHERE address = ${address.toLowerCase()} AND land_id = ${landId}`)
+    if(status === "On Sale") {
 
-    if(checkQuery.length>0 && checkQuery[0].status == "On Sale" ) {
-        res.json({
-            message: "Land is already put on sale"
-        })
+        const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM land_sale WHERE address = ${address.toLowerCase()} AND land_id = ${landId}`)
+
+        if(checkQuery.length>0) {
+            res.json({
+                message: "Land is already put on sale"
+            })
+        }
+        else {
+            // const insertQuery = await prisma.land_sale.create({
+            //     data: {
+            //       land_id: landId,
+            //       address: address,
+            //       usercnic: cnic,
+            //       status: status,
+            //     },
+            // })
+
+            const insertQuery = await prisma.$executeRaw`INSERT INTO land_sale (land_id, address, usercnic) VALUES (${landId}, ${address.toLowerCase()}, ${cnic})`
+
+            res.json({
+                message: "Land put on sale",
+                status: insertQuery.status
+            })
+        }
+
     }
-    else {
-        const insertQuery = await prisma.users.create({
-            data: {
-              land_id: landId,
-              address: address,
-              usercnic: cnic,
-              status: "On Sale",
-            },
-        })
+    else if(status === "Off Sale") {
+        
+        const deleteQuery = await prisma.$executeRaw`DELETE FROM land_sale WHERE address = ${address.toLowerCase()} AND land_id = ${landId}`
 
         res.json({
-            message: "Land put on sale",
-            status: insertQuery.status
+            message: "Land put off sale",
         })
+
     }
+    
+    
 }
