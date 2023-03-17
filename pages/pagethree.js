@@ -101,7 +101,7 @@ const pagethree = () => {
 
     }, [web3Api.web3])
 
-    const [landSaleStatus, setLandSaleStatus] = useState({});
+    const [landSaleStatus, setLandSaleStatus] = useState({})
 
     useEffect(() => {
       const fetchLandSaleStatus = async () => {

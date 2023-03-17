@@ -27,6 +27,11 @@ export default function Home() {
 
   const router = useRouter()
 
+  useEffect(() => {
+    if(!router.isReady) return
+    if(router.query.logoutStatus) logout()
+  }, [router.isReady])
+
   const connectAccount = async () => {
     const accounts = await web3Api.provider.request({method: "eth_requestAccounts"})
     setAddress(accounts[0])
@@ -185,7 +190,7 @@ export default function Home() {
 
           if(isRegistered === "2") {
             router.push({
-              pathname: "pagetwo",
+              pathname: "Dashboard",
               query: {
                 address
               }
