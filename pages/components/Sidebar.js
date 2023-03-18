@@ -6,7 +6,7 @@ function Sidebar() {
   const router = useRouter()
 
   const isActive = (pathname) => {
-    return router.pathname === pathname ? "bg-gray-700 text-white" : "text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
+    return router.pathname === pathname ? "bg-yellow-600 text-white" : "text-gray-400 hover:text-white hover:bg-yellow-400 focus:outline-none focus:text-white focus:bg-yellow-400"
   }
 
 
@@ -32,7 +32,7 @@ function Sidebar() {
           </li>
           <li>
             <button className={`w-full rounded-lg text-center ${isActive("/MyProperties")}`}>
-              <Link href="">My Properties</Link>
+              <Link href="/MyProperties">My Properties</Link>
             </button>
           </li>
         </ul>

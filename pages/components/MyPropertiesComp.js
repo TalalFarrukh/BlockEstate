@@ -1,4 +1,4 @@
-import { useState } from "react"
+import MyProperty from "./cards/MyProperty"
 
 const MyPropertiesComp = ({ userLands, address }) => {
 
@@ -10,8 +10,14 @@ const MyPropertiesComp = ({ userLands, address }) => {
             <div className="flex-1 bg-gray-600 h-px"></div>
         </div>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="md:flex flex-wrap justify-between md:p-5 p-2">
+
+        {userLands ? userLands.map(userLand => {return userLand ?
+            <MyProperty userLand={userLand} address={address} />
+        : null})
+        : null}
             
+
         </div>
 
     </div>

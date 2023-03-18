@@ -175,21 +175,24 @@ const MyProperties = () => {
 
   return (
     <div>
-
+      {sessionDetails.token ?
         <>
-            <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} logout={logout} />
+          <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} logout={logout} />
 
-            <div className="md:flex">
-                <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block`}>
-                <Sidebar />
-                </div>
-
-                <div className="w-full">
-                    <MyPropertiesComp userLands={userLands} address={address} />
-                </div>
+          <div className="md:flex">
+            <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block`}>
+            <Sidebar />
             </div>
 
+            <div className="w-full">
+              <MyPropertiesComp userLands={userLands} address={address} />
+            </div>
+          </div>
+
         </>
+      :
+        <div>Error not logged in</div>
+      }
 
 
     </div>
