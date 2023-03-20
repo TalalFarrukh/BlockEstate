@@ -22,19 +22,21 @@ export default function Home() {
     status: null
   })
 
+  const [sessionStatus, setSessionStatus] = useState(0)
   const [isLogout, setIsLogout] = useState(false)
   const [isRegistered, setIsRegistered] = useState(null)
 
   const router = useRouter()
 
-  useEffect(() => {
-    if(!router.isReady) return
-    if(router.query.logoutStatus) logout()
-  }, [router.isReady])
+  // useEffect(() => {
+  //   if(!router.isReady) return
+  //   if(router.query.logoutStatus) logout()
+  // }, [router.isReady])
 
   const connectAccount = async () => {
     const accounts = await web3Api.provider.request({method: "eth_requestAccounts"})
     setAddress(accounts[0])
+    setSessionStatus(1)
     setIsLogout(false)
   }
 
@@ -52,6 +54,7 @@ export default function Home() {
 
     setIsLogout(true)
     setAddress(null)
+    setSessionStatus(0)
     setSessionDetails({
       sessionID: null,
       address: null,
@@ -59,20 +62,6 @@ export default function Home() {
       status: null
     })
   }
-
-  useEffect(() => {
-    function handleBeforeUnload(event) {
-      logout()
-      event.preventDefault()
-      event.returnValue = ''
-    }
-
-    window.addEventListener('beforeunload', handleBeforeUnload)
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [])
   
   const registerCnic = async (e) => {
     e.preventDefault()
@@ -113,11 +102,8 @@ export default function Home() {
 
     if(isRegistered === "2") {
       router.push({
-        pathname: "pagetwo",
+        pathname: "Dashboard",
         query: {
-          web3: web3Api.web3,
-          provider: web3Api.provider,
-          landToken: web3Api.landToken,
           address
         }
       })
@@ -128,13 +114,7 @@ export default function Home() {
   useEffect(() => {
     ethereum.on("accountsChanged", (accounts) => {
       if(!accounts.length) {
-        setAddress(null)
-        setSessionDetails({
-          sessionID: null,
-          address: null,
-          token: null,
-          status: null
-        })
+        logout()
       }
     })  
   })
@@ -168,14 +148,16 @@ export default function Home() {
         if(address) {
           const response = await fetch("api/login", {
             method: "POST",
-            body: JSON.stringify({ address }),
+            body: JSON.stringify({ address, sessionStatus }),
             headers: {
               'Content-Type': 'application/json'
             }
           })
           
           const data = await response.json()
-          setSessionDetails(data)
+
+          if(!data) return
+          else setSessionDetails(data)
 
           const registerResponse = await fetch("api/registered", {
             method: "POST",

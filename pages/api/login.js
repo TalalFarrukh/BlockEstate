@@ -7,11 +7,11 @@ const prisma = new PrismaClient()
 const jwt = require("jsonwebtoken")
 
 export default async function handler(req, res) {
-    const { address } = req.body
+    const { address, sessionStatus } = req.body
 
     const checkSessionQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM sessions WHERE address = ${address.toLowerCase()} AND status = 'Active'`)
 
-    if(!checkSessionQuery.length>0 && address) {
+    if(!checkSessionQuery.length>0 && address && sessionStatus === 1) {
         
       const sessionID = uuid()
       const salt = bcryptjs.genSaltSync(10)
@@ -34,6 +34,9 @@ export default async function handler(req, res) {
         token,
         status: "Active"
       })
+    }
+    else if(!checkSessionQuery.length>0 && address) {
+      res.json(null)
     }
     else {
       res.json({

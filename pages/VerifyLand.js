@@ -28,6 +28,7 @@ const VerifyLand = () => {
         status: null
     })
 
+    const [sessionStatus, setSessionStatus] = useState(0)
     const [isLogout, setIsLogout] = useState(false)
 
     const [web3Api, setWeb3Api] = useState({
@@ -45,23 +46,20 @@ const VerifyLand = () => {
         body: JSON.stringify({ address, session_id }),
         headers: {
             'Content-Type': 'application/json'
-        }
+          }
         })
 
         setIsLogout(true)
         setAddress(null)
         setSessionDetails({
-        sessionID: null,
-        address: null,
-        token: null,
-        status: null
+          sessionID: null,
+          address: null,
+          token: null,
+          status: null
         })
 
         router.push({
-        pathname: "/",
-        query: {
-            logoutStatus: true
-        }
+          pathname: "/",
         })
 
     }
@@ -96,14 +94,16 @@ const VerifyLand = () => {
             if(address) {
               const response = await fetch("api/login", {
                 method: "POST",
-                body: JSON.stringify({ address }),
+                body: JSON.stringify({ address, sessionStatus }),
                 headers: {
                   'Content-Type': 'application/json'
                 }
               })
               
               const data = await response.json()
-              setSessionDetails(data)
+
+              if(!data) return
+              else setSessionDetails(data)
               
             }
           }
@@ -113,20 +113,6 @@ const VerifyLand = () => {
     
       }, [web3Api.web3, address])
     
-    
-      useEffect(() => {
-        function handleBeforeUnload(event) {
-          logout()
-          event.preventDefault()
-          event.returnValue = ''
-        }
-    
-        window.addEventListener('beforeunload', handleBeforeUnload)
-    
-        return () => {
-          window.removeEventListener('beforeunload', handleBeforeUnload)
-        }
-      }, [])
     
       useEffect(() => {
         ethereum.on("accountsChanged", (accounts) => {

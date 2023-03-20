@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic"
-
 const HomeMap = dynamic(() => import("../Map"), { ssr:false })
 
 

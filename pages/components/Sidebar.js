@@ -16,22 +16,22 @@ function Sidebar() {
         <div className="text-white font-bold text-xl mb-4">Menu</div>
         <ul>
           <li className="mb-4">
-            <button className={`w-full rounded-lg text-center ${isActive("/Dashboard")}`}>
+            <button onClick={() => router.push("/Dashboard")} className={`w-full rounded-lg text-center ${isActive("/Dashboard")}`}>
               <Link href="/Dashboard">Home</Link>
             </button>
           </li>
           <li className="mb-4">
-            <button className={`w-full rounded-lg text-center ${isActive("/Marketplace")}`}>
+            <button onClick={() => router.push("/Marketplace")} className={`w-full rounded-lg text-center ${isActive("/Marketplace")}`}>
               <Link href="">Marketplace</Link>
             </button>
           </li>
           <li className="mb-4">
-            <button className={`w-full rounded-lg text-center ${isActive("/VerifyLand")}`}>
+            <button onClick={() => router.push("/VerifyLand")} className={`w-full rounded-lg text-center ${isActive("/VerifyLand")}`}>
               <Link href="/VerifyLand">Verify Land</Link>
             </button>
           </li>
           <li>
-            <button className={`w-full rounded-lg text-center ${isActive("/MyProperties")}`}>
+            <button onClick={() => router.push("/MyProperties")} className={`w-full rounded-lg text-center ${isActive("/MyProperties")}`}>
               <Link href="/MyProperties">My Properties</Link>
             </button>
           </li>
@@ -40,7 +40,7 @@ function Sidebar() {
         <div className="text-white font-bold text-xl mb-4">Settings</div>
         <ul>
           <li>
-            <button className={`w-full rounded-lg text-center ${isActive("/Myaccount")}`}>
+            <button onClick={() => router.push("/MyAccount")} className={`w-full rounded-lg text-center ${isActive("/MyAccount")}`}>
               <Link href="">My Account</Link>
             </button>
           </li>

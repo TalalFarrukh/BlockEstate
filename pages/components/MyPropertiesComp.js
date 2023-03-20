@@ -1,6 +1,6 @@
 import MyProperty from "./cards/MyProperty"
 
-const MyPropertiesComp = ({ userLands, address }) => {
+const MyPropertiesComp = ({ userLands, address, landToken }) => {
 
   return (
     <div className="flex flex-col">
@@ -13,7 +13,7 @@ const MyPropertiesComp = ({ userLands, address }) => {
         <div className="md:flex flex-wrap justify-between md:p-5 p-2">
 
         {userLands ? userLands.map(userLand => {return userLand ?
-            <MyProperty userLand={userLand} address={address} />
+            <MyProperty userLand={userLand} address={address} landToken={landToken} />
         : null})
         : null}
             

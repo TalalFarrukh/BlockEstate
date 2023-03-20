@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 
-import MyMap from "../MyMap"
 import AddOwner from "../modals/AddOwner"
 
-const MyProperty = ({ userLand, address }) => {
+import dynamic from "next/dynamic"
+const MyMap = dynamic(() => import("../MyMap"), { ssr:false })
+
+const MyProperty = ({ userLand, address, landToken }) => {
 
     const [refreshStatus, setRefreshStatus] = useState(false)
     const [landSaleStatus, setLandSaleStatus] = useState()
@@ -80,10 +82,16 @@ const MyProperty = ({ userLand, address }) => {
         setShowModal(false)
     }
 
-    const handleSubmitModal = (sharedAddress) => {
+    const handleSubmitModal = async (sharedAddress) => {
         setNewSharedAddress(sharedAddress)
-        //add owner first
-        setShowModal(false)
+        
+        const setOwner = await landToken.setSharedOwners(address, [newSharedAddress], userLand.land_id, {from:address})
+
+        if(setOwner) {
+            console.log('New Shared Owner Added')
+            setShowModal(false)
+        }
+
     }
 
   return (

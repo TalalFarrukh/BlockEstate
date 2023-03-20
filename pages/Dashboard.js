@@ -27,6 +27,7 @@ const Dashboard = () => {
     status: null
   })
 
+  const [sessionStatus, setSessionStatus] = useState(0)
   const [isLogout, setIsLogout] = useState(false)
 
   const [userLands, setUserLands] = useState([])
@@ -52,6 +53,7 @@ const Dashboard = () => {
 
     setIsLogout(true)
     setAddress(null)
+    setSessionStatus(0)
     setSessionDetails({
       sessionID: null,
       address: null,
@@ -61,9 +63,6 @@ const Dashboard = () => {
 
     router.push({
       pathname: "/",
-      query: {
-        logoutStatus: true
-      }
     })
 
   }
@@ -105,7 +104,7 @@ const Dashboard = () => {
       })
 
       const eventFilterOtherTokenIds = eventOtherTokenIds.filter(event => {
-        return event.event === 'Transfer' && event.returnValues.to.toLowerCase() !== address
+        return event.event === 'Transfer' && event.returnValues.to.toLowerCase() !== address.toLowerCase()
       })
 
       const otherLands = []
@@ -147,7 +146,7 @@ const Dashboard = () => {
 
     web3Api.web3 && getAllUserTokens()
 
-  }, [web3Api.web3])
+  }, [web3Api.web3 && address])
   
   useEffect(() => {
     if(!router.isReady) return
@@ -167,14 +166,16 @@ const Dashboard = () => {
         if(address) {
           const response = await fetch("api/login", {
             method: "POST",
-            body: JSON.stringify({ address }),
+            body: JSON.stringify({ address, sessionStatus }),
             headers: {
               'Content-Type': 'application/json'
             }
           })
           
           const data = await response.json()
-          setSessionDetails(data)
+
+          if(!data) return
+          else setSessionDetails(data)
           
         }
       }
@@ -184,20 +185,6 @@ const Dashboard = () => {
 
   }, [web3Api.web3, address])
 
-
-  useEffect(() => {
-    function handleBeforeUnload(event) {
-      logout()
-      event.preventDefault()
-      event.returnValue = ''
-    }
-
-    window.addEventListener('beforeunload', handleBeforeUnload)
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [])
 
   useEffect(() => {
     ethereum.on("accountsChanged", (accounts) => {

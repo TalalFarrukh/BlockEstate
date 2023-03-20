@@ -29,6 +29,7 @@ const MyProperties = () => {
 
     const [userLands, setUserLands] = useState([])
 
+    const [sessionStatus, setSessionStatus] = useState(0)
     const [isLogout, setIsLogout] = useState(false)
 
     const [web3Api, setWeb3Api] = useState({
@@ -59,10 +60,7 @@ const MyProperties = () => {
         })
 
         router.push({
-            pathname: "/",
-            query: {
-                logoutStatus: true
-            }
+          pathname: "/",
         })
 
     }
@@ -97,14 +95,16 @@ const MyProperties = () => {
             if(address) {
               const response = await fetch("api/login", {
                 method: "POST",
-                body: JSON.stringify({ address }),
+                body: JSON.stringify({ address, sessionStatus }),
                 headers: {
                   'Content-Type': 'application/json'
                 }
               })
               
               const data = await response.json()
-              setSessionDetails(data)
+
+              if(!data) return
+              else setSessionDetails(data)
               
             }
           }
@@ -112,66 +112,51 @@ const MyProperties = () => {
     
         web3Api.web3 && getSessionDetails()
     
-      }, [web3Api.web3, address])
+    }, [web3Api.web3, address])
 
 
-      useEffect(() => {
-        const getAllUserTokens = async () => {
-          const { landToken, web3 } = web3Api
-          
-          const eventTokenIds = await landToken.getPastEvents('Transfer', {
-            filter: {
-              'to': address
-            },
-            fromBlock: 0,
-            toBlock: 'latest'
-          })
-    
-          const lands = []
-          const promises = []
-          
-          eventTokenIds.forEach((tokenId) => {
-            promises.push(
-              landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
-                .then((landTokenURI) => {
-                  lands.push(JSON.parse(landTokenURI))
-                })
-            )
-          })
-    
-          Promise.all(promises)
-            .then(() => {
-              setUserLands(lands)
-            })
+    useEffect(() => {
+      const getAllUserTokens = async () => {
+        const { landToken, web3 } = web3Api
         
-        }
+        const eventTokenIds = await landToken.getPastEvents('Transfer', {
+          filter: {
+            'to': address
+          },
+          fromBlock: 0,
+          toBlock: 'latest'
+        })
+  
+        const lands = []
+        const promises = []
+        
+        eventTokenIds.forEach((tokenId) => {
+          promises.push(
+            landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
+              .then((landTokenURI) => {
+                lands.push(JSON.parse(landTokenURI))
+              })
+          )
+        })
+  
+        Promise.all(promises)
+          .then(() => {
+            setUserLands(lands)
+          })
+      }
+  
+      web3Api.web3 && getAllUserTokens()
+  
+    }, [web3Api.web3 && address])
     
-        web3Api.web3 && getAllUserTokens()
     
-      }, [web3Api.web3])
-    
-    
-      useEffect(() => {
-        function handleBeforeUnload(event) {
+    useEffect(() => {
+      ethereum.on("accountsChanged", (accounts) => {
+        if(!accounts.length) {
           logout()
-          event.preventDefault()
-          event.returnValue = ''
         }
-    
-        window.addEventListener('beforeunload', handleBeforeUnload)
-    
-        return () => {
-          window.removeEventListener('beforeunload', handleBeforeUnload)
-        }
-      }, [])
-    
-      useEffect(() => {
-        ethereum.on("accountsChanged", (accounts) => {
-          if(!accounts.length) {
-            logout()
-          }
-        })  
-      })
+      })  
+    })
 
   return (
     <div>
@@ -181,11 +166,11 @@ const MyProperties = () => {
 
           <div className="md:flex">
             <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block`}>
-            <Sidebar />
+              <Sidebar />
             </div>
 
             <div className="w-full">
-              <MyPropertiesComp userLands={userLands} address={address} />
+              <MyPropertiesComp userLands={userLands} address={address} landToken={web3Api.landToken} />
             </div>
           </div>
 
