@@ -10,6 +10,9 @@ const MyProperty = ({ userLand, address, landToken }) => {
     const [refreshStatus, setRefreshStatus] = useState(false)
     const [landSaleStatus, setLandSaleStatus] = useState()
 
+    const [isEditingPrice, setIsEditingPrice] = useState(false)
+    const [price, setPrice] = useState(0)
+
     const checkLandSale = async (landId) => {
         const response = await fetch("api/checkLandSale", {
             method: "POST",
@@ -20,6 +23,9 @@ const MyProperty = ({ userLand, address, landToken }) => {
         })
 
         const data = await response.json()
+
+        if(data.status) setPrice(data.price)
+
         return data.status
     }
 
@@ -48,9 +54,6 @@ const MyProperty = ({ userLand, address, landToken }) => {
           fetchLandSaleStatus()
 
     }, [refreshStatus])
-
-    const [isEditingPrice, setIsEditingPrice] = useState(false)
-    const [price, setPrice] = useState(0)
 
     const handlePriceDoubleClick = () => {
         setIsEditingPrice(true)
