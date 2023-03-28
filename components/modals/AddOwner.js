@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const AddOwner = ({ onClose, onSubmit, setNewSharedAddress }) => {
+const AddOwner = ({ onClose, onSubmit }) => {
 
     const [sharedAddress, setSharedAddress] = useState("")
 

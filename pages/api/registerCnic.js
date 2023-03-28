@@ -2,8 +2,24 @@ const { PrismaClient } = require('@prisma/client')
 const { Prisma } = require('@prisma/client')
 const prisma = new PrismaClient()
 
+import bcryptjs from "bcryptjs"
 
-export default async function handler(req, res) {
+function requireAuth(handler) {
+    return async (req, res) => {
+      
+      const isAuthenticated = bcryptjs.compareSync("APIs", req.body.apiKey)
+  
+      if (isAuthenticated) {
+        return await handler(req, res)
+      }
+  
+      res.status(401).json({
+        message: "Unauthorized"
+      })
+    }
+}
+
+async function handler(req, res) {
     const { address, cnic } = req.body
 
     const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM users WHERE address = ${address.toLowerCase()} AND cnic = ${cnic}`)
@@ -26,6 +42,6 @@ export default async function handler(req, res) {
     else {
         res.json({message: "User CNIC already registered"})
     }
-
-    
 }
+
+export default requireAuth(handler)

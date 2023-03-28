@@ -9,6 +9,11 @@ import Header from "../components/Header"
 import Sidebar from "../components/Sidebar"
 import MyAccountComp from "../components/MyAccountComp"
 
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
+
 const MyAccount = () => {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -53,7 +58,7 @@ const MyAccount = () => {
 
         const response = await fetch("api/logout", {
         method: "POST",
-        body: JSON.stringify({ address, session_id }),
+        body: JSON.stringify({ address, session_id, apiKey }),
         headers: {
             'Content-Type': 'application/json'
           }
@@ -104,7 +109,7 @@ const MyAccount = () => {
             if(address) {
               const response = await fetch("api/login", {
                 method: "POST",
-                body: JSON.stringify({ address, sessionStatus }),
+                body: JSON.stringify({ address, sessionStatus, apiKey }),
                 headers: {
                   'Content-Type': 'application/json'
                 }
@@ -128,7 +133,7 @@ const MyAccount = () => {
       const getUserDetails = async (e) => {
         const userResponse = await fetch("api/getUserDetails", {
           method: "POST",
-          body: JSON.stringify({ address }),
+          body: JSON.stringify({ address, apiKey }),
           headers: {
             'Content-Type': 'application/json'
           }

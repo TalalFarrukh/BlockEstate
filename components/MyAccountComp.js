@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react"
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
 
 const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }) => {
 
@@ -12,7 +15,7 @@ const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }
 
         const response = await fetch("api/updateUserDetails", {
             method: "POST",
-            body: JSON.stringify({ address, firstName, lastName, email, contact }),
+            body: JSON.stringify({ address, firstName, lastName, email, contact, apiKey }),
             headers: {
                 'Content-Type': 'application/json'
             }

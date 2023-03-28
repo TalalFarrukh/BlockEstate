@@ -5,6 +5,11 @@ import AddOwner from "../modals/AddOwner"
 import dynamic from "next/dynamic"
 const MyMap = dynamic(() => import("../MyMap"), { ssr:false })
 
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
+
 const MyProperty = ({ userLand, address, landToken, cnic }) => {
 
     const [refreshStatus, setRefreshStatus] = useState(false)
@@ -16,7 +21,7 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
     const checkLandSale = async (landId) => {
         const response = await fetch("api/checkLandSale", {
             method: "POST",
-            body: JSON.stringify({ landId, address }),
+            body: JSON.stringify({ landId, address, apiKey }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -37,7 +42,7 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
 
         const response = await fetch("api/setLandSale", {
             method: "POST",
-            body: JSON.stringify({ landId, address, cnic, status, landAddress, type, area, price }),
+            body: JSON.stringify({ landId, address, cnic, status, landAddress, type, area, price, apiKey }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -147,7 +152,7 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
                     Add Owners
                 </button>
                 {showModal &&
-                    <AddOwner onClose={handleCloseModal} onSubmit={handleSubmitModal} setNewSharedAddress={setNewSharedAddress} />
+                    <AddOwner onClose={handleCloseModal} onSubmit={handleSubmitModal} />
                 }
 
             </div>

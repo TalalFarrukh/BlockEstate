@@ -1,5 +1,10 @@
 import { useState } from "react"
 
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
+
 const VerifyLandComp = ({ address, landToken }) => {
 
   const [landExists, setLandExists] = useState(false)
@@ -15,7 +20,7 @@ const VerifyLandComp = ({ address, landToken }) => {
 
     const response = await fetch("api/checkLandExists", {
       method: "POST",
-      body: JSON.stringify({ landId, cnic }),
+      body: JSON.stringify({ landId, cnic, apiKey }),
       headers: {
         'Content-Type': 'application/json'
       }

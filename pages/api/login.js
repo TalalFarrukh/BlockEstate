@@ -6,7 +6,23 @@ const prisma = new PrismaClient()
 
 const jwt = require("jsonwebtoken")
 
-export default async function handler(req, res) {
+
+function requireAuth(handler) {
+  return async (req, res) => {
+    
+    const isAuthenticated = bcryptjs.compareSync("APIs", req.body.apiKey)
+
+    if (isAuthenticated) {
+      return await handler(req, res)
+    }
+
+    res.status(401).json({
+      message: "Unauthorized"
+    })
+  }
+}
+
+async function handler(req, res) {
     const { address, sessionStatus } = req.body
 
     const checkSessionQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM sessions WHERE address = ${address.toLowerCase()} AND status = 'Active'`)
@@ -48,3 +64,5 @@ export default async function handler(req, res) {
     }
  
 }
+
+export default requireAuth(handler)

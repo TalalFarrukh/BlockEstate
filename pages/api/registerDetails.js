@@ -2,8 +2,24 @@ const { PrismaClient } = require('@prisma/client')
 const { Prisma } = require('@prisma/client')
 const prisma = new PrismaClient()
 
+import bcryptjs from "bcryptjs"
 
-export default async function handler(req, res) {
+function requireAuth(handler) {
+    return async (req, res) => {
+      
+      const isAuthenticated = bcryptjs.compareSync("APIs", req.body.apiKey)
+  
+      if (isAuthenticated) {
+        return await handler(req, res)
+      }
+  
+      res.status(401).json({
+        message: "Unauthorized"
+      })
+    }
+}
+
+async function handler(req, res) {
 
     const { address, firstName, lastName, email, contact } = req.body
     
@@ -25,3 +41,5 @@ export default async function handler(req, res) {
         res.json({message: "Details already registered"})
     }
 }
+
+export default requireAuth(handler)

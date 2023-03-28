@@ -4,7 +4,10 @@ import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 import { useRouter } from "next/router"
 import { FaUser, FaUserTie, FaEnvelope, FaAddressCard, FaPhoneAlt } from "react-icons/fa"
-import { stringify } from 'circular-json'
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
 
 export default function Home() {
 
@@ -28,11 +31,6 @@ export default function Home() {
 
   const router = useRouter()
 
-  // useEffect(() => {
-  //   if(!router.isReady) return
-  //   if(router.query.logoutStatus) logout()
-  // }, [router.isReady])
-
   const connectAccount = async () => {
     const accounts = await web3Api.provider.request({method: "eth_requestAccounts"})
     setAddress(accounts[0])
@@ -46,7 +44,7 @@ export default function Home() {
 
     const response = await fetch("api/logout", {
       method: "POST",
-      body: JSON.stringify({ address, session_id }),
+      body: JSON.stringify({ address, session_id, apiKey }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -70,7 +68,7 @@ export default function Home() {
     
     const response = await fetch("api/registerCnic", {
       method: "POST",
-      body: JSON.stringify({ address, cnic }),
+      body: JSON.stringify({ address, cnic, apiKey }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -91,7 +89,7 @@ export default function Home() {
 
     const response = await fetch("api/registerDetails", {
       method: "POST",
-      body: JSON.stringify({ address, firstName, lastName, email, contact}),
+      body: JSON.stringify({ address, firstName, lastName, email, contact, apiKey }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -148,7 +146,7 @@ export default function Home() {
         if(address) {
           const response = await fetch("api/login", {
             method: "POST",
-            body: JSON.stringify({ address, sessionStatus }),
+            body: JSON.stringify({ address, sessionStatus, apiKey }),
             headers: {
               'Content-Type': 'application/json'
             }
@@ -161,7 +159,7 @@ export default function Home() {
 
           const registerResponse = await fetch("api/registered", {
             method: "POST",
-            body: JSON.stringify({ address }),
+            body: JSON.stringify({ address, apiKey }),
             headers: {
               'Content-Type': 'application/json'
             }
