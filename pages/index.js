@@ -3,7 +3,7 @@ import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 import { useRouter } from "next/router"
-import { FaRegEnvelope } from "react-icons/fa"
+import { FaUser, FaUserTie, FaEnvelope, FaAddressCard, FaPhoneAlt } from "react-icons/fa"
 import { stringify } from 'circular-json'
 
 export default function Home() {
@@ -207,7 +207,7 @@ export default function Home() {
                       <div className="border-2 w-10 border-white inline-block mb-3"></div>
                       <form onSubmit={registerCnic} className="flex flex-col items-center">
                         <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
-                          <FaRegEnvelope className="text-gray-500 m-2"/>
+                          <FaAddressCard className="text-gray-500 m-2"/>
                           <input type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required className="bg-gray-100 outline-none text-sm" />
                         </div>
                         <button type="submit" className="text-lg rounded-full px-10 py-1 my-4 inline-block font-semibold bg-yellow-600 text-white">Submit</button>
@@ -221,19 +221,19 @@ export default function Home() {
                       <div className="border-2 w-10 border-white inline-block mb-3"></div>
                       <form onSubmit={registerOtherDetails} className="flex flex-col items-center">
                         <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
-                          <FaRegEnvelope className="text-gray-500 m-2"/>
+                          <FaUser className="text-gray-500 m-2"/>
                           <input type="text" name="firstName" placeholder="First Name" required className="bg-gray-100 outline-none text-sm" />
                         </div>
                         <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
-                          <FaRegEnvelope className="text-gray-500 m-2"/>
+                          <FaUserTie className="text-gray-500 m-2"/>
                           <input type="text" name="lastName" placeholder="Last Name" required className="bg-gray-100 outline-none text-sm" />
                         </div>
                         <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
-                          <FaRegEnvelope className="text-gray-500 m-2"/>
+                          <FaEnvelope className="text-gray-500 m-2"/>
                           <input type="text" name="email" placeholder="Email" required className="bg-gray-100 outline-none text-sm" />
                         </div>
                         <div className="bg-gray-100 w-64 p-2 flex items-center mb-3">
-                          <FaRegEnvelope className="text-gray-500 m-2"/>
+                          <FaPhoneAlt className="text-gray-500 m-2"/>
                           <input type="text" name="contact" placeholder="Contact Number" required className="bg-gray-100 outline-none text-sm" />
                         </div>
                         <button type="submit" className="text-lg rounded-full px-10 py-1 my-4 inline-block font-semibold bg-yellow-600 text-white">Submit</button>
