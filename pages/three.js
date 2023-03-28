@@ -41,7 +41,7 @@ const three = () => {
         })
 
         const data = await response.json()
-        console.log(data)
+        
         if(!data) return
         else {
           setIsSubmitted(data.status)
@@ -59,9 +59,11 @@ const three = () => {
 
       const buyerBidPrice = e.target.bidPrice.value
 
+      const status = "Submit"
+
       const response = await fetch("api/submitBid", {
         method: "POST",
-        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice }),
+        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -70,7 +72,29 @@ const three = () => {
       const data = await response.json()
   
       if(!data) return
-      else if(data.status) setRefreshStatus(!refreshStatus)
+      else setRefreshStatus(!refreshStatus)
+
+    }
+
+    const removeBid = async (e) => {
+      e.preventDefault()
+
+      const buyerBidPrice = 0
+
+      const status = "Remove"
+
+      const response = await fetch("api/submitBid", {
+        method: "POST",
+        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+
+      if(!data) return
+      else setRefreshStatus(!refreshStatus)
 
     }
 
@@ -86,6 +110,7 @@ const three = () => {
           <div>
             Bid submitted
             <div>Bid Price: {bidPrice}</div>
+            <button type="button" onClick={removeBid}>Remove Bid</button>
           </div>
         </>
 

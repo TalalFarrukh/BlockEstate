@@ -25,7 +25,7 @@ const pagetwo = () => {
         landToken: null
     })
 
-    const [otherUserLands, setOtherUserLands] = useState([])
+    const [testLands, setTestLands] = useState([])
 
     const logout = async () => {
 
@@ -105,47 +105,6 @@ const pagetwo = () => {
 
 
     useEffect(() => {
-        const getAllUserTokens = async () => {
-          const { landToken, web3 } = web3Api
-    
-          const eventOtherTokenIds = await landToken.getPastEvents('Transfer', {
-            filter: {
-              'from': '0x0000000000000000000000000000000000000000'
-            },
-            fromBlock: 0,
-            toBlock: 'latest'
-          })
-    
-          const eventFilterOtherTokenIds = eventOtherTokenIds.filter(event => {
-            return event.event === 'Transfer' && event.returnValues.to.toLowerCase() !== address.toLowerCase()
-          })
-    
-          const otherLands = []
-          const otherPromises = []
-          
-          eventFilterOtherTokenIds.forEach((tokenId) => {
-            otherPromises.push(
-              landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
-                .then((landTokenURI) => {
-                  otherLands.push(JSON.parse(landTokenURI))
-                })
-            )
-          })
-    
-          Promise.all(otherPromises)
-            .then(() => {
-              setOtherUserLands(otherLands)
-            })
-            
-            
-        }
-    
-        web3Api.web3 && getAllUserTokens()
-    
-      }, [web3Api.web3 && address])
-
-
-    useEffect(() => {
         ethereum.on("accountsChanged", (accounts) => {
           if(!accounts.length) {
             logout()
@@ -153,23 +112,43 @@ const pagetwo = () => {
         })  
       })
 
-    
+    useEffect(() => {
+
+      const getAllLandSale = async () => {
+
+        const response = await fetch("api/getAllLandSale", {
+          method: "POST",
+          body: JSON.stringify({ address }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        
+        const data = await response.json()
+        setTestLands(data.landOnSale)
+        console.log(data.landOnSale)
+      }
+
+      address && getAllLandSale()
+
+    }, [address])
+
 
 
   return (
     <div>
-        {otherUserLands ? otherUserLands.map(shape => {
+        {testLands ? testLands.map(shape => {
             return shape ?
 
             <div>
-                Shape ID: {shape.properties.land_id}
+                Shape ID: {shape.land_id}
                 <button type="button" onClick={(e) => {
                     router.push({
                         pathname: "/three",
                         query: {
-                            landId: shape.properties.land_id,
-                            sellerAddress: "0x34e9ae971ce73aa51cf44656559265cae4655ab6",
-                            askPrice: 100000
+                            landId: shape.land_id,
+                            sellerAddress: shape.address,
+                            askPrice: shape.price
                         }
                     })
                 }}>Buy shape</button>
