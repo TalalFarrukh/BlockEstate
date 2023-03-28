@@ -5,9 +5,9 @@ import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 
 
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-import VerifyLandComp from "./components/VerifyLandComp"
+import Header from "../components/Header"
+import Sidebar from "../components/Sidebar"
+import VerifyLandComp from "../components/VerifyLandComp"
 
 
 const VerifyLand = () => {

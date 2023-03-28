@@ -4,10 +4,9 @@ import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 
-
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-import Home from "./components/Home"
+import Header from "../components/Header"
+import Sidebar from "../components/Sidebar"
+import Home from "../components/Home"
 
 const Dashboard = () => {
 

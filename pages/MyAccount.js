@@ -5,9 +5,9 @@ import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 
 
-import Header from "./components/Header"
-import Sidebar from "./components/Sidebar"
-import MyAccountComp from "./components/MyAccountComp"
+import Header from "../components/Header"
+import Sidebar from "../components/Sidebar"
+import MyAccountComp from "../components/MyAccountComp"
 
 const MyAccount = () => {
 

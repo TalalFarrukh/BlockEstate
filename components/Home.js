@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic"
-const HomeMap = dynamic(() => import("../Map"), { ssr:false })
-
+const HomeMap = dynamic(() => import("./Map"), { ssr:false })
 
 const Home = ({ userLands, otherUserLands, address }) => {
   return (

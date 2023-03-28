@@ -39,6 +39,8 @@ export default async function handler(req, res) {
         
         const deleteQuery = await prisma.$executeRaw`DELETE FROM land_sale WHERE address = ${address.toLowerCase()} AND land_id = ${landId}`
 
+        const deleteBidRequestQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE seller_address = ${address.toLowerCase()} AND land_id = ${landId}`
+
         res.json({
             message: "Land put off sale",
         })

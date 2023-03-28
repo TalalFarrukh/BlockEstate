@@ -125,8 +125,10 @@ const pagetwo = () => {
         })
         
         const data = await response.json()
-        setTestLands(data.landOnSale)
-        console.log(data.landOnSale)
+
+        if(!data) return
+        else setTestLands(data.landOnSale)
+        
       }
 
       address && getAllLandSale()
