@@ -36,5 +36,7 @@ model land_sale {
   address   String?
   usercnic    String?
   price   Int?
-  status String?
+  land_address   String?
+  type   String?
+  area   Int?
 }

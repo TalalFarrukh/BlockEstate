@@ -140,6 +140,8 @@ const Dashboard = () => {
           setOtherUserLands(otherLands)
         })
 
+        console.log(eventFilterOtherTokenIds)
+
     }
 
     web3Api.web3 && getAllUserTokens()

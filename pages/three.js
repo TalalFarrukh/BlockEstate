@@ -7,57 +7,20 @@ import { loadContract } from "./utils/load-contract"
 
 const three = () => {
 
-  const router = useRouter()
+    const [landId, setLandId] = useState(null)
 
-  const [address, setAddress] = useState("0x294a60E096abbb9c77178a55A059E2f58d8409B7")
+    useEffect(() => {
+        if(!router.isReady) return
+        setLandId(router.query.landId)
+      }, [router.isReady])
 
-  const [landId, setLandId] = useState(null)
-  const [sellerAddress, setSellerAddress] = useState(null)
-  const [sellerPrice, setSellerPrice] = useState(null)
-
-  useEffect(() => {
-    if(!router.isReady) return
-    setLandId(router.query.landId)
-  }, [router.isReady])
-
-  useEffect(() => {//this will be run at the time of page load along with the sessions
-
-    const checkLandSale = async () => {
-
-      if(!landId) return
-      else {
-        
-        const response = await fetch("api/getSellerLandSale", {
-            method: "POST",
-            body: JSON.stringify({ landId }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-        })
-
-        const data = await response.json()
-
-        if(data.status) {
-          setSellerAddress(data.address)
-          setSellerPrice(data.price)
-        }
-
-      }
-    }
-
-    checkLandSale()
-
-  }, [landId])
+    useEffect(() => {
+        console.log(landId)
+    })
 
 
   return (
-    <div>
-
-      <div>Seller Address: {sellerAddress}</div>
-      <div>Price: {sellerPrice}</div>
-
-
-    </div>
+    <div>three</div>
   )
 }
 
