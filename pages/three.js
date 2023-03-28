@@ -4,6 +4,10 @@ import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
 
 const three = () => {
 
@@ -34,7 +38,7 @@ const three = () => {
       const checkSubmitBid = async () => {
         const response = await fetch("api/checkSubmitBid", {
           method: "POST",
-          body: JSON.stringify({ landId, address }),
+          body: JSON.stringify({ landId, address, apiKey }),
           headers: {
             'Content-Type': 'application/json'
           }
@@ -63,7 +67,7 @@ const three = () => {
 
       const response = await fetch("api/submitBid", {
         method: "POST",
-        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status }),
+        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status, apiKey }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -85,7 +89,7 @@ const three = () => {
 
       const response = await fetch("api/submitBid", {
         method: "POST",
-        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status }),
+        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status, apiKey }),
         headers: {
           'Content-Type': 'application/json'
         }

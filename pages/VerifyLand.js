@@ -64,6 +64,7 @@ const VerifyLand = () => {
 
         setIsLogout(true)
         setAddress(null)
+        setSessionStatus(0)
         setSessionDetails({
           sessionID: null,
           address: null,

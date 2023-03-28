@@ -4,6 +4,11 @@ import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
+
 const pagetwo = () => {
 
     const router = useRouter()
@@ -33,7 +38,7 @@ const pagetwo = () => {
 
         const response = await fetch("api/logout", {
             method: "POST",
-            body: JSON.stringify({ address, session_id }),
+            body: JSON.stringify({ address, session_id, apiKey }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -84,7 +89,7 @@ const pagetwo = () => {
             if(address) {
               const response = await fetch("api/login", {
                 method: "POST",
-                body: JSON.stringify({ address, sessionStatus }),
+                body: JSON.stringify({ address, sessionStatus, apiKey }),
                 headers: {
                   'Content-Type': 'application/json'
                 }
@@ -118,7 +123,7 @@ const pagetwo = () => {
 
         const response = await fetch("api/getAllLandSale", {
           method: "POST",
-          body: JSON.stringify({ address }),
+          body: JSON.stringify({ address, apiKey }),
           headers: {
             'Content-Type': 'application/json'
           }

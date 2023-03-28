@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import { get } from "lodash"
+
+import bcryptjs from "bcryptjs"
+
+const apiSalt = bcryptjs.genSaltSync(10)
+const apiKey = bcryptjs.hashSync("APIs", apiSalt)
 
 const four = () => {
 
@@ -23,7 +27,7 @@ const four = () => {
 
             const response = await fetch("api/getBidRequestList", {
                 method: "POST",
-                body: JSON.stringify({ landId, address }),
+                body: JSON.stringify({ landId, address, apiKey }),
                 headers: {
                   'Content-Type': 'application/json'
                 }

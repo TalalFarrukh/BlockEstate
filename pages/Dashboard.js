@@ -98,6 +98,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     const getAllUserTokens = async () => {
+
+      if(!address) return
+
       const { landToken, web3 } = web3Api
       
       const eventTokenIds = await landToken.getPastEvents('Transfer', {
