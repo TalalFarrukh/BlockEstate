@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react"
 
-const MyAccountComp = ({ address }) => {
-
-    const [refreshStatus, setRefreshStatus] = useState(false)
-
-    const [userDetails, setUserDetails] = useState({
-        address: null,
-        cnic: null,
-        firstName: null,
-        lastName: null,
-        email: null,
-        contact: null
-    })
+const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }) => {
 
     const updateUser = async (e) => {
         e.preventDefault()
@@ -35,29 +24,6 @@ const MyAccountComp = ({ address }) => {
 
     }
 
-
-    useEffect(() => {
-
-        const getUserDetails = async () => {
-            const response = await fetch("api/getUserDetails", {
-                method: "POST",
-                body: JSON.stringify({ address }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-
-            const data = await response.json()
-            if(!data) return
-            else setUserDetails(data)
-
-        }
-
-        getUserDetails()
-
-    }, [refreshStatus])
-
-
   return (
     <div className="flex flex-col">
 
@@ -79,8 +45,8 @@ const MyAccountComp = ({ address }) => {
                         Address
                       </label>
                       <input
-                        className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-solid border-2 border-slate-700"
-                        type="text" name="address" placeholder="Address" required readOnly defaultValue={userDetails.address}
+                        className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 disabled:bg-gray-200 leading-tight focus:outline-none focus:shadow-outline border-solid border-2 border-slate-700"
+                        type="text" name="address" placeholder="Address" required readOnly disabled defaultValue={userDetails.address}
                       />
                     </div>
 
@@ -89,8 +55,8 @@ const MyAccountComp = ({ address }) => {
                         CNIC
                       </label>
                       <input
-                        className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-solid border-2 border-slate-700"
-                        type="text" name="cnic" placeholder="CNIC" required readOnly defaultValue={userDetails.cnic}
+                        className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 disabled:bg-gray-200 leading-tight focus:outline-none focus:shadow-outline border-solid border-2 border-slate-700"
+                        type="text" name="cnic" placeholder="CNIC" required readOnly disabled defaultValue={userDetails.cnic}
                       />
                     </div>
 

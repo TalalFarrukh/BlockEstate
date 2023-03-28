@@ -9,6 +9,8 @@ const three = () => {
 
     const [landId, setLandId] = useState(null)
 
+    const router = useRouter()
+
     useEffect(() => {
         if(!router.isReady) return
         setLandId(router.query.landId)
@@ -16,11 +18,11 @@ const three = () => {
 
     useEffect(() => {
         console.log(landId)
-    })
+    }, [])
 
 
   return (
-    <div>three</div>
+    <div>{landId}</div>
   )
 }
 

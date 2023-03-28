@@ -14,7 +14,8 @@ export default async function handler(req, res) {
         firstName: getQuery[0].first_name,
         lastName: getQuery[0].last_name,
         email: getQuery[0].email,
-        contact: getQuery[0].contact
+        contact: getQuery[0].contact,
+        isRegistered: getQuery[0].is_registered
     })
 
 }

@@ -26,6 +26,15 @@ const Dashboard = () => {
     token: null,
     status: null
   })
+  const [userDetails, setUserDetails] = useState({
+    address: null,
+    cnic: null,
+    firstName: null,
+    lastName: null,
+    email: null,
+    contact: null,
+    isRegistered: null
+  })
 
   const [sessionStatus, setSessionStatus] = useState(0)
   const [isLogout, setIsLogout] = useState(false)
@@ -175,7 +184,22 @@ const Dashboard = () => {
           const data = await response.json()
 
           if(!data) return
-          else setSessionDetails(data)
+          else {
+            setSessionDetails(data)
+
+            const userResponse = await fetch("api/getUserDetails", {
+              method: "POST",
+              body: JSON.stringify({ address }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            
+            const userData = await userResponse.json()
+            
+            setUserDetails(userData)
+
+          } 
           
         }
       }
@@ -198,7 +222,7 @@ const Dashboard = () => {
   
   return (
     <div>
-      {sessionDetails.token ?
+      {sessionDetails.token && userDetails.isRegistered === "2" ?
         <>
           <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} logout={logout} />
 

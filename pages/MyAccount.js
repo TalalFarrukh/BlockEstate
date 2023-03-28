@@ -19,12 +19,23 @@ const MyAccount = () => {
 
     const router = useRouter()
 
+    const [refreshStatus, setRefreshStatus] = useState(false)
+
     const [address, setAddress] = useState(null)
     const [sessionDetails, setSessionDetails] = useState({
         sessionID: null,
         address: null,
         token: null,
         status: null
+    })
+    const [userDetails, setUserDetails] = useState({
+        address: null,
+        cnic: null,
+        firstName: null,
+        lastName: null,
+        email: null,
+        contact: null,
+        isRegistered: null
     })
 
     const [sessionStatus, setSessionStatus] = useState(0)
@@ -111,12 +122,31 @@ const MyAccount = () => {
         web3Api.web3 && getSessionDetails()
     
     }, [web3Api.web3, address])
+
+    useEffect(() => {
+
+      const getUserDetails = async (e) => {
+        const userResponse = await fetch("api/getUserDetails", {
+          method: "POST",
+          body: JSON.stringify({ address }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const userData = await userResponse.json()
+
+        setUserDetails(userData)
+      }
+
+      address && getUserDetails()
+
+    }, [address, refreshStatus])
     
     
     useEffect(() => {
         ethereum.on("accountsChanged", (accounts) => {
             if(!accounts.length) {
-            logout()
+              logout()
             }
         })  
     })
@@ -125,7 +155,7 @@ const MyAccount = () => {
   return (
     <div>
 
-        {sessionDetails.token ?
+        {sessionDetails.token && userDetails.isRegistered === "2" ?
             <>
                 <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} logout={logout} />
 
@@ -135,7 +165,7 @@ const MyAccount = () => {
                     </div>
 
                     <div className="w-full">
-                        <MyAccountComp address={address} />
+                        <MyAccountComp address={address} refreshStatus={refreshStatus} setRefreshStatus={setRefreshStatus} userDetails={userDetails} />
                     </div>
                 </div>
 
