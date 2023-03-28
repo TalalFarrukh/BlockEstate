@@ -40,3 +40,12 @@ model land_sale {
   type   String?
   area   Int?
 }
+
+model bid_requests {
+  id    Int   @id @default(autoincrement())
+  land_id   Int?
+  seller_address   String?
+  buyer_address   String?
+  ask_price   Int?
+  bid_price   Int?
+}

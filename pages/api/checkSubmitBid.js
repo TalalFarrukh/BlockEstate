@@ -6,11 +6,11 @@ export default async function handler(req, res) {
 
     const { landId, address } = req.body
     
-    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM land_sale WHERE address = ${address.toLowerCase()} AND land_id = ${landId}`)
-    
+    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE buyer_address = ${address.toLowerCase()} AND land_id = ${parseInt(landId)}`)
+
     if(checkQuery.length > 0) {
         res.json({
-            price: checkQuery[0].price,
+            bidPrice: checkQuery[0].bid_price,
             status: true
         })
     }

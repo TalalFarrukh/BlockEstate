@@ -167,7 +167,9 @@ const pagetwo = () => {
                     router.push({
                         pathname: "/three",
                         query: {
-                            landId: shape.properties.land_id 
+                            landId: shape.properties.land_id,
+                            sellerAddress: "0x34e9ae971ce73aa51cf44656559265cae4655ab6",
+                            askPrice: 100000
                         }
                     })
                 }}>Buy shape</button>
