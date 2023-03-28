@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
 
-    const { landId, address, cnic, status, price } = req.body
+    const { landId, address, cnic, status, landAddress, type, area, price } = req.body
 
     if(status === "On Sale") {
 
@@ -25,7 +25,8 @@ export default async function handler(req, res) {
             //     },
             // })
 
-            const insertQuery = await prisma.$executeRaw`INSERT INTO land_sale (land_id, address, usercnic, price) VALUES (${landId}, ${address.toLowerCase()}, ${cnic}, ${parseInt(price)})`
+            const insertQuery = await prisma.$executeRaw`INSERT INTO land_sale (land_id, address, usercnic, price, land_address, type, area) 
+            VALUES (${landId}, ${address.toLowerCase()}, ${cnic}, ${parseInt(price)}, ${landAddress}, ${type}, ${area})`
 
             res.json({
                 message: "Land put on sale",

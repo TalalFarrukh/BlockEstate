@@ -5,7 +5,7 @@ import AddOwner from "../modals/AddOwner"
 import dynamic from "next/dynamic"
 const MyMap = dynamic(() => import("../MyMap"), { ssr:false })
 
-const MyProperty = ({ userLand, address, landToken }) => {
+const MyProperty = ({ userLand, address, landToken, cnic }) => {
 
     const [refreshStatus, setRefreshStatus] = useState(false)
     const [landSaleStatus, setLandSaleStatus] = useState()
@@ -29,11 +29,15 @@ const MyProperty = ({ userLand, address, landToken }) => {
         return data.status
     }
 
-    const setLandSale = async (landId, cnic, status) => {
+    const setLandSale = async (landId, status) => {
+
+        const landAddress = userLand.properties.name
+        const type = userLand.properties.type
+        const area = userLand.properties.area
 
         const response = await fetch("api/setLandSale", {
             method: "POST",
-            body: JSON.stringify({ landId, address, cnic, status, price }),
+            body: JSON.stringify({ landId, address, cnic, status, landAddress, type, area, price }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -130,11 +134,11 @@ const MyProperty = ({ userLand, address, landToken }) => {
 
             <div className="flex justify-between">
                 {!landSaleStatus ? 
-                    <button onClick={() => setLandSale(userLand.land_id, "90403-0145166-1", "On Sale")} className="bg-red-500 hover:bg-red-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
+                    <button onClick={() => setLandSale(userLand.land_id, "On Sale")} className="bg-red-500 hover:bg-red-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
                         Sell
                     </button>
                 :
-                    <button onClick={() => setLandSale(userLand.land_id, "90403-0145166-1", "Off Sale")} className="bg-green-500 hover:bg-green-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
+                    <button onClick={() => setLandSale(userLand.land_id, "Off Sale")} className="bg-green-500 hover:bg-green-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
                         On Sale
                     </button>
                 }

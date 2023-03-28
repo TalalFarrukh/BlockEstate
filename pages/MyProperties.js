@@ -194,7 +194,7 @@ const MyProperties = () => {
             </div>
 
             <div className="w-full">
-              <MyPropertiesComp userLands={userLands} address={address} landToken={web3Api.landToken} />
+              <MyPropertiesComp userLands={userLands} address={address} landToken={web3Api.landToken} cnic={userDetails.cnic} />
             </div>
           </div>
 
