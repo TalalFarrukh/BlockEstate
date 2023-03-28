@@ -189,54 +189,63 @@ export default function Home() {
   
   return (
     <div className="flex flex-col h-screen items-center justify-center py-2 bg-slate-900">
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <div className="flex md:flex-row flex-col bg-slate-800 rounded-2xl shadow-2xl w-2/3 max-w-4xl">
-          <div className="w-full md:w-3/5 p-5">
-            <div className="text-left font-bold">
+      <main className="flex w-full flex-1 flex-col items-center justify-center text-center px-2">
+        <div className="flex md:flex-row flex-col bg-slate-800 rounded-2xl shadow-2xl w-full md:w-2/3 max-w-4xl">
+          <div className="w-full md:w-3/5 p-1 md:p-5">
+            <div className="text-left font-bold ml-2 md:ml-0 mt-2 md:mt-0">
               <span className="text-yellow-600">Block</span><span className="text-white">Estate</span>
             </div>
 
-            <div className="flex flex-col justify-center items-center h-48 md:h-96">
+            <div className="flex flex-col justify-center items-center h-56 md:h-96 mb-4 md:mb-0">
               {sessionDetails.token ?
                 <div>
                   {!isRegistered ?
                     <>
-                      <h2 className="text-lg md:text-2xl font-bold text-white mb-2">
+                      <h2 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2">
                         Register Your CNIC
                       </h2>
                       <div className="border-2 w-10 border-white inline-block mb-3"></div>
                       <form onSubmit={registerCnic} className="flex flex-col items-center">
-                        <div className="bg-gray-100 w-64 p-2 flex items-center mb-3 rounded-lg">
+                        <div className="bg-gray-100 w-52 p-1 md:p-2 flex items-center mb-3 rounded-lg">
                           <FaAddressCard className="text-gray-500 m-2"/>
                           <input type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required className="bg-gray-100 outline-none text-sm w-full" />
                         </div>
-                        <button type="submit" className="text-lg rounded-full px-10 md:py-1 my-2 inline-block font-semibold bg-yellow-600 text-white">Submit</button>
+                        <button type="submit" className="text-md md:text-lg rounded-full px-10 md:py-1 my-2 inline-block font-semibold bg-yellow-600 text-white">Submit</button>
                       </form>
                     </>
                   : isRegistered === '1' ?
                     <>
-                      <h2 className="text-lg md:text-2xl font-bold text-white mb-2 my-4">
+                      <h2 className="text-lg md:text-2xl font-bold text-white mb-1 md:mb-2 my-4">
                         Register Your Details
                       </h2>
                       <div className="border-2 w-10 border-white inline-block mb-3"></div>
                       <form onSubmit={registerOtherDetails} className="flex flex-col items-center">
-                        <div className="bg-gray-100 w-64 p-2 flex items-center mb-3 rounded-lg">
-                          <FaUser className="text-gray-500 m-2"/>
-                          <input type="text" name="firstName" placeholder="First Name" required className="bg-gray-100 outline-none text-sm w-full" />
+
+                        <div className="flex md:block flex-wrap md:flex-nowrap justify-between">
+                          <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
+                            <FaUser className="text-gray-500 m-2"/>
+                            <input type="text" name="firstName" placeholder="First Name" required className="bg-gray-100 outline-none text-sm w-full" />
+                          </div>
+
+                          <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
+                            <FaUserTie className="text-gray-500 m-2"/>
+                            <input type="text" name="lastName" placeholder="Last Name" required className="bg-gray-100 outline-none text-sm w-full" />
+                          </div>
                         </div>
-                        <div className="bg-gray-100 w-64 p-2 flex items-center mb-3 rounded-lg">
-                          <FaUserTie className="text-gray-500 m-2"/>
-                          <input type="text" name="lastName" placeholder="Last Name" required className="bg-gray-100 outline-none text-sm w-full" />
+
+                        <div className="flex md:block flex-wrap md:flex-nowrap justify-between">
+                          <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
+                            <FaEnvelope className="text-gray-500 m-2"/>
+                            <input type="text" name="email" placeholder="Email" required className="bg-gray-100 outline-none text-sm w-full" />
+                          </div>
+
+                          <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
+                            <FaPhoneAlt className="text-gray-500 m-2"/>
+                            <input type="text" name="contact" placeholder="Contact Number" required className="bg-gray-100 outline-none text-sm w-full" />
+                          </div>
                         </div>
-                        <div className="bg-gray-100 w-64 p-2 flex items-center mb-3 rounded-lg">
-                          <FaEnvelope className="text-gray-500 m-2"/>
-                          <input type="text" name="email" placeholder="Email" required className="bg-gray-100 outline-none text-sm w-full" />
-                        </div>
-                        <div className="bg-gray-100 w-64 p-2 flex items-center mb-3 rounded-lg">
-                          <FaPhoneAlt className="text-gray-500 m-2"/>
-                          <input type="text" name="contact" placeholder="Contact Number" required className="bg-gray-100 outline-none text-sm w-full" />
-                        </div>
-                        <button type="submit" className="text-lg rounded-full px-10 py-1 my-2 inline-block font-semibold bg-yellow-600 text-white">Submit</button>
+
+                        <button type="submit" className="text-md md:text-lg rounded-full px-10 py-1 my-2 inline-block font-semibold bg-yellow-600 text-white">Submit</button>
                       </form>
                     </>
                   : isRegistered === '2' ?
@@ -246,24 +255,24 @@ export default function Home() {
                 </div>
               :
                 <>
-                  <h2 className="text-lg md:text-3xl font-bold text-white mb-2">
+                  <h2 className="text-xl md:text-3xl font-bold text-white mb-2">
                     Connect To Your Wallet
                   </h2>
-                  <button className="text-lg rounded-full px-10 md:py-1 my-2 inline-block font-semibold bg-yellow-600 text-white" onClick={connectAccount}>Connect</button>
+                  <button className="text-md md:text-lg rounded-full px-10 md:py-1 my-2 inline-block font-semibold bg-yellow-600 text-white" onClick={connectAccount}>Connect</button>
                 </>
               }
               
             </div>
           </div>
 
-          <div className="w-full md:w-2/5 bg-yellow-600 text-white rounded-tr-2xl rounded-2xl p-5 flex flex-col justify-center items-center">
-            <h1 className="text-lg md:text-xl mb-3  font-bold">Your Property Tokenized</h1>
+          <div className="w-full md:w-2/5 bg-yellow-600 text-white rounded-tr-2xl rounded-2xl p-3 md:p-5 flex flex-col justify-center items-center">
+            <h1 className="text-lg md:text-xl mb-1 md:mb-3 font-bold">Your Property Tokenized</h1>
             <div className="border-2 w-10 border-white inline-block mb-3"></div>
             <p className="font-bold">
             {sessionDetails.token ? 
               <>
                 Welcome <div className="break-all">{address}</div>
-                <button onClick={logout} className="text-lg rounded-full px-10 md:py-1 mt-5 inline-block font-semibold bg-slate-800 text-white">Logout</button>
+                <button onClick={logout} className="text-md md:text-lg rounded-full px-10 md:py-1 mt-2 md:mt-5 inline-block font-semibold bg-slate-800 text-white">Logout</button>
               </>
             :
               <>The power of buying and selling property in your hands. No third party agents, very low commissions</>
