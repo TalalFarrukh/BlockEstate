@@ -1,3 +1,6 @@
+import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+
 import bcryptjs from "bcryptjs"
 
 const apiSalt = bcryptjs.genSaltSync(10)
@@ -23,8 +26,21 @@ const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }
 
         const data = await response.json()
         if(!data) return
-        else setRefreshStatus(!refreshStatus)
+        else {
 
+          if(data.status) {
+            toast.success(data.message, {
+              position: toast.POSITION.BOTTOM_RIGHT
+            })
+          }
+          else {
+            toast.error(data.message, {
+              position: toast.POSITION.BOTTOM_RIGHT
+            })
+          }
+
+          setRefreshStatus(!refreshStatus)
+        }
     }
 
   return (
@@ -115,6 +131,8 @@ const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }
             </div>
 
         </div>
+
+        <ToastContainer limit={1} autoClose={1800} hideProgressBar={true} pauseOnFocusLoss={false} theme="colored" transition={Flip} closeOnClick={false} />
 
     </div>
   )

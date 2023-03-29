@@ -53,7 +53,7 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
         const data = await response.json()
 
         toast.success(data.message, {
-            position: toast.POSITION.TOP_CENTER
+            position: toast.POSITION.BOTTOM_RIGHT
         })
 
         setRefreshStatus(!refreshStatus)
@@ -106,15 +106,19 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
         const setOwner = await landToken.setSharedOwners(address, [newSharedAddress], userLand.land_id, {from:address})
 
         if(setOwner) {
-            console.log('New Shared Owner Added')
             setShowModal(false)
+            toast.success("Owner added", {
+                position: toast.POSITION.BOTTOM_RIGHT
+            })
         }
 
     }
 
   return (
     <div className="max-w-xl md:w-3/6 m-3 rounded-md overflow-hidden shadow-lg bg-gradient-to-r from-gray-800 via-slate-600 to-gray-600 text-white border-4 border-black">
+        
         <MyMap userLand={userLand} />
+        
         <div className="p-4">
             <h2 className="font-semibold text-xl mb-2 ml-2.5">{userLand.properties.name.toUpperCase()}</h2>
 
@@ -157,15 +161,15 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
                 <button onClick={handleShowModal} className="bg-yellow-600 hover:bg-yellow-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
                     Add Owners
                 </button>
+
                 {showModal &&
                     <AddOwner onClose={handleCloseModal} onSubmit={handleSubmitModal} />
                 }
-
             </div>
 
         </div>
         
-        <ToastContainer limit={1} autoClose={2000} hideProgressBar={true} pauseOnFocusLoss={false} theme="colored" transition={Flip} closeOnClick={false} />
+        <ToastContainer limit={1} autoClose={1800} hideProgressBar={true} pauseOnFocusLoss={false} theme="colored" transition={Flip} closeOnClick={false} />
     </div>
   )
 }

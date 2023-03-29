@@ -1,4 +1,7 @@
 import { useState } from "react"
+import { FaFolder, FaIdCard } from "react-icons/fa"
+import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import bcryptjs from "bcryptjs"
 
@@ -27,14 +30,21 @@ const VerifyLandComp = ({ address, landToken }) => {
     })
 
     const data = await response.json()
-    console.log(data.landJson)
+    
     if(data.status) {
+
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      })
+
       setLandExists(data.status)
       setLandExistsId(landId)
       setLand(data.landJson)
     }
     else {
-      //throw error
+      toast.error(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      })
     }
 
   }
@@ -46,7 +56,10 @@ const VerifyLandComp = ({ address, landToken }) => {
     const landTokenContract = await landToken.safeMint(address, landExistsId, landJsonString, {from:address})
 
     if(landTokenContract) {
-      console.log(landTokenContract)
+      toast.success("Token generated!", {
+        position: toast.POSITION.BOTTOM_RIGHT
+      })
+      
       setLandTokenExists(true)
     }
     
@@ -80,8 +93,9 @@ const VerifyLandComp = ({ address, landToken }) => {
                   <form onSubmit={checkLandExists}>
 
                     <div className="mb-4">
-                      <label className="block text-white font-bold mb-2" htmlFor="landId">
-                        Land ID
+                      
+                      <label className="flex text-white font-bold mb-2" htmlFor="landId">
+                        <FaFolder className="text-white text-xl mt-0.5 mr-2" /> Land ID 
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -90,8 +104,8 @@ const VerifyLandComp = ({ address, landToken }) => {
                     </div>
 
                     <div className="mb-4">
-                      <label className="block text-white font-bold mb-2" htmlFor="cnic">
-                        CNIC
+                      <label className="flex text-white font-bold mb-2" htmlFor="cnic">
+                        <FaIdCard className="text-white text-xl mt-0.5 mr-2" /> CNIC
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -141,6 +155,8 @@ const VerifyLandComp = ({ address, landToken }) => {
 
             </div>
         </div>
+
+        <ToastContainer limit={1} autoClose={1800} hideProgressBar={true} pauseOnFocusLoss={false} theme="colored" transition={Flip} closeOnClick={false} />
 
     </div>
   )

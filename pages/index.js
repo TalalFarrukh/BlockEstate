@@ -3,7 +3,7 @@ import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "./utils/load-contract"
 import { useRouter } from "next/router"
-import { FaUser, FaUserTie, FaEnvelope, FaAddressCard, FaPhoneAlt } from "react-icons/fa"
+import { FaUser, FaUserTie, FaEnvelope, FaIdCard, FaPhoneAlt } from "react-icons/fa"
 import bcryptjs from "bcryptjs"
 
 const apiSalt = bcryptjs.genSaltSync(10)
@@ -205,7 +205,7 @@ export default function Home() {
                       <div className="border-2 w-10 border-white inline-block mb-3"></div>
                       <form onSubmit={registerCnic} className="flex flex-col items-center">
                         <div className="bg-gray-100 w-52 p-1 md:p-2 flex items-center mb-3 rounded-lg">
-                          <FaAddressCard className="text-gray-500 m-2"/>
+                          <FaIdCard className="text-gray-500 m-2" />
                           <input type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required className="bg-gray-100 outline-none text-sm w-full" />
                         </div>
                         <button type="submit" className="text-md md:text-lg rounded-full px-10 md:py-1 my-2 inline-block font-semibold bg-yellow-600 text-white">Submit</button>
@@ -221,24 +221,24 @@ export default function Home() {
 
                         <div className="flex md:block flex-wrap md:flex-nowrap justify-between">
                           <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
-                            <FaUser className="text-gray-500 m-2"/>
+                            <FaUser className="text-gray-500 m-2" />
                             <input type="text" name="firstName" placeholder="First Name" required className="bg-gray-100 outline-none text-sm w-full" />
                           </div>
 
                           <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
-                            <FaUserTie className="text-gray-500 m-2"/>
+                            <FaUserTie className="text-gray-500 m-2" />
                             <input type="text" name="lastName" placeholder="Last Name" required className="bg-gray-100 outline-none text-sm w-full" />
                           </div>
                         </div>
 
                         <div className="flex md:block flex-wrap md:flex-nowrap justify-between">
                           <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
-                            <FaEnvelope className="text-gray-500 m-2"/>
+                            <FaEnvelope className="text-gray-500 m-2" />
                             <input type="text" name="email" placeholder="Email" required className="bg-gray-100 outline-none text-sm w-full" />
                           </div>
 
                           <div className="bg-gray-100 w-40 md:w-64 p-1 md:p-2 flex items-center mb-3 rounded-lg mx-1">
-                            <FaPhoneAlt className="text-gray-500 m-2"/>
+                            <FaPhoneAlt className="text-gray-500 m-2" />
                             <input type="text" name="contact" placeholder="Contact Number" required className="bg-gray-100 outline-none text-sm w-full" />
                           </div>
                         </div>
