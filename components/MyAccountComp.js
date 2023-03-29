@@ -31,7 +31,7 @@ const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }
     <div className="flex flex-col">
 
         <div className="items-center">
-            <h1 className="md:text-3xl text-sm text-center font-bold md:m-4 m-2">My Account</h1>
+            <h1 className="md:text-3xl text-xl text-center font-bold md:m-4 m-2">My Account</h1>
             <div className="flex-1 bg-gray-600 h-px"></div>
         </div>
 

@@ -66,7 +66,7 @@ const VerifyLandComp = ({ address, landToken }) => {
     <div className="flex flex-col">
 
         <div className="items-center">
-            <h1 className="md:text-3xl text-sm text-center font-bold md:m-4 m-2">Verify your land and generate your token!</h1>
+            <h1 className="md:text-3xl text-xl text-center font-bold md:m-4 m-2">Verify your land and generate your token!</h1>
             <div className="flex-1 bg-gray-600 h-px"></div>
         </div>
 

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import AddOwner from "../modals/AddOwner"
 
@@ -49,6 +51,10 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
         })
 
         const data = await response.json()
+
+        toast.success(data.message, {
+            position: toast.POSITION.TOP_CENTER
+        })
 
         setRefreshStatus(!refreshStatus)
     }
@@ -107,7 +113,7 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
     }
 
   return (
-    <div className="max-w-xl md:w-3/6 m-3 rounded-md overflow-hidden shadow-lg bg-gray-700 text-white">
+    <div className="max-w-xl md:w-3/6 m-3 rounded-md overflow-hidden shadow-lg bg-gradient-to-r from-gray-800 via-slate-600 to-gray-600 text-white border-4 border-black">
         <MyMap userLand={userLand} />
         <div className="p-4">
             <h2 className="font-semibold text-xl mb-2 ml-2.5">{userLand.properties.name.toUpperCase()}</h2>
@@ -158,8 +164,8 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
             </div>
 
         </div>
-
-
+        
+        <ToastContainer limit={1} autoClose={2000} hideProgressBar={true} pauseOnFocusLoss={false} theme="colored" transition={Flip} closeOnClick={false} />
     </div>
   )
 }
