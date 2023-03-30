@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
-import { loadContract } from "./utils/load-contract"
+import { loadContract } from "../utils/load-contract"
 
 import Header from "../components/Header"
 import Sidebar from "../components/Sidebar"
@@ -163,11 +163,6 @@ const Dashboard = () => {
     web3Api.web3 && getAllUserTokens()
 
   }, [web3Api.web3 && address])
-  
-  useEffect(() => {
-    if(!router.isReady) return
-    if(router.query.address) setAddress(router.query.address)
-  }, [router.isReady])
 
   useEffect(() => {
     const getSessionDetails = async () => {

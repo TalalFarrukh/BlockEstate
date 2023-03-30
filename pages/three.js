@@ -2,7 +2,8 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
-import { loadContract } from "./utils/load-contract"
+import { loadContract } from "../utils/load-contract"
+import { decrypt } from "../utils/decrypt"
 
 import bcryptjs from "bcryptjs"
 
@@ -25,11 +26,13 @@ const three = () => {
 
     const router = useRouter()
 
+    const SECRET_KEY = 'potatotomato'
+
     useEffect(() => {
         if(!router.isReady) return
-        setLandId(router.query.landId)
-        setSellerAddress(router.query.sellerAddress)
-        setAskPrice(router.query.askPrice)
+        setLandId(decrypt(router.query.landId))
+        setSellerAddress(decrypt(router.query.sellerAddress))
+        setAskPrice(decrypt(router.query.askPrice))
       }, [router.isReady])
 
 

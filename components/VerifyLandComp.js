@@ -8,7 +8,7 @@ import bcryptjs from "bcryptjs"
 const apiSalt = bcryptjs.genSaltSync(10)
 const apiKey = bcryptjs.hashSync("APIs", apiSalt)
 
-const VerifyLandComp = ({ address, landToken }) => {
+const VerifyLandComp = ({ address, landToken, cnic }) => {
 
   const [landExists, setLandExists] = useState(false)
   const [landExistsId, setLandExistsId] = useState(null)
@@ -99,7 +99,7 @@ const VerifyLandComp = ({ address, landToken }) => {
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        type="text" name="landId" placeholder="Land ID" required
+                        type="text" name="landId" placeholder="Land ID" required 
                       />
                     </div>
 
@@ -108,8 +108,8 @@ const VerifyLandComp = ({ address, landToken }) => {
                         <FaIdCard className="text-white text-xl mt-0.5 mr-2" /> CNIC
                       </label>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 disabled:bg-gray-200 leading-tight focus:outline-none focus:shadow-outline"
+                        type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required readOnly disabled defaultValue={cnic}
                       />
                     </div>
 

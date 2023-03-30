@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
-import { loadContract } from "./utils/load-contract"
+import { loadContract } from "../utils/load-contract"
 import { useRouter } from "next/router"
 import { FaUser, FaUserTie, FaEnvelope, FaIdCard, FaPhoneAlt } from "react-icons/fa"
 import bcryptjs from "bcryptjs"
@@ -134,6 +134,10 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    router.prefetch('Dashboard')
+  }, [router])
+
+  useEffect(() => {
     const getSessionDetails = async () => {
       if(isLogout) return
       if(!await web3Api.web3.eth.getAccounts()) return 
@@ -170,10 +174,7 @@ export default function Home() {
 
           if(isRegistered === "2") {
             router.push({
-              pathname: "Dashboard",
-              query: {
-                address
-              }
+              pathname: "Dashboard"
             })
           }
           

@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import { encrypt } from "utils/encrypt"
 
 import dynamic from "next/dynamic"
 const MyMap = dynamic(() => import("../MyMap"), { ssr:false })
@@ -33,12 +34,13 @@ const LandSaleCard = ({ land }) => {
                 <button type="button" className="bg-green-500 hover:bg-green-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-4/5 m-2"
                 onClick={(e) => {
                     router.push({
-                        pathname: "/three",
+                        pathname: "three",
                         query: {
-                            landId: land.land_id,
-                            sellerAddress: land.address,
-                            askPrice: land.price
-                        }
+                            landId: encrypt(land.land_id),
+                            sellerAddress: encrypt(land.address),
+                            askPrice: encrypt(land.price)
+                        },
+                        
                     })
                 }}>
                     Buy

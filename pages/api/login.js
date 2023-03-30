@@ -1,7 +1,7 @@
 import { uuid } from "uuidv4"
 import bcryptjs from "bcryptjs"
-const { PrismaClient, Prisma } = require('@prisma/client')
 
+const { Prisma, PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient()
 
 const jwt = require("jsonwebtoken")

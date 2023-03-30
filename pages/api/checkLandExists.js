@@ -1,4 +1,5 @@
-import conn from "utils/dbConnection"
+const { Prisma, PrismaClient } = require("@prisma/client")
+const prisma = new PrismaClient()
 
 import bcryptjs from "bcryptjs"
 
@@ -21,7 +22,7 @@ async function handler(req, res) {
 
     const { landId, cnic } = req.body
 
-    const checkLandQuery = await conn.query(`Select *, 
+    const checkLandQuery = await prisma.$queryRaw(Prisma.sql`Select 
     
     jsonb_build_object(
         'type', 'Feature',
@@ -36,13 +37,13 @@ async function handler(req, res) {
         )
     ) as landJson
     
-    from plots where land_id = $1 and usercnic = $2`, [landId, cnic])
+    from plots where land_id = ${landId} and usercnic = ${cnic}`)
     
-    if(checkLandQuery.rows.length>0) {
+    if(checkLandQuery.length>0) {
         res.json({
             status: true,
             message: "Land verified!",
-            landJson: checkLandQuery.rows[0].landjson
+            landJson: checkLandQuery[0].landjson
         })
     }
     else {

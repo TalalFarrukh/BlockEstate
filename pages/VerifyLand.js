@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
-import { loadContract } from "./utils/load-contract"
+import { loadContract } from "../utils/load-contract"
 
 
 import Header from "../components/Header"
@@ -165,7 +165,7 @@ const VerifyLand = () => {
                   </div>
 
                   <div className="w-full">
-                    <VerifyLandComp address={address} landToken={web3Api.landToken} />
+                    <VerifyLandComp address={address} landToken={web3Api.landToken} cnic={userDetails.cnic} />
                   </div>
               </div>
           </>
