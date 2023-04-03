@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { encrypt } from "utils/encrypt"
+import { encrypt } from "utils/crypt"
 
 import dynamic from "next/dynamic"
 const MyMap = dynamic(() => import("../MyMap"), { ssr:false })

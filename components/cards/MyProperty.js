@@ -31,6 +31,7 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
 
         const data = await response.json()
 
+        if(!data) return
         if(data.status) setPrice(data.price)
 
         return data.status

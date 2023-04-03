@@ -25,22 +25,20 @@ const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }
         })
 
         const data = await response.json()
+        
         if(!data) return
-        else {
-
-          if(data.status) {
-            toast.success(data.message, {
-              position: toast.POSITION.BOTTOM_RIGHT
-            })
-          }
-          else {
-            toast.error(data.message, {
-              position: toast.POSITION.BOTTOM_RIGHT
-            })
-          }
-
-          setRefreshStatus(!refreshStatus)
+        if(data.status) {
+          toast.success(data.message, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
         }
+        else {
+          toast.error(data.message, {
+            position: toast.POSITION.BOTTOM_RIGHT
+          })
+        }
+
+        setRefreshStatus(!refreshStatus)
     }
 
   return (

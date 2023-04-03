@@ -1,9 +1,6 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import Web3 from "web3"
-import detectEthereumProvider from "@metamask/detect-provider"
-import { loadContract } from "../utils/load-contract"
-import { decrypt } from "../utils/decrypt"
+import { decrypt } from "../utils/crypt"
 
 import bcryptjs from "bcryptjs"
 
@@ -26,7 +23,6 @@ const three = () => {
 
     const router = useRouter()
 
-    const SECRET_KEY = 'potatotomato'
 
     useEffect(() => {
         if(!router.isReady) return
@@ -68,9 +64,11 @@ const three = () => {
 
       const status = "Submit"
 
+      const buyerAddress = address
+
       const response = await fetch("api/submitBid", {
         method: "POST",
-        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status, apiKey }),
+        body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -90,9 +88,11 @@ const three = () => {
 
       const status = "Remove"
 
+      const buyerAddress = address
+
       const response = await fetch("api/submitBid", {
         method: "POST",
-        body: JSON.stringify({ landId, sellerAddress, address, askPrice, buyerBidPrice, status, apiKey }),
+        body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
         headers: {
           'Content-Type': 'application/json'
         }

@@ -132,7 +132,7 @@ const pagetwo = () => {
         const data = await response.json()
 
         if(!data) return
-        else setTestLands(data.landOnSale)
+        setTestLands(data.landOnSale)
         
       }
 

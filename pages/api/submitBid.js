@@ -20,12 +20,11 @@ function requireAuth(handler) {
 
 async function handler(req, res) {
 
-    const { landId, sellerAddress, address, askPrice, buyerBidPrice, status } = req.body
-
+    const { landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status } = req.body
 
     if(status === "Submit") {
         const insertQuery = await prisma.$executeRaw`INSERT INTO bid_requests (land_id, seller_address, buyer_address, ask_price, bid_price)
-        VALUES (${parseInt(landId)}, ${sellerAddress.toLowerCase()}, ${address.toLowerCase()}, ${parseFloat(askPrice)}, ${parseFloat(buyerBidPrice)})`
+        VALUES (${parseInt(landId)}, ${sellerAddress.toLowerCase()}, ${buyerAddress.toLowerCase()}, ${parseFloat(askPrice)}, ${parseFloat(buyerBidPrice)})`
     
         res.json({
             message: "Bid submitted!",
@@ -34,7 +33,7 @@ async function handler(req, res) {
     }
     else if(status === "Remove") {
 
-        const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE buyer_address = ${address.toLowerCase()} AND land_id = ${parseInt(landId)}`
+        const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`
 
         res.json({
             message: "Bid removed",

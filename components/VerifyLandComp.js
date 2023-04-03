@@ -31,6 +31,7 @@ const VerifyLandComp = ({ address, landToken, cnic }) => {
 
     const data = await response.json()
     
+    if(!data) return
     if(data.status) {
 
       toast.success(data.message, {

@@ -118,23 +118,20 @@ const Marketplace = () => {
               const data = await response.json()
     
               if(!data) return
-              else {
-                setSessionDetails(data)
+              setSessionDetails(data)
     
-                const userResponse = await fetch("api/getUserDetails", {
-                  method: "POST",
-                  body: JSON.stringify({ address, apiKey }),
-                  headers: {
-                    'Content-Type': 'application/json'
-                  }
-                })
-                
-                const userData = await userResponse.json()
-                
-                setUserDetails(userData)
-    
-              } 
+              const userResponse = await fetch("api/getUserDetails", {
+                method: "POST",
+                body: JSON.stringify({ address, apiKey }),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              })
               
+              const userData = await userResponse.json()
+              
+              if(!userData) return
+              setUserDetails(userData)
             }
           }
         }

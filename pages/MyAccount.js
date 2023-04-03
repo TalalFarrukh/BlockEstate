@@ -119,7 +119,7 @@ const MyAccount = () => {
               const data = await response.json()
 
               if(!data) return
-              else setSessionDetails(data)
+              setSessionDetails(data)
               
             }
           }
@@ -141,6 +141,7 @@ const MyAccount = () => {
         })
         const userData = await userResponse.json()
 
+        if(!userData) return
         setUserDetails(userData)
       }
 

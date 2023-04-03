@@ -16,6 +16,8 @@ const four = () => {
 
     const router = useRouter()
 
+    const [refreshStatus, setRefreshStatus] = useState(false)
+
     useEffect(() => {
         if(!router.isReady) return
         setLandId(router.query.landId)
@@ -24,7 +26,7 @@ const four = () => {
     useEffect(() => {
 
         const getAllBidRequests = async () => {
-
+            
             const response = await fetch("api/getBidRequestList", {
                 method: "POST",
                 body: JSON.stringify({ landId, address, apiKey }),
@@ -38,17 +40,74 @@ const four = () => {
             if(!data) return
             else setBidRequest(data.bidRequest)
 
-            console.log(data.bidRequest)
-
         }
 
         address && landId && getAllBidRequests()
 
-    }, [landId, address])
+    }, [landId, address, refreshStatus])
+
+    const acceptBid = async (e, request) => {
+
+      e.preventDefault()
+      
+      const status = "Remove"
+      
+      const buyerAddress = request.buyer_address
+
+      const response = await fetch("api/submitBid", {
+        method: "POST",
+        body: JSON.stringify({ landId, buyerAddress, status, apiKey }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+
+      if(!data) return
+      //also going to remove but going to next phase
+
+    }
+
+    const rejectBid = async (e, request) => {
+
+      e.preventDefault()
+      
+      const status = "Remove"
+      
+      const buyerAddress = request.buyer_address
+
+      const response = await fetch("api/submitBid", {
+        method: "POST",
+        body: JSON.stringify({ landId, buyerAddress, status, apiKey }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const data = await response.json()
+
+      if(!data) return
+      else setRefreshStatus(!refreshStatus)
+
+    }
 
 
   return (
-    <div>four</div>
+    <div>
+ 
+      {bidRequest ? bidRequest.map(request => {return request ?
+
+        <>
+          <div>Bid Request: {request.id}</div>
+          <button onClick={acceptBid}>Accept Bid</button>
+          <button onClick={e => rejectBid(e, request)}>Reject Bid</button>
+        </>
+
+      :null})
+      :null}
+ 
+    </div>
   )
 }
 
