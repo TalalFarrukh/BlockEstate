@@ -27,7 +27,7 @@ model users {
   last_name String?
   email   String?
   contact String?
-  is_registered   String?
+  is_registered   String @default("0")
 }
 
 model land_sale {
@@ -48,4 +48,7 @@ model bid_requests {
   buyer_address   String?
   ask_price   Int?
   bid_price   Int?
+  is_status   String @default("0")
+  is_buyer_signed   String @default("0")
+  is_seller_signed    String @default("0")
 }

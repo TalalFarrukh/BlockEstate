@@ -50,13 +50,27 @@ const four = () => {
 
       e.preventDefault()
       
-      const status = "Remove"
+      const status = "Remove All"
+      const bidStatus = "1"
       
       const buyerAddress = request.buyer_address
+      const sellerAddress = address
 
-      const response = await fetch("api/submitBid", {
+      const updateBid = await fetch("api/updateBidStatus", {
         method: "POST",
-        body: JSON.stringify({ landId, buyerAddress, status, apiKey }),
+        body: JSON.stringify({ landId, sellerAddress, buyerAddress, bidStatus, apiKey }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      const updateData = await updateBid.json()
+
+      if(!updateData) return
+
+      const response = await fetch("api/rejectBid", {
+        method: "POST",
+        body: JSON.stringify({ landId, sellerAddress, buyerAddress, status, apiKey }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -65,7 +79,6 @@ const four = () => {
       const data = await response.json()
 
       if(!data) return
-      //also going to remove but going to next phase
 
     }
 
@@ -73,11 +86,9 @@ const four = () => {
 
       e.preventDefault()
       
-      const status = "Remove"
-      
-      const buyerAddress = request.buyer_address
+      const status = "Remove One"
 
-      const response = await fetch("api/submitBid", {
+      const response = await fetch("api/rejectBid", {
         method: "POST",
         body: JSON.stringify({ landId, buyerAddress, status, apiKey }),
         headers: {
@@ -100,7 +111,7 @@ const four = () => {
 
         <>
           <div>Bid Request: {request.id}</div>
-          <button onClick={acceptBid}>Accept Bid</button>
+          <button onClick={e => acceptBid(e, request)}>Accept Bid</button>
           <button onClick={e => rejectBid(e, request)}>Reject Bid</button>
         </>
 

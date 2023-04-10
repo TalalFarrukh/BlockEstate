@@ -12,12 +12,11 @@ const MyPropertiesComp = ({ userLands, address, landToken, cnic }) => {
 
         <div className="md:flex flex-wrap justify-between md:p-5 p-2">
 
-        {userLands ? userLands.map(userLand => {return userLand ?
-            <MyProperty userLand={userLand} address={address} landToken={landToken} cnic={cnic} />
-        : null})
-        : null}
+          {userLands ? userLands.map(userLand => {return userLand ?
+              <MyProperty userLand={userLand} address={address} landToken={landToken} cnic={cnic} />
+          : null})
+          : null}
             
-
         </div>
 
     </div>

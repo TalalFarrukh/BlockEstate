@@ -20,21 +20,27 @@ function requireAuth(handler) {
 
 async function handler(req, res) {
 
-    const { landId, address } = req.body
+    const { landId, sellerAddress, buyerAddress, status } = req.body
 
-    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM bid_requests WHERE seller_address = ${address.toLowerCase()} AND land_id = ${parseInt(landId)}`)
+    if(status === "Remove One") {
 
-    if(getQuery.length > 0) {
+        const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`
+
         res.json({
-            bidRequest: getQuery,
-            message: `${getQuery.length} bid requests made for this land`
+            message: "Bid removed"
         })
+
     }
-    else {
+    else if(status === "Remove All") {
+
+        const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`
+
         res.json({
-            message: "No bid requests made"
+            message: "Bid removed"
         })
+
     }
+
 }
 
 export default requireAuth(handler)

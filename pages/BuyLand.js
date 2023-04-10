@@ -3,19 +3,22 @@ import { useEffect, useState } from "react"
 import Web3 from "web3"
 import detectEthereumProvider from "@metamask/detect-provider"
 import { loadContract } from "../utils/load-contract"
+import { decrypt } from "../utils/crypt"
 
 import Header from "../components/Header"
 import Sidebar from "../components/Sidebar"
-import MarketplaceComp from "../components/MarketplaceComp"
+import BuyLandComp from "../components/BuyLandComp"
 
 import bcryptjs from "bcryptjs"
 
 const apiSalt = bcryptjs.genSaltSync(10)
 const apiKey = bcryptjs.hashSync("APIs", apiSalt)
 
-const Marketplace = () => {
+const BuyLand = () => {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+
+    const [refreshStatus, setRefreshStatus] = useState(false)
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen)
@@ -49,8 +52,23 @@ const Marketplace = () => {
         landToken: null
     })
 
-    const [landSale, setLandSale] = useState([])
-    
+    const [isSubmitted, setIsSubmitted] = useState(false)
+
+    const [landId, setLandId] = useState(null)
+    const [sellerAddress, setSellerAddress] = useState(null)
+    const [askPrice, setAskPrice] = useState(null)
+
+    const [bidPrice, setBidPrice] = useState(null)
+
+    const [land, setLand] = useState({})
+
+    useEffect(() => {
+        if(!router.isReady) return
+        setLandId(decrypt(router.query.landId))
+        setSellerAddress(decrypt(router.query.sellerAddress))
+        setAskPrice(decrypt(router.query.askPrice))
+    }, [router.isReady])
+
     const logout = async () => {
     
         const session_id = sessionDetails.sessionID
@@ -94,7 +112,6 @@ const Marketplace = () => {
         }
         loadProvider()
     }, [])
-
 
     useEffect(() => {
         const getSessionDetails = async () => {
@@ -140,7 +157,6 @@ const Marketplace = () => {
     
     }, [web3Api.web3, address])
     
-    
     useEffect(() => {
         ethereum.on("accountsChanged", (accounts) => {
             if(!accounts.length) {
@@ -151,43 +167,91 @@ const Marketplace = () => {
 
     useEffect(() => {
 
-      const getAllLandSale = async () => {
+        const getLand = async () => {
+            const { landToken, web3 } = web3Api
 
-        if(!address) return
+            const tokenURI = await landToken.tokenURI(parseInt(landId))
+            const parseLand = await JSON.parse(tokenURI)
 
-        const { landToken, web3 } = web3Api
+            setLand(parseLand)
+        }
 
-        const response = await fetch("api/getAllLandSale", {
+        web3Api.web3 && landId && getLand()
+
+    }, [web3Api.web3 && landId])
+
+
+    useEffect(() => {
+        const checkSubmitBid = async () => {
+          const response = await fetch("api/checkSubmitBid", {
+            method: "POST",
+            body: JSON.stringify({ landId, address, apiKey }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+  
+          const data = await response.json()
+          
+          if(!data) return
+          else {
+            setIsSubmitted(data.status)
+            if(data.status) setBidPrice(data.bidPrice)
+          }
+  
+        }
+  
+        address && landId && checkSubmitBid()
+  
+    }, [landId, address, refreshStatus])
+
+    const submitBid = async (e) => {
+        e.preventDefault()
+  
+        const buyerBidPrice = e.target.bidPrice.value
+  
+        const status = "Submit"
+  
+        const buyerAddress = address
+  
+        const response = await fetch("api/submitBid", {
           method: "POST",
-          body: JSON.stringify({ address, apiKey }),
+          body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
           headers: {
             'Content-Type': 'application/json'
           }
         })
-        
+  
+        const data = await response.json()
+    
+        if(!data) return
+        else setRefreshStatus(!refreshStatus)
+  
+    }
+  
+    const removeBid = async (e) => {
+        e.preventDefault()
+
+        const buyerBidPrice = 0
+
+        const status = "Remove"
+
+        const buyerAddress = address
+
+        const response = await fetch("api/submitBid", {
+            method: "POST",
+            body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
+
         const data = await response.json()
 
         if(!data) return
+        else setRefreshStatus(!refreshStatus)
 
-        const updatedLandOnSale = data.landOnSale.map(async land => {
-
-          const tokenURI = await landToken.tokenURI(parseInt(land.land_id))
-          
-          return {
-            ...land,
-            geometry: JSON.parse(tokenURI).geometry
-          }
-
-        })
-
-        const results = await Promise.all(updatedLandOnSale)
-        setLandSale(results)
-      }
-
-      web3Api.web3 && address && getAllLandSale()
-
-
-    }, [web3Api.web3 && address])
+    }
 
 
   return (
@@ -198,11 +262,11 @@ const Marketplace = () => {
 
           <div className="md:flex">
             <div className={`${isSidebarOpen ? 'block' : 'hidden'} md:block`}>
-              <Sidebar />
+                <Sidebar />
             </div>
 
             <div className="w-full">
-                <MarketplaceComp landSale={landSale} />
+                <BuyLandComp land={land} />
             </div>
           </div>
 
@@ -215,4 +279,4 @@ const Marketplace = () => {
   )
 }
 
-export default Marketplace
+export default BuyLand

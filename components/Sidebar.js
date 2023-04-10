@@ -30,9 +30,14 @@ function Sidebar() {
               <Link href="/VerifyLand">Verify Land</Link>
             </button>
           </li>
-          <li>
+          <li className="mb-4">
             <button onClick={() => router.push("/MyProperties")} className={`w-full rounded-lg text-center ${isActive("/MyProperties")}`}>
               <Link href="/MyProperties">My Properties</Link>
+            </button>
+          </li>
+          <li>
+            <button onClick={() => router.push("/Ongoing")} className={`w-full rounded-lg text-center ${isActive("/Ongoing")}`}>
+              <Link href="/Ongoing">On-going Transactions</Link>
             </button>
           </li>
         </ul>
