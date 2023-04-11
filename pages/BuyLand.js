@@ -18,8 +18,6 @@ const BuyLand = () => {
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
-    const [refreshStatus, setRefreshStatus] = useState(false)
-
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen)
     }
@@ -52,13 +50,9 @@ const BuyLand = () => {
         landToken: null
     })
 
-    const [isSubmitted, setIsSubmitted] = useState(false)
-
     const [landId, setLandId] = useState(null)
     const [sellerAddress, setSellerAddress] = useState(null)
     const [askPrice, setAskPrice] = useState(null)
-
-    const [bidPrice, setBidPrice] = useState(null)
 
     const [land, setLand] = useState({})
 
@@ -168,90 +162,17 @@ const BuyLand = () => {
     useEffect(() => {
 
         const getLand = async () => {
-            const { landToken, web3 } = web3Api
+          const { landToken, web3 } = web3Api
 
-            const tokenURI = await landToken.tokenURI(parseInt(landId))
-            const parseLand = await JSON.parse(tokenURI)
+          const tokenURI = await landToken.tokenURI(parseInt(landId))
+          const parseLand = await JSON.parse(tokenURI)
 
-            setLand(parseLand)
+          setLand(parseLand)
         }
 
         web3Api.web3 && landId && getLand()
 
     }, [web3Api.web3 && landId])
-
-
-    useEffect(() => {
-        const checkSubmitBid = async () => {
-          const response = await fetch("api/checkSubmitBid", {
-            method: "POST",
-            body: JSON.stringify({ landId, address, apiKey }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-  
-          const data = await response.json()
-          
-          if(!data) return
-          else {
-            setIsSubmitted(data.status)
-            if(data.status) setBidPrice(data.bidPrice)
-          }
-  
-        }
-  
-        address && landId && checkSubmitBid()
-  
-    }, [landId, address, refreshStatus])
-
-    const submitBid = async (e) => {
-        e.preventDefault()
-  
-        const buyerBidPrice = e.target.bidPrice.value
-  
-        const status = "Submit"
-  
-        const buyerAddress = address
-  
-        const response = await fetch("api/submitBid", {
-          method: "POST",
-          body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-  
-        const data = await response.json()
-    
-        if(!data) return
-        else setRefreshStatus(!refreshStatus)
-  
-    }
-  
-    const removeBid = async (e) => {
-        e.preventDefault()
-
-        const buyerBidPrice = 0
-
-        const status = "Remove"
-
-        const buyerAddress = address
-
-        const response = await fetch("api/submitBid", {
-            method: "POST",
-            body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
-            headers: {
-            'Content-Type': 'application/json'
-            }
-        })
-
-        const data = await response.json()
-
-        if(!data) return
-        else setRefreshStatus(!refreshStatus)
-
-    }
 
 
   return (
@@ -266,7 +187,7 @@ const BuyLand = () => {
             </div>
 
             <div className="w-full">
-                <BuyLandComp land={land} />
+                <BuyLandComp land={land} sellerAddress={sellerAddress} askPrice={askPrice} landId={landId} apiKey={apiKey} address={address} />
             </div>
           </div>
 
