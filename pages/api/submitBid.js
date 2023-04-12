@@ -36,7 +36,8 @@ async function handler(req, res) {
         const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status = ${"0"}`
 
         res.json({
-            message: "Bid removed"
+            message: "Bid removed!",
+            status: false
         })
 
     }

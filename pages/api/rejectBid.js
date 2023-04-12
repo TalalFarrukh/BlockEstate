@@ -33,7 +33,7 @@ async function handler(req, res) {
     }
     else if(status === "Remove All") {
 
-        const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`
+        const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status = ${"0"}`
 
         res.json({
             message: "Bid removed"

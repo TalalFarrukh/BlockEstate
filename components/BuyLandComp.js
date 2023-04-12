@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { decrypt } from "utils/crypt"
+import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import LandBuyCard from "./cards/LandBuyCard"
 
@@ -75,6 +77,17 @@ const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
     const data = await response.json()
 
     if(!data) return
+    
+    if(data.status) {
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      })
+    }
+    else {
+      toast.error(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      })
+    }
     setRefreshStatus(!refreshStatus)
 
   }
@@ -97,6 +110,16 @@ const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
     const data = await response.json()
 
     if(!data) return
+    if(data.status) {
+      toast.success(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      })
+    }
+    else {
+      toast.error(data.message, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      })
+    }
     setRefreshStatus(!refreshStatus)
 
   }
@@ -149,6 +172,8 @@ const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
         </div>
         
       </div>
+
+      <ToastContainer limit={1} autoClose={1800} hideProgressBar={true} pauseOnFocusLoss={false} theme="colored" transition={Flip} closeOnClick={false} />
 
     </div>
   )

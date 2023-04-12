@@ -20,15 +20,10 @@ function requireAuth(handler) {
 
 async function handler(req, res) {
 
-    const { landId, address, user } = req.body
+    const { address } = req.body
 
-    if(user === "Seller") {
-        const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE seller_address = ${address.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status NOT IN (${"0"})`)
-    }
-    else if(user === "Buyer") {
-        const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE buyer_address = ${address.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status NOT IN (${"0"})`)
-    }
-
+    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE (seller_address = ${address.toLowerCase()} OR buyer_address = ${address.toLowerCase()}) AND (is_status NOT IN (${"0"}))`)
+    
     if(getQuery.length > 0) {
       res.json({
         transactionBid: getQuery,

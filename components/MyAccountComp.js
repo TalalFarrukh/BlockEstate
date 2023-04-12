@@ -7,7 +7,7 @@ const MyAccountComp = ({ address, userDetails, setUserDetails, apiKey }) => {
     const [refreshStatus, setRefreshStatus] = useState(false)
 
     useEffect(() => {
-      const getUserDetails = async (e) => {
+      const getUserDetails = async () => {
         const userResponse = await fetch("api/getUserDetails", {
           method: "POST",
           body: JSON.stringify({ address, apiKey }),
@@ -44,6 +44,7 @@ const MyAccountComp = ({ address, userDetails, setUserDetails, apiKey }) => {
         const data = await response.json()
         
         if(!data) return
+        
         if(data.status) {
           toast.success(data.message, {
             position: toast.POSITION.BOTTOM_RIGHT
