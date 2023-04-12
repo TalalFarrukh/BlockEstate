@@ -1,7 +1,80 @@
+import { useState, useEffect } from "react"
+
 import dynamic from "next/dynamic"
 const HomeMap = dynamic(() => import("./Map"), { ssr:false })
 
-const Home = ({ userLands, otherUserLands, address }) => {
+const Home = ({ address, web3Api, apiKey }) => {
+
+    const [userLands, setUserLands] = useState([])
+    const [otherUserLands, setOtherUserLands] = useState([])
+
+    useEffect(() => {
+        const getAllUserTokens = async () => {
+    
+          if(!address) return
+    
+          const { landToken, web3 } = web3Api
+          
+          const eventTokenIds = await landToken.getPastEvents('Transfer', {
+            filter: {
+              'to': address
+            },
+            fromBlock: 0,
+            toBlock: 'latest'
+          })
+    
+          const eventOtherTokenIds = await landToken.getPastEvents('Transfer', {
+            filter: {
+              'from': '0x0000000000000000000000000000000000000000'
+            },
+            fromBlock: 0,
+            toBlock: 'latest'
+          })
+    
+          const eventFilterOtherTokenIds = eventOtherTokenIds.filter(event => {
+            return event.event === 'Transfer' && event.returnValues.to.toLowerCase() !== address.toLowerCase()
+          })
+    
+          const otherLands = []
+          const otherPromises = []
+          const lands = []
+          const promises = []
+          
+          eventTokenIds.forEach((tokenId) => {
+            promises.push(
+              landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
+                .then((landTokenURI) => {
+                  lands.push(JSON.parse(landTokenURI))
+                })
+            )
+          })
+    
+          Promise.all(promises)
+            .then(() => {
+              setUserLands(lands)
+            })
+    
+          eventFilterOtherTokenIds.forEach((tokenId) => {
+            otherPromises.push(
+              landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
+                .then((landTokenURI) => {
+                  otherLands.push(JSON.parse(landTokenURI))
+                })
+            )
+          })
+    
+          Promise.all(otherPromises)
+            .then(() => {
+              setOtherUserLands(otherLands)
+            })
+    
+        }
+    
+        web3Api.web3 && getAllUserTokens()
+    
+    }, [web3Api.web3 && address])
+
+
   return (
     
     <div className="flex flex-col">

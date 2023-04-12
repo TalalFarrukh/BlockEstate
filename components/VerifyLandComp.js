@@ -3,12 +3,7 @@ import { FaFolder, FaIdCard } from "react-icons/fa"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import bcryptjs from "bcryptjs"
-
-const apiSalt = bcryptjs.genSaltSync(10)
-const apiKey = bcryptjs.hashSync("APIs", apiSalt)
-
-const VerifyLandComp = ({ address, landToken, cnic }) => {
+const VerifyLandComp = ({ address, web3Api, userDetails, apiKey }) => {
 
   const [landExists, setLandExists] = useState(false)
   const [landExistsId, setLandExistsId] = useState(null)
@@ -52,6 +47,8 @@ const VerifyLandComp = ({ address, landToken, cnic }) => {
 
   const mintToken = async (e) => {
     e.preventDefault()
+
+    const { landToken } = web3Api.landToken
     
     const landJsonString = JSON.stringify(land)
     const landTokenContract = await landToken.safeMint(address, landExistsId, landJsonString, {from:address})
@@ -110,7 +107,7 @@ const VerifyLandComp = ({ address, landToken, cnic }) => {
                       </label>
                       <input
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 disabled:bg-gray-200 leading-tight focus:outline-none focus:shadow-outline"
-                        type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required readOnly disabled defaultValue={cnic}
+                        type="text" name="cnic" placeholder="CNIC" minLength="13" maxLength="13" required readOnly disabled defaultValue={userDetails.cnic}
                       />
                     </div>
 

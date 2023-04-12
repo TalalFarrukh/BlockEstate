@@ -1,13 +1,38 @@
 import { useEffect, useState } from "react"
+import { decrypt } from "utils/crypt"
 
 import LandBuyCard from "./cards/LandBuyCard"
 
-const BuyLandComp = ({ land, sellerAddress, askPrice, landId, apiKey, address }) => {
+const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
+
+  const [landId, setLandId] = useState(null)
+  const [sellerAddress, setSellerAddress] = useState(null)
+  const [askPrice, setAskPrice] = useState(null)
+
+  const [land, setLand] = useState(null)
+  
+  useEffect(() => {
+    if(!router.isReady) return
+    setLandId(decrypt(router.query.landId))
+    setSellerAddress(decrypt(router.query.sellerAddress))
+    setAskPrice(decrypt(router.query.askPrice))
+  }, [router.isReady])
+
+  useEffect(() => {
+    const getLand = async () => {
+      const { landToken, web3 } = web3Api
+      const tokenURI = await landToken.tokenURI(parseInt(landId))
+      const parseLand = await JSON.parse(tokenURI)
+
+      setLand(parseLand)
+    }
+
+    web3Api.web3 && landId && getLand()
+
+  }, [web3Api.web3 && landId])
 
   const [refreshStatus, setRefreshStatus] = useState(false)
-
   const [isSubmitted, setIsSubmitted] = useState(false)
-
   const [bidPrice, setBidPrice] = useState(null)
 
   useEffect(() => {
@@ -30,7 +55,7 @@ const BuyLandComp = ({ land, sellerAddress, askPrice, landId, apiKey, address })
 
     address && landId && checkSubmitBid()
 
-  }, [landId, address, refreshStatus])
+  }, [address && landId, refreshStatus])
 
   const submitBid = async (e) => {
     e.preventDefault()
@@ -86,7 +111,9 @@ const BuyLandComp = ({ land, sellerAddress, askPrice, landId, apiKey, address })
 
       <div className="flex flex-col md:flex-row md:p-5 p-2">
         
-        <LandBuyCard land={land} sellerAddress={sellerAddress} askPrice={askPrice} />
+        {land && (
+          <LandBuyCard land={land} sellerAddress={sellerAddress} askPrice={askPrice} />
+        )}
 
         <div className="max-w-xl md:w-1/2 m-3 flex flex-col justify-center md:ml-6 mt-5 md:mt-0">
         {!isSubmitted ? 

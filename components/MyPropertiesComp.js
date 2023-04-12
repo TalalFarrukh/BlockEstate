@@ -1,6 +1,43 @@
+import { useState, useEffect } from "react"
 import MyProperty from "./cards/MyProperty"
 
-const MyPropertiesComp = ({ userLands, address, landToken, cnic }) => {
+const MyPropertiesComp = ({ address, web3Api, userDetails }) => {
+
+  const [userLands, setUserLands] = useState([])
+
+  useEffect(() => {
+    const getAllUserTokens = async () => {
+      const { landToken, web3 } = web3Api
+      
+      const eventTokenIds = await landToken.getPastEvents('Transfer', {
+        filter: {
+          'to': address
+        },
+        fromBlock: 0,
+        toBlock: 'latest'
+      })
+
+      const lands = []
+      const promises = []
+      
+      eventTokenIds.forEach((tokenId) => {
+        promises.push(
+          landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
+            .then((landTokenURI) => {
+              lands.push(JSON.parse(landTokenURI))
+            })
+        )
+      })
+
+      Promise.all(promises)
+        .then(() => {
+          setUserLands(lands)
+        })
+    }
+
+    web3Api.web3 && getAllUserTokens()
+
+  }, [web3Api.web3 && address])
 
   return (
     <div className="flex flex-col">
@@ -13,7 +50,7 @@ const MyPropertiesComp = ({ userLands, address, landToken, cnic }) => {
         <div className="md:flex flex-wrap justify-between md:p-5 p-2">
 
           {userLands ? userLands.map(userLand => {return userLand ?
-              <MyProperty userLand={userLand} address={address} landToken={landToken} cnic={cnic} />
+              <MyProperty userLand={userLand} address={address} landToken={web3Api.landToken} cnic={userDetails.cnic} />
           : null})
           : null}
             

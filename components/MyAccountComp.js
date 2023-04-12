@@ -1,12 +1,29 @@
+import { useState, useEffect } from "react"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import bcryptjs from "bcryptjs"
+const MyAccountComp = ({ address, userDetails, setUserDetails, apiKey }) => {
 
-const apiSalt = bcryptjs.genSaltSync(10)
-const apiKey = bcryptjs.hashSync("APIs", apiSalt)
+    const [refreshStatus, setRefreshStatus] = useState(false)
 
-const MyAccountComp = ({ address, refreshStatus, setRefreshStatus, userDetails }) => {
+    useEffect(() => {
+      const getUserDetails = async (e) => {
+        const userResponse = await fetch("api/getUserDetails", {
+          method: "POST",
+          body: JSON.stringify({ address, apiKey }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        const userData = await userResponse.json()
+
+        if(!userData) return
+        setUserDetails(userData)
+      }
+
+      address && getUserDetails()
+
+    }, [address, refreshStatus])
 
     const updateUser = async (e) => {
         e.preventDefault()

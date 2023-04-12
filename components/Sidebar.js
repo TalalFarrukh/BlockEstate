@@ -15,39 +15,27 @@ function Sidebar() {
       <div className="text-center">
         <div className="text-white font-bold text-xl mb-4">Menu</div>
         <ul>
-          <li className="mb-4">
-            <button onClick={() => router.push("/Dashboard")} className={`w-full rounded-lg text-center ${isActive("/Dashboard")}`}>
-              <Link href="/Dashboard">Home</Link>
-            </button>
+          <li className={`w-full rounded-lg text-center mb-4 ${isActive("/Dashboard")}`}>
+            <Link href="/Dashboard">Home</Link>
           </li>
-          <li className="mb-4">
-            <button onClick={() => router.push("/Marketplace")} className={`w-full rounded-lg text-center ${isActive("/Marketplace")}`}>
-              <Link href="">Marketplace</Link>
-            </button>
+          <li className={`w-full rounded-lg text-center mb-4 ${isActive("/Marketplace")}`}>
+            <Link href="/Marketplace">Marketplace</Link>
           </li>
-          <li className="mb-4">
-            <button onClick={() => router.push("/VerifyLand")} className={`w-full rounded-lg text-center ${isActive("/VerifyLand")}`}>
-              <Link href="/VerifyLand">Verify Land</Link>
-            </button>
+          <li className={`w-full rounded-lg text-center mb-4 ${isActive("/VerifyLand")}`}>
+            <Link href="/VerifyLand">Verify Land</Link>
           </li>
-          <li className="mb-4">
-            <button onClick={() => router.push("/MyProperties")} className={`w-full rounded-lg text-center ${isActive("/MyProperties")}`}>
-              <Link href="/MyProperties">My Properties</Link>
-            </button>
+          <li className={`w-full rounded-lg text-center mb-4 ${isActive("/MyProperties")}`}>
+            <Link href="/MyProperties">My Properties</Link>
           </li>
-          <li>
-            <button onClick={() => router.push("/Ongoing")} className={`w-full rounded-lg text-center ${isActive("/Ongoing")}`}>
-              <Link href="/Ongoing">On-going Transactions</Link>
-            </button>
+          <li className={`w-full rounded-lg text-center ${isActive("/Ongoing")}`}>
+            <Link href="/Ongoing">On-going Transactions</Link>
           </li>
         </ul>
         <div className="h-px bg-gray-700 my-6"></div>
         <div className="text-white font-bold text-xl mb-4">Settings</div>
         <ul>
-          <li>
-            <button onClick={() => router.push("/MyAccount")} className={`w-full rounded-lg text-center ${isActive("/MyAccount")}`}>
-              <Link href="">My Account</Link>
-            </button>
+          <li className={`w-full rounded-lg text-center ${isActive("/MyAccount")}`}>
+            <Link href="/MyAccount">My Account</Link>
           </li>
         </ul>
       </div>
