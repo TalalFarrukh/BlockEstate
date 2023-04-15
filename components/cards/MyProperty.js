@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { FaBars } from "react-icons/fa"
 
 import AddOwner from "../modals/AddOwner"
 
@@ -115,13 +116,35 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
 
     }
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
   return (
     <div className="max-w-xl md:w-3/6 m-3 rounded-md overflow-hidden shadow-lg bg-gradient-to-r from-gray-800 via-slate-600 to-gray-600 text-white border-4 border-black">
         
         <MyMap userLand={userLand} />
         
         <div className="p-4">
-            <h2 className="font-semibold text-xl mb-2 ml-2.5">{userLand.properties.name.toUpperCase()}</h2>
+            <div className="flex justify-between">
+                <div className="inline-flex">
+                    <h2 className="font-semibold text-xl mb-2 ml-2.5">{userLand.properties.name.toUpperCase()}</h2>
+                </div>
+                <div className="relative flex justify-end">
+                    <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="w-8 h-8 focus:outline-none">
+                        <FaBars className="text-xl" />
+                    </button>
+                    {isDropdownOpen && (
+                    <div className="absolute top-8 right-0 z-10 w-32 text-center bg-gray-800 rounded-md shadow-lg">
+                        <button onClick={handleShowModal} className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
+                            Add Owners
+                        </button>
+
+                        {showModal &&
+                            <AddOwner onClose={handleCloseModal} onSubmit={handleSubmitModal} />
+                        }
+                    </div>
+                    )}
+                </div>
+            </div>
 
             <ul className="mb-4 ml-2.5">
                 <li>Address: {userLand.properties.name}</li>
@@ -148,23 +171,15 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
                 
             </ul>
 
-            <div className="flex justify-between">
+            <div className="flex justify-center">
                 {!landSaleStatus ? 
-                    <button onClick={() => setLandSale(userLand.land_id, "On Sale")} className="bg-red-500 hover:bg-red-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
+                    <button onClick={() => setLandSale(userLand.land_id, "On Sale")} className="bg-red-500 hover:bg-red-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-3/4 m-2">
                         Sell
                     </button>
                 :
-                    <button onClick={() => setLandSale(userLand.land_id, "Off Sale")} className="bg-green-500 hover:bg-green-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
-                        On Sale
+                    <button onClick={() => setLandSale(userLand.land_id, "Off Sale")} className="bg-green-500 hover:bg-green-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-3/4 m-2">
+                        Remove
                     </button>
-                }
-
-                <button onClick={handleShowModal} className="bg-yellow-600 hover:bg-yellow-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-2/4 m-2">
-                    Add Owners
-                </button>
-
-                {showModal &&
-                    <AddOwner onClose={handleCloseModal} onSubmit={handleSubmitModal} />
                 }
             </div>
 
