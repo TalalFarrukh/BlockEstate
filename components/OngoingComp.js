@@ -42,12 +42,12 @@ const OngoingComp = ({ address, apiKey }) => {
 
           {transactionBid ? transactionBid.map(bid => {return bid ?
             <div className="flex flex-col justify-between max-w-xl md:w-2/4 m-4">
-              <div className="bg-gray-700 rounded-lg shadow-lg p-2 text-white">
+              <div className="bg-gray-700 rounded-lg shadow-lg text-white">
                 <div className="w-2/5/5 p-3 md:text-lg text-sm text-center">
-                  <h1 className="mb-2 font-bold">Transaction #{bid.id}</h1>
-                  <div className="mb-2" style={{wordWrap: 'break-word'}}>Buyers Address: {bid.buyer_address}</div>  
-                  <div className="mb-4" style={{wordWrap: 'break-word'}}>Seller Address: {bid.seller_address}</div>
-                  <Link href="#" className="rounded-lg bg-yellow-600 hover:bg-yellow-400 text-white px-8 py-1 inline-block font-bold">Continue</Link>
+                <div className="mb-2">Seller's Address: </div>  
+                <div className="mb-4">Bid Price: </div>
+                <a href="#" className="rounded-lg bg-green-600 hover:bg-green-400 text-white mx-4 px-8 py-1 inline-block font-bold">Accept</a>
+                <a href="#" className="rounded-lg bg-red-600 hover:bg-red-400 text-white px-8 py-1 inline-block font-bold">Decline</a>
                 </div>
               </div>
             </div>

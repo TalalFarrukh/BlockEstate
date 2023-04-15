@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import { encrypt } from "utils/crypt"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { FaBars } from "react-icons/fa"
@@ -8,12 +10,9 @@ import AddOwner from "../modals/AddOwner"
 import dynamic from "next/dynamic"
 const MyMap = dynamic(() => import("../MyMap"), { ssr:false })
 
-import bcryptjs from "bcryptjs"
+const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
 
-const apiSalt = bcryptjs.genSaltSync(10)
-const apiKey = bcryptjs.hashSync("APIs", apiSalt)
-
-const MyProperty = ({ userLand, address, landToken, cnic }) => {
+    const router = useRouter()
 
     const [refreshStatus, setRefreshStatus] = useState(false)
     const [landSaleStatus, setLandSaleStatus] = useState()
@@ -66,9 +65,9 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
         const fetchLandSaleStatus = async () => {
             const landSaleStatusPromise = await checkLandSale(userLand.land_id)
             setLandSaleStatus(landSaleStatusPromise)
-          }
+        }
     
-          fetchLandSaleStatus()
+        fetchLandSaleStatus()
 
     }, [refreshStatus])
 
@@ -141,6 +140,24 @@ const MyProperty = ({ userLand, address, landToken, cnic }) => {
                         {showModal &&
                             <AddOwner onClose={handleCloseModal} onSubmit={handleSubmitModal} />
                         }
+
+                        <button className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
+                            Remove Owners
+                        </button>
+
+                        {landSaleStatus ?
+                            <button onClick={(e) => {
+                                router.push({
+                                    pathname: "BidRequests",
+                                    query: {
+                                        landId: encrypt(userLand.land_id),
+                                    }
+                                })
+                            }} className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
+                                Bid Requests
+                            </button>
+                        : null}
+                        
                     </div>
                     )}
                 </div>

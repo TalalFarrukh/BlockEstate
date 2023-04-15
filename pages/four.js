@@ -11,7 +11,6 @@ const four = () => {
     const [address, setAddress] = useState("0x34E9aE971ce73Aa51Cf44656559265cAe4655AB6")
 
     const [landId, setLandId] = useState(null)
-
     const [bidRequest, setBidRequest] = useState([])
 
     const router = useRouter()
@@ -47,7 +46,6 @@ const four = () => {
     }, [landId, address, refreshStatus])
 
     const acceptBid = async (e, request) => {
-
       e.preventDefault()
       
       const status = "Remove All"
@@ -65,7 +63,6 @@ const four = () => {
       })
 
       const updateData = await updateBid.json()
-
       if(!updateData) return
 
       const response = await fetch("api/rejectBid", {
@@ -77,13 +74,11 @@ const four = () => {
       })
 
       const data = await response.json()
-
       if(!data) return
 
     }
 
     const rejectBid = async (e, request) => {
-
       e.preventDefault()
       
       const status = "Remove One"
@@ -97,9 +92,9 @@ const four = () => {
       })
 
       const data = await response.json()
-
       if(!data) return
-      else setRefreshStatus(!refreshStatus)
+      
+      setRefreshStatus(!refreshStatus)
 
     }
 

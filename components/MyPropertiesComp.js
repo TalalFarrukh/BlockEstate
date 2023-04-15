@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import MyProperty from "./cards/MyProperty"
 
-const MyPropertiesComp = ({ address, web3Api, userDetails }) => {
+const MyPropertiesComp = ({ address, web3Api, userDetails, apiKey }) => {
 
   const [userLands, setUserLands] = useState([])
 
@@ -50,7 +50,7 @@ const MyPropertiesComp = ({ address, web3Api, userDetails }) => {
         <div className="md:flex flex-wrap justify-between md:p-5 p-2">
 
           {userLands ? userLands.map(userLand => {return userLand ?
-              <MyProperty userLand={userLand} address={address} landToken={web3Api.landToken} cnic={userDetails.cnic} />
+              <MyProperty userLand={userLand} address={address} landToken={web3Api.landToken} cnic={userDetails.cnic} apiKey={apiKey} />
           : null})
           : null}
             
