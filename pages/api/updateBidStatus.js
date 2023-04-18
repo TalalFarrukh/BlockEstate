@@ -20,17 +20,21 @@ function requireAuth(handler) {
 
 async function handler(req, res) {
 
-    const { landId, sellerAddress, buyerAddress, bidStatus } = req.body
+    const { landId, sellerAddress, buyerAddress, acceptedPrice, bidStatus } = req.body
 
     const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`)
 
     if(checkQuery.length > 0) {
 
-        const updateQuery = await prisma.$executeRaw`UPDATE bid_requests SET is_status = ${bidStatus} 
+        const updateQuery = await prisma.$executeRaw`UPDATE bid_requests SET is_status = ${bidStatus}, accepted_price = ${acceptedPrice}
         WHERE buyer_address = ${buyerAddress.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`
 
         if(updateQuery) {
+
+            const fetchResult = await prisma.$queryRaw(Prisma.sql`SELECT * FROM bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status = ${"1"}`)
+
             res.json({
+                id: fetchResult[0].id,
                 message: "Transaction is in next phase",
                 status: true
             })

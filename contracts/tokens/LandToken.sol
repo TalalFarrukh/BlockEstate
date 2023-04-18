@@ -24,6 +24,10 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Enumerable, ERC721Burnable
     }
     mapping(bytes32 => TokenSharedOwnerStruct) TokenSharedOwner;
 
+    mapping(uint256 => mapping(address => mapping(address => string))) documentMapping;
+
+    address private newOwner;
+    address private oldOwner;
 
     constructor() ERC721("LandToken", "LTT") {}
 
@@ -36,7 +40,7 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Enumerable, ERC721Burnable
     }
 
     function safeMint(address to, uint256 tokenId, string memory uri) public {
-         _safeMint(to,tokenId);  _setTokenURI(tokenId,uri);
+         _safeMint(to, tokenId);  _setTokenURI(tokenId, uri);
         
         address[] memory emptyArray;
         bytes32 ownerToken = hashTokenAddress(to,tokenId);
@@ -124,6 +128,21 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Enumerable, ERC721Burnable
 
         bytes32 newOwnerToken = hashTokenAddress(to,tokenId);
         TokenOwner[newOwnerToken] = TokenOwnerStruct(tokenId,false,emptyArray);
+    }
+
+    function setNewOwner(address user) public {
+        newOwner = user;
+    }
+
+    function transferAgreementDocument(uint256 tokenId, string memory document) public {
+        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner or approved");
+
+        oldOwner = ownerOf(tokenId);
+        documentMapping[tokenId][newOwner][oldOwner] = document;
+    }
+
+    function retrieveTransferDocument(uint256 tokenId) public view returns (string memory) {
+        return documentMapping[tokenId][newOwner][oldOwner];
     }
     
 }

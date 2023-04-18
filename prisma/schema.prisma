@@ -51,4 +51,5 @@ model bid_requests {
   is_status   String @default("0")
   is_buyer_signed   String @default("0")
   is_seller_signed    String @default("0")
+  accepted_price   Int?
 }

@@ -11,6 +11,7 @@ const MyMap = ({ userLand }) => {
         .leaflet-container {
           width: 80wh; 
           height: 40vh;
+          z-index: 0;
         }
 
         @media only screen and (max-width: 767px) {

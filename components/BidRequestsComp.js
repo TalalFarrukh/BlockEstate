@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { decrypt } from "utils/crypt"
+import { encrypt, decrypt } from "utils/crypt"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
@@ -30,9 +30,7 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
             const data = await response.json()
             
             if(!data) return
-            else setBidRequest(data.bidRequest)
-
-            console.log(data.bidRequest)
+            setBidRequest(data.bidRequest)
 
         }
 
@@ -43,15 +41,17 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
     const acceptBid = async (e, request) => {
         e.preventDefault()
         
-        const status = "Remove All"
+        const status = "Off Sale"
         const bidStatus = "1"
         
         const buyerAddress = request.buyer_address
         const sellerAddress = address
+
+        const acceptedPrice = request.bid_price
   
         const updateBid = await fetch("api/updateBidStatus", {
           method: "POST",
-          body: JSON.stringify({ landId, sellerAddress, buyerAddress, bidStatus, apiKey }),
+          body: JSON.stringify({ landId, sellerAddress, buyerAddress, acceptedPrice, bidStatus, apiKey }),
           headers: {
             'Content-Type': 'application/json'
           }
@@ -60,16 +60,23 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
         const updateData = await updateBid.json()
         if(!updateData) return
   
-        const response = await fetch("api/rejectBid", {
-          method: "POST",
-          body: JSON.stringify({ landId, sellerAddress, buyerAddress, status, apiKey }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
+        const response = await fetch("api/setLandSale", {
+            method: "POST",
+            body: JSON.stringify({ landId, address, status, apiKey }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
   
         const data = await response.json()
         if(!data) return
+
+        router.push({
+            pathname: "one",
+            query: {
+                id: encrypt(updateData.id)
+            }
+          })
   
     }
   

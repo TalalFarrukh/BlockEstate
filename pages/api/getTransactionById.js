@@ -20,21 +20,23 @@ function requireAuth(handler) {
 
 async function handler(req, res) {
 
-    const { landId, address } = req.body
+    const { transactionId } = req.body
 
-    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM bid_requests WHERE seller_address = ${address.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status = ${"0"}`)
-
+    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE id = ${transactionId}`)
+    
     if(getQuery.length > 0) {
-        res.json({
-            bidRequest: getQuery,
-            message: `${getQuery.length} bid requests made for this land`
-        })
+      res.json({
+        transaction: getQuery[0],
+        status: true
+      })
     }
     else {
-        res.json({
-            message: "No bid requests made"
-        })
+      res.json({
+        message: "Transaction not found",
+        status: false
+      })
     }
+    
 }
 
 export default requireAuth(handler)

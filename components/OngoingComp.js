@@ -18,7 +18,7 @@ const OngoingComp = ({ address, apiKey }) => {
       })
 
       const data = await response.json()
-      console.log(data)
+      
       if(!data) return
       setTransactionBid(data.transactionBid)
 
@@ -46,8 +46,7 @@ const OngoingComp = ({ address, apiKey }) => {
                 <div className="w-2/5/5 p-3 md:text-lg text-sm text-center">
                 <div className="mb-2">Seller's Address: </div>  
                 <div className="mb-4">Bid Price: </div>
-                <a href="#" className="rounded-lg bg-green-600 hover:bg-green-400 text-white mx-4 px-8 py-1 inline-block font-bold">Accept</a>
-                <a href="#" className="rounded-lg bg-red-600 hover:bg-red-400 text-white px-8 py-1 inline-block font-bold">Decline</a>
+                  {/* <button onClick={e => acceptBid(e, request)} className="rounded-lg bg-green-600 hover:bg-green-400 text-white mx-4 px-8 py-1 inline-block font-bold">Continue Transaction</button> */}
                 </div>
               </div>
             </div>
