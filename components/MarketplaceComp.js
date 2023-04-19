@@ -13,7 +13,7 @@ const MarketplaceComp = ({ address, web3Api, apiKey }) => {
 
         const { landToken, web3 } = web3Api
 
-        const response = await fetch("api/getAllLandSale", {
+        const response = await fetch("api/landSale/getAllLandSale", {
           method: "POST",
           body: JSON.stringify({ address, apiKey }),
           headers: {

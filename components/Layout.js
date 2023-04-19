@@ -116,7 +116,7 @@ const Layout = ({ children }) => {
               if(!data) return
               setSessionDetails(data)
     
-              const userResponse = await fetch("api/getUserDetails", {
+              const userResponse = await fetch("api/user/getUserDetails", {
                 method: "POST",
                 body: JSON.stringify({ address, apiKey }),
                 headers: {

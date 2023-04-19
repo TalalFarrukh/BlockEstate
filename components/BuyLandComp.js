@@ -39,7 +39,7 @@ const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
 
   useEffect(() => {
     const checkSubmitBid = async () => {
-      const response = await fetch("api/checkSubmitBid", {
+      const response = await fetch("api/bid/checkSubmitBid", {
         method: "POST",
         body: JSON.stringify({ landId, address, sellerAddress, apiKey }),
         headers: {
@@ -66,7 +66,7 @@ const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
     const status = "Submit"
     const buyerAddress = address
 
-    const response = await fetch("api/submitBid", {
+    const response = await fetch("api/bid/submitBid", {
       method: "POST",
       body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
       headers: {
@@ -99,7 +99,7 @@ const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
     const status = "Remove"
     const buyerAddress = address
 
-    const response = await fetch("api/submitBid", {
+    const response = await fetch("api/bid/submitBid", {
       method: "POST",
       body: JSON.stringify({ landId, sellerAddress, buyerAddress, askPrice, buyerBidPrice, status, apiKey }),
       headers: {

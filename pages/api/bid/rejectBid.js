@@ -1,5 +1,4 @@
-const { Prisma, PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
+import prisma from "utils/dbConnection"
 
 import bcryptjs from "bcryptjs"
 
@@ -25,15 +24,6 @@ async function handler(req, res) {
     if(status === "Remove One") {
 
         const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`
-
-        res.json({
-            message: "Bid removed"
-        })
-
-    }
-    else if(status === "Remove All") {
-
-        const deleteQuery = await prisma.$executeRaw`DELETE FROM bid_requests WHERE seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status = ${"0"}`
 
         res.json({
             message: "Bid removed"

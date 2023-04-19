@@ -19,7 +19,7 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
     useEffect(() => {
         const getAllBidRequests = async () => {
             
-            const response = await fetch("api/getBidRequestList", {
+            const response = await fetch("api/bid/getBidRequestList", {
                 method: "POST",
                 body: JSON.stringify({ landId, address, apiKey }),
                 headers: {
@@ -49,7 +49,7 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
 
         const acceptedPrice = request.bid_price
   
-        const updateBid = await fetch("api/updateBidStatus", {
+        const updateBid = await fetch("api/transaction/updateBidStatus", {
           method: "POST",
           body: JSON.stringify({ landId, sellerAddress, buyerAddress, acceptedPrice, bidStatus, apiKey }),
           headers: {
@@ -60,7 +60,7 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
         const updateData = await updateBid.json()
         if(!updateData) return
   
-        const response = await fetch("api/setLandSale", {
+        const response = await fetch("api/landSale/setLandSale", {
             method: "POST",
             body: JSON.stringify({ landId, address, status, apiKey }),
             headers: {
@@ -76,7 +76,7 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
             query: {
                 id: encrypt(updateData.id)
             }
-          })
+        })
   
     }
   
@@ -88,7 +88,7 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
         const buyerAddress = request.buyer_address
         const sellerAddress = address
 
-        const response = await fetch("api/rejectBid", {
+        const response = await fetch("api/bid/rejectBid", {
             method: "POST",
             body: JSON.stringify({ landId, sellerAddress, buyerAddress, status, apiKey }),
             headers: {

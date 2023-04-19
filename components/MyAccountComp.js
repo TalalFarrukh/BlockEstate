@@ -8,7 +8,7 @@ const MyAccountComp = ({ address, userDetails, setUserDetails, apiKey }) => {
 
     useEffect(() => {
       const getUserDetails = async () => {
-        const userResponse = await fetch("api/getUserDetails", {
+        const userResponse = await fetch("api/user/getUserDetails", {
           method: "POST",
           body: JSON.stringify({ address, apiKey }),
           headers: {
@@ -33,7 +33,7 @@ const MyAccountComp = ({ address, userDetails, setUserDetails, apiKey }) => {
         const email = e.target.email.value
         const contact = e.target.contact.value
 
-        const response = await fetch("api/updateUserDetails", {
+        const response = await fetch("api/user/updateUserDetails", {
             method: "POST",
             body: JSON.stringify({ address, firstName, lastName, email, contact, apiKey }),
             headers: {

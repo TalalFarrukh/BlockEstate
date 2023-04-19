@@ -1,5 +1,5 @@
-const { Prisma, PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
+const { Prisma } = require("@prisma/client")
+import prisma from "utils/dbConnection"
 
 import bcryptjs from "bcryptjs"
 
@@ -38,6 +38,12 @@ async function handler(req, res) {
             status: true
         })
 
+        const checkStatus = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE id = ${transactionId}`)
+
+        if(checkStatus[0].is_buyer_signed === "1" && checkStatus[0].is_seller_signed === "1") {
+          const updateStatus = await prisma.$executeRaw`UPDATE bid_requests SET is_status = ${"2"} WHERE id = ${transactionId}`
+        }
+        
     }
 
 }

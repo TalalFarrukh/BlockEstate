@@ -1,15 +1,15 @@
-import { Pool } from "pg"
+const { PrismaClient } = require("@prisma/client")
 
-let conn;
+let prisma
 
-if (!conn) {
-  conn = new Pool({
-    user: "postgres",
-    password: "password",
-    host: "localhost",
-    port: 5432,
-    database: "fyp_db",
-  })
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient()
+} 
+else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient()
+  }
+  prisma = global.prisma
 }
 
-export default conn
+export default prisma

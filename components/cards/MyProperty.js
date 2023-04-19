@@ -21,7 +21,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
     const [price, setPrice] = useState(0)
 
     const checkLandSale = async (landId) => {
-        const response = await fetch("api/checkLandSale", {
+        const response = await fetch("api/landSale/checkLandSale", {
             method: "POST",
             body: JSON.stringify({ landId, address, apiKey }),
             headers: {
@@ -43,7 +43,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
         const type = userLand.properties.type
         const area = userLand.properties.area
 
-        const response = await fetch("api/setLandSale", {
+        const response = await fetch("api/landSale/setLandSale", {
             method: "POST",
             body: JSON.stringify({ landId, address, cnic, status, landAddress, type, area, price, apiKey }),
             headers: {

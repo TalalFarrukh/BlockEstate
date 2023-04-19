@@ -19,13 +19,22 @@ function requireAuth(handler) {
 }
 
 async function handler(req, res) {
-    const { address, session_id } = req.body
-    
-    const logout = await prisma.$queryRaw(Prisma.sql`Update sessions set status = 'Expired' where address = ${address.toLowerCase()} and session_id = ${session_id};`)//, [address, session_id]
-    
-    res.json({
-        message: "User Logged Out"
-    })
+
+    const { landId, address } = req.body
+
+    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * FROM bid_requests WHERE seller_address = ${address.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status = ${"0"}`)
+
+    if(getQuery.length > 0) {
+        res.json({
+            bidRequest: getQuery,
+            message: `${getQuery.length} bid requests made for this land`
+        })
+    }
+    else {
+        res.json({
+            message: "No bid requests made"
+        })
+    }
 }
 
 export default requireAuth(handler)

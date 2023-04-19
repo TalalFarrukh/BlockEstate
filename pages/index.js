@@ -66,7 +66,7 @@ export default function Home() {
     
     const cnic = e.target.cnic.value
     
-    const response = await fetch("api/registerCnic", {
+    const response = await fetch("api/user/registerCnic", {
       method: "POST",
       body: JSON.stringify({ address, cnic, apiKey }),
       headers: {
@@ -87,7 +87,7 @@ export default function Home() {
     const email = e.target.email.value
     const contact = e.target.contact.value
 
-    const response = await fetch("api/registerDetails", {
+    const response = await fetch("api/user/registerDetails", {
       method: "POST",
       body: JSON.stringify({ address, firstName, lastName, email, contact, apiKey }),
       headers: {
@@ -161,7 +161,7 @@ export default function Home() {
           if(!data) return
           else setSessionDetails(data)
 
-          const registerResponse = await fetch("api/registered", {
+          const registerResponse = await fetch("api/user/registered", {
             method: "POST",
             body: JSON.stringify({ address, apiKey }),
             headers: {

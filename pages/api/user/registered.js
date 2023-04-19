@@ -1,5 +1,5 @@
-const { Prisma, PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
+const { Prisma } = require("@prisma/client")
+import prisma from "utils/dbConnection"
 
 import bcryptjs from "bcryptjs"
 
@@ -20,22 +20,21 @@ function requireAuth(handler) {
 
 async function handler(req, res) {
 
-    const { landId, address, sellerAddress } = req.body
+    const { address } = req.body
     
-    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE buyer_address = ${address.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`)
-
+    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT is_registered FROM users WHERE address = ${address.toLowerCase()}`)//, [address.toLowerCase()])
+    
     if(checkQuery.length > 0) {
         res.json({
-          bidPrice: checkQuery[0].bid_price,
-          status: true
+            isRegistered: checkQuery[0].is_registered
         })
     }
     else {
         res.json({
-          status: false
+            message: "CNIC does not exist"
         })
     }
-
+    
 }
 
 export default requireAuth(handler)

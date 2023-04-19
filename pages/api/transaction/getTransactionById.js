@@ -1,5 +1,5 @@
-const { Prisma, PrismaClient } = require("@prisma/client")
-const prisma = new PrismaClient()
+const { Prisma } = require("@prisma/client")
+import prisma from "utils/dbConnection"
 
 import bcryptjs from "bcryptjs"
 
@@ -20,19 +20,19 @@ function requireAuth(handler) {
 
 async function handler(req, res) {
 
-    const { address } = req.body
+    const { transactionId } = req.body
 
-    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE (seller_address = ${address.toLowerCase()} OR buyer_address = ${address.toLowerCase()}) AND (is_status NOT IN (${"0"}))`)
+    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE id = ${transactionId}`)
     
     if(getQuery.length > 0) {
       res.json({
-        transactionBid: getQuery,
+        transaction: getQuery[0],
         status: true
       })
     }
     else {
       res.json({
-        message: "No on going bids",
+        message: "Transaction not found",
         status: false
       })
     }
