@@ -81,11 +81,11 @@ const Layout = ({ children }) => {
             const landToken = await loadContract("LandToken", provider)
             
             if(provider) {
-            setWeb3Api({
-                web3: new Web3(provider),
-                provider,
-                landToken
-            })
+              setWeb3Api({
+                  web3: new Web3(provider),
+                  provider,
+                  landToken
+              })
             }
         }
         loadProvider()

@@ -48,7 +48,7 @@ const VerifyLandComp = ({ address, web3Api, userDetails, apiKey }) => {
   const mintToken = async (e) => {
     e.preventDefault()
 
-    const { landToken } = web3Api.landToken
+    const { landToken } = web3Api
     
     const landJsonString = JSON.stringify(land)
     const landTokenContract = await landToken.safeMint(address, landExistsId, landJsonString, {from:address})

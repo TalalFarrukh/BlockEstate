@@ -103,8 +103,11 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Enumerable, ERC721Burnable
         address[] memory outputArray = new address[](sharedOwners.length-1);
 
         for(uint i = 0; i < sharedOwners.length; i++) {
-            if (sharedOwners[i] != sharedOwner) outputArray[i] = sharedOwners[i];
-            else i--;
+            uint j = 0;
+            if (sharedOwners[i] != sharedOwner) {
+                outputArray[j] = sharedOwners[i];
+                j++;
+            }
         }
 
         TokenOwner[ownerToken].sharedOwners = outputArray;

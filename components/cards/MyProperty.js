@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { FaBars } from "react-icons/fa"
 
 import AddOwner from "../modals/AddOwner"
+import OwnerList from "../modals/OwnerList"
 
 import dynamic from "next/dynamic"
 const MyMap = dynamic(() => import("../MyMap"), { ssr:false })
@@ -61,13 +62,22 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
     }
 
     useEffect(() => {
-
         const fetchLandSaleStatus = async () => {
             const landSaleStatusPromise = await checkLandSale(userLand.land_id)
             setLandSaleStatus(landSaleStatusPromise)
         }
     
         fetchLandSaleStatus()
+
+    }, [refreshStatus])
+
+    useEffect(() => {
+        const getSharedOwnerList = async () => {
+            const ownerList = await landToken.sharedOwnerList(address, userLand.land_id, {from:address})
+            setSharedOwnerList(ownerList)
+        }
+        
+        getSharedOwnerList()
 
     }, [refreshStatus])
 
@@ -90,30 +100,51 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
     }
 
 
-    const [showModal, setShowModal] = useState(false)
-    const [newSharedAddress, setNewSharedAddress] = useState("")
+    const [showOwnerModal, setShowOwnerModal] = useState(false)
 
-    const handleShowModal = () => {
-        setShowModal(true)
+    const [showOwnerListModal, setShowOwnerListModal] = useState(false)
+    const [sharedOwnerList, setSharedOwnerList] = useState([])
+
+    const handleShowOwnerModal = () => {
+        setShowOwnerModal(true)
     }
-
-    const handleCloseModal = () => {
-        setShowModal(false)
+    const handleCloseOwnerModal = () => {
+        setShowOwnerModal(false)
     }
-
-    const handleSubmitModal = async (sharedAddress) => {
-        setNewSharedAddress(sharedAddress)
+    const handleSubmitOwnerModal = async (sharedAddress) => {
         
-        const setOwner = await landToken.setSharedOwners(address, [newSharedAddress], userLand.land_id, {from:address})
+        const setOwner = await landToken.setSharedOwners(address, sharedAddress, userLand.land_id, {from:address})
 
         if(setOwner) {
-            setShowModal(false)
+            setShowOwnerModal(false)
+            setRefreshStatus(!refreshStatus)
             toast.success("Owner added", {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
         }
 
     }
+
+    const handleShowOwnerListModal = () => {
+        setShowOwnerListModal(true)
+    }
+    const handleCloseOwnerListModal = () => {
+        setShowOwnerListModal(false)
+    }
+    const handleRemoveOwnerModal = async (sharedAddress) => {
+        
+        const removeOwner = await landToken.deleteSharedOwners(address, sharedAddress, userLand.land_id, {from:address})
+
+        if(removeOwner) {
+            setRefreshStatus(!refreshStatus)
+            toast.success("Owner removed", {
+                position: toast.POSITION.BOTTOM_RIGHT
+            })
+        }
+
+    }
+    
+    
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
@@ -133,17 +164,19 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
                     </button>
                     {isDropdownOpen && (
                     <div className="absolute top-8 right-0 z-10 w-32 text-center bg-gray-800 rounded-md shadow-lg">
-                        <button onClick={handleShowModal} className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
+                        <button onClick={handleShowOwnerModal} className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
                             Add Owners
                         </button>
-
-                        {showModal &&
-                            <AddOwner onClose={handleCloseModal} onSubmit={handleSubmitModal} />
+                        {showOwnerModal &&
+                            <AddOwner onClose={handleCloseOwnerModal} onSubmit={handleSubmitOwnerModal} />
                         }
 
-                        <button className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
-                            Remove Owners
+                        <button onClick={handleShowOwnerListModal} className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
+                            Owner List
                         </button>
+                        {showOwnerListModal &&
+                            <OwnerList sharedOwnerList={sharedOwnerList} onClose={handleCloseOwnerListModal} onSubmit={handleRemoveOwnerModal} />
+                        }
 
                         {landSaleStatus ?
                             <button onClick={(e) => {
