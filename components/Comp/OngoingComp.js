@@ -44,11 +44,15 @@ const OngoingComp = ({ address, router, apiKey }) => {
             <div className="flex flex-col justify-between max-w-xl md:w-2/4 m-4">
               <div className="bg-gray-700 rounded-lg shadow-lg text-white">
                 <div className="w-2/5/5 p-3 md:text-lg text-sm text-center">
-                <div className="mb-2">Seller's Address: {bid.seller_address}</div>  
+                {bid.seller_address === address.toLowerCase() ?
+                  <div className="mb-2">Buyer's Address: {bid.buyer_address}</div>
+                :
+                  <div className="mb-2">Seller's Address: {bid.seller_address}</div>
+                }
                 <div className="mb-4">Accepted Price: {bid.accepted_price}</div>
                   <button onClick={(e) => {
                     router.push({
-                        pathname: "one",
+                        pathname: "Transaction",
                         query: {
                             id: encrypt(bid.id),
                         }

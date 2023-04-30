@@ -17,6 +17,8 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
 
     const [refreshStatus, setRefreshStatus] = useState(false)
     const [landSaleStatus, setLandSaleStatus] = useState()
+    const [isTransaction, setIsTransaction] = useState(false)
+    const [transactionId, setTransactionId] = useState(null)
 
     const [isEditingPrice, setIsEditingPrice] = useState(false)
     const [price, setPrice] = useState(0)
@@ -63,8 +65,28 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
 
     useEffect(() => {
         const fetchLandSaleStatus = async () => {
-            const landSaleStatusPromise = await checkLandSale(userLand.land_id)
-            setLandSaleStatus(landSaleStatusPromise)
+
+            let landId = userLand.land_id
+
+            const response = await fetch("api/bid/checkLandBidStatus", {
+                method: "POST",
+                body: JSON.stringify({ landId, apiKey }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+    
+            const data = await response.json()
+            
+            if(data.status) {
+                setTransactionId(data.id)
+                setIsTransaction(data.status)
+            }
+            else {
+                const landSaleStatusPromise = await checkLandSale(userLand.land_id)
+                setLandSaleStatus(landSaleStatusPromise)
+            }
+            
         }
     
         fetchLandSaleStatus()
@@ -143,8 +165,6 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
         }
 
     }
-    
-    
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
@@ -222,13 +242,24 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
             </ul>
 
             <div className="flex justify-center">
-                {!landSaleStatus ? 
+                {!landSaleStatus && !isTransaction ? 
                     <button onClick={() => setLandSale(userLand.land_id, "On Sale")} className="bg-red-500 hover:bg-red-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-3/4 m-2">
                         Sell
                     </button>
-                :
+                :!isTransaction ?
                     <button onClick={() => setLandSale(userLand.land_id, "Off Sale")} className="bg-green-500 hover:bg-green-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-3/4 m-2">
                         Remove
+                    </button>
+                :
+                    <button onClick={(e) => {
+                        router.push({
+                            pathname: "Transaction",
+                            query: {
+                                id: encrypt(transactionId),
+                            }
+                        })
+                    }} className="bg-yellow-600 hover:bg-yellow-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-3/4 m-2">
+                        Continue Transaction
                     </button>
                 }
             </div>

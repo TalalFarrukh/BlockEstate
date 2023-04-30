@@ -137,15 +137,17 @@ contract LandToken is ERC721, ERC721URIStorage, ERC721Enumerable, ERC721Burnable
         newOwner = user;
     }
 
-    function transferAgreementDocument(uint256 tokenId, string memory document) public {
+    function transferAgreementDocument(uint256 tokenId, address _newOwner, address _oldOwner, string memory document) public {
         require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721: caller is not token owner or approved");
 
         oldOwner = ownerOf(tokenId);
-        documentMapping[tokenId][newOwner][oldOwner] = document;
+        documentMapping[tokenId][_newOwner][_oldOwner] = document;
+
+        transferFrom(_oldOwner, _newOwner, tokenId);
     }
 
-    function retrieveTransferDocument(uint256 tokenId) public view returns (string memory) {
-        return documentMapping[tokenId][newOwner][oldOwner];
+    function retrieveTransferDocument(uint256 tokenId, address _newOwner, address _oldOwner) public view returns (string memory) {
+        return documentMapping[tokenId][_newOwner][_oldOwner];
     }
     
 }

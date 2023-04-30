@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 import dynamic from "next/dynamic"
-const HomeMap = dynamic(() => import("./Map"), { ssr:false })
+const HomeMap = dynamic(() => import("../Map"), { ssr:false })
 
 const Home = ({ address, web3Api, apiKey }) => {
 

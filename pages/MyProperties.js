@@ -1,5 +1,5 @@
 import Layout from "../components/Layout"
-import MyPropertiesComp from "../components/MyPropertiesComp"
+import MyPropertiesComp from "../components/Comp/MyPropertiesComp"
 
 const MyProperties = () => {
   return (

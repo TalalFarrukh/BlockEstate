@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import MyProperty from "./cards/MyProperty"
+import MyProperty from "../cards/MyProperty"
 
 const MyPropertiesComp = ({ address, web3Api, userDetails, apiKey }) => {
 

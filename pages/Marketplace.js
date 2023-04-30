@@ -1,5 +1,5 @@
 import Layout from "../components/Layout"
-import MarketplaceComp from "../components/MarketplaceComp"
+import MarketplaceComp from "../components/Comp/MarketplaceComp"
 
 const Marketplace = () => {
   return (

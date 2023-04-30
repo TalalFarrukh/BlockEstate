@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import LandSaleCard from "./cards/LandSaleCard"
+import LandSaleCard from "../cards/LandSaleCard"
 
 const MarketplaceComp = ({ address, web3Api, apiKey }) => {
 
@@ -25,19 +25,22 @@ const MarketplaceComp = ({ address, web3Api, apiKey }) => {
 
         if(!data) return
 
-        const updatedLandOnSale = data.landOnSale.map(async land => {
+        if(data.landOnSale) {
+          const updatedLandOnSale = data.landOnSale.map(async land => {
 
-          const tokenURI = await landToken.tokenURI(parseInt(land.land_id))
-          
-          return {
-            ...land,
-            geometry: JSON.parse(tokenURI).geometry
-          }
-
-        })
-
-        const results = await Promise.all(updatedLandOnSale)
-        setLandSale(results)
+            const tokenURI = await landToken.tokenURI(parseInt(land.land_id))
+            
+            return {
+              ...land,
+              geometry: JSON.parse(tokenURI).geometry
+            }
+  
+          })
+  
+          const results = await Promise.all(updatedLandOnSale)
+          setLandSale(results)
+        }
+        
       }
 
       web3Api.web3 && address && getAllLandSale()

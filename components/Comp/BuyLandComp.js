@@ -3,7 +3,7 @@ import { decrypt } from "utils/crypt"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import LandBuyCard from "./cards/LandBuyCard"
+import LandBuyCard from "../cards/LandBuyCard"
 
 const BuyLandComp = ({ address, web3Api, apiKey, router }) => {
 

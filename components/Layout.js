@@ -158,7 +158,7 @@ const Layout = ({ children }) => {
             </div>
 
             <div className="w-full">
-                {React.cloneElement(children, { address, web3Api, userDetails, setUserDetails, apiKey, router })}
+              {React.cloneElement(children, { address, web3Api, userDetails, setUserDetails, apiKey, router })}
             </div>
           </div>
         </>

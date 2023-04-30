@@ -31,8 +31,8 @@ async function handler(req, res) {
 
         if(updateQuery) {
 
-            const fetchResult = await prisma.$queryRaw(Prisma.sql`SELECT * FROM bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)} AND is_status = ${"1"}`)
-
+            const fetchResult = await prisma.$queryRaw(Prisma.sql`SELECT * FROM bid_requests WHERE buyer_address = ${buyerAddress.toLowerCase()} AND seller_address = ${sellerAddress.toLowerCase()} AND land_id = ${parseInt(landId)}`)
+            
             res.json({
                 id: fetchResult[0].id,
                 message: "Transaction is in next phase",

@@ -1,5 +1,5 @@
 import Layout from "../components/Layout"
-import VerifyLandComp from "../components/VerifyLandComp"
+import VerifyLandComp from "../components/Comp/VerifyLandComp"
 
 const VerifyLand = () => {
     return (

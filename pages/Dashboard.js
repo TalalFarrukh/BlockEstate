@@ -1,7 +1,7 @@
 import Layout from "../components/Layout"
-import Home from "../components/Home"
+import Home from "../components/Comp/Home"
 
-const Dashboard = () => {  
+const Dashboard = () => {
   return (
     <Layout>
       <Home />

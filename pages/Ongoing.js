@@ -1,5 +1,5 @@
 import Layout from "../components/Layout"
-import OngoingComp from "../components/OngoingComp"
+import OngoingComp from "../components/Comp/OngoingComp"
 
 const Ongoing = () => {
   return (

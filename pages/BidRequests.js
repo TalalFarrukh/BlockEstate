@@ -1,5 +1,5 @@
 import Layout from "../components/Layout"
-import BidRequestsComp from "@components/BidRequestsComp"
+import BidRequestsComp from "../components/Comp/BidRequestsComp"
 
 const BidRequests = () => {
   return (

@@ -1,5 +1,5 @@
 import Layout from "../components/Layout"
-import BuyLandComp from "../components/BuyLandComp"
+import BuyLandComp from "../components/Comp/BuyLandComp"
 
 const BuyLand = () => {
   return (

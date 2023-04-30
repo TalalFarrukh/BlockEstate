@@ -72,7 +72,7 @@ const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
         if(!data) return
 
         router.push({
-            pathname: "one",
+            pathname: "Transaction",
             query: {
                 id: encrypt(updateData.id)
             }
