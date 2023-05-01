@@ -27,8 +27,11 @@ function Sidebar() {
           <li className={`w-full rounded-lg text-center mb-4 ${isActive("/MyProperties")}`}>
             <Link href="/MyProperties">My Properties</Link>
           </li>
-          <li className={`w-full rounded-lg text-center ${isActive("/Ongoing")}`}>
+          <li className={`w-full rounded-lg text-center mb-4 ${isActive("/Ongoing")}`}>
             <Link href="/Ongoing">On-going Transactions</Link>
+          </li>
+          <li className={`w-full rounded-lg text-center ${isActive("/History")}`}>
+            <Link href="/History">Transaction History</Link>
           </li>
         </ul>
         <div className="h-px bg-gray-700 my-6"></div>

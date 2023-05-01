@@ -11,16 +11,28 @@ const MyPropertiesComp = ({ address, web3Api, userDetails, apiKey }) => {
       
       const eventTokenIds = await landToken.getPastEvents('Transfer', {
         filter: {
-          'to': address
+          'to': address,
         },
         fromBlock: 0,
         toBlock: 'latest'
       })
 
+      const notOwnedTokenIds = await landToken.getPastEvents('Transfer', {
+        filter: {
+          'from': address,
+        },
+        fromBlock: 0,
+        toBlock: 'latest'
+      })
+
+      const commonTokenIds = eventTokenIds.filter((event) => {
+        return !notOwnedTokenIds.some((notOwned) => notOwned.returnValues.tokenId === event.returnValues.tokenId);
+      })      
+
       const lands = []
       const promises = []
-      
-      eventTokenIds.forEach((tokenId) => {
+
+      commonTokenIds.forEach((tokenId) => {
         promises.push(
           landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
             .then((landTokenURI) => {
@@ -28,7 +40,7 @@ const MyPropertiesComp = ({ address, web3Api, userDetails, apiKey }) => {
             })
         )
       })
-
+      
       Promise.all(promises)
         .then(() => {
           setUserLands(lands)

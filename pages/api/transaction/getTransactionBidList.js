@@ -22,7 +22,7 @@ async function handler(req, res) {
 
     const { address } = req.body
 
-    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE (seller_address = ${address.toLowerCase()} OR buyer_address = ${address.toLowerCase()}) AND (is_status NOT IN (${"0"}))`)
+    const getQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE (seller_address = ${address.toLowerCase()} OR buyer_address = ${address.toLowerCase()}) AND (is_status NOT IN (${"0"})) AND (is_status NOT IN (${"3"}))`)
     
     if(getQuery.length > 0) {
       res.json({
