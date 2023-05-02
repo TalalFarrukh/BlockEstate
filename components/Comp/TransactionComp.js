@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 import { decrypt } from "utils/crypt"
 import generatePDF from "utils/load-document"
@@ -140,15 +139,15 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
         const documentData = {
             tokenId: transaction.land_id,
-            buyer: transaction.buyer_address,
-            seller: transaction.seller_address,
-            price: transaction.accepted_price,
+            buyer: buyer,
+            seller: seller,
+            transaction: transaction,
             date: date
         }
 
         const documentDataJSON = JSON.stringify(documentData)
 
-        const landTransferContract = await landToken.transferAgreementDocument(documentData.tokenId, documentData.buyer, documentData.seller, documentDataJSON, {from:address})
+        const landTransferContract = await landToken.transferAgreementDocument(documentData.tokenId, documentData.buyer.address, documentData.seller.address, documentDataJSON, {from:address})
 
         if(landTransferContract) {
             toast.success("Transfer complete!", {
