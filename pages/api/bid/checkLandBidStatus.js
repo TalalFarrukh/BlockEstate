@@ -22,7 +22,7 @@ async function handler(req, res) {
 
     const { landId } = req.body
 
-    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE land_id = ${parseInt(landId)} AND (is_status NOT IN (${"0"}))`)
+    const checkQuery = await prisma.$queryRaw(Prisma.sql`SELECT * from bid_requests WHERE land_id = ${parseInt(landId)} AND (is_status NOT IN (${"0"})) AND (is_status NOT IN (${"3"}))`)
 
     if(checkQuery.length > 0) {
         res.json({

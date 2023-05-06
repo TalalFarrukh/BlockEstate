@@ -3,6 +3,7 @@ import { decrypt } from "utils/crypt"
 import generatePDF from "utils/load-document"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { createWorker } from "tesseract.js"
 
 const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
@@ -135,26 +136,32 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
         const updateData = await updateBid.json()
         if(!updateData) return
 
-        const { landToken } = web3Api
+        if(transaction.seller_payment_id === transaction.buyer_payment_id) {
+            const { landToken } = web3Api
 
-        const documentData = {
-            tokenId: transaction.land_id,
-            buyer: buyer,
-            seller: seller,
-            transaction: transaction,
-            date: date
+            const documentData = {
+                tokenId: transaction.land_id,
+                buyer: buyer,
+                seller: seller,
+                transaction: transaction,
+                date: date
+            }
+    
+            const documentDataJSON = JSON.stringify(documentData)
+    
+            const landTransferContract = await landToken.transferAgreementDocument(documentData.tokenId, documentData.buyer.address, documentData.seller.address, documentDataJSON, {from:address})
+    
+            if(landTransferContract) {
+                toast.success("Transfer complete!", {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                })
+            }
         }
-
-        const documentDataJSON = JSON.stringify(documentData)
-
-        const landTransferContract = await landToken.transferAgreementDocument(documentData.tokenId, documentData.buyer.address, documentData.seller.address, documentDataJSON, {from:address})
-
-        if(landTransferContract) {
-            toast.success("Transfer complete!", {
+        else {
+            toast.error("Payments do not match", {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
         }
-
     }
 
     const payPayment = async () => {
@@ -180,6 +187,62 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
         
     }
 
+    const [ocr, setOcr] = useState("")
+    const [imageData, setImageData] = useState(null)
+
+    const worker = createWorker({
+        logger: async (m) => {
+            if(m.progress === 1 && m.status === "recognizing text") {
+                const idRegex = /ID#(\d+)/
+                
+                const paymentID = ocr.match(idRegex)[1]
+
+                let id = transaction.id
+                
+                const response = await fetch("api/transaction/uploadPaymentID", {
+                    method: "POST",
+                    body: JSON.stringify({ id, paymentID, userStatus, apiKey }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+
+                const data = await response.json()
+                if(!data) return
+
+                toast.success(data.message, {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                })
+            }
+        },
+    })
+
+    const convertImageToText = async () => {
+        if (!imageData) return
+        await worker.load()
+        await worker.loadLanguage("eng")
+        await worker.initialize("eng")
+        const {
+          data: { text },
+        } = await worker.recognize(imageData)
+        setOcr(text)
+    }
+
+    useEffect(() => {
+        convertImageToText()
+    }, [imageData])
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0]
+        if(!file)return
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const imageDataUri = reader.result
+          setImageData(imageDataUri)
+        }
+        reader.readAsDataURL(file)
+    }
+
   return (
     <div className="flex flex-col">
 
@@ -195,13 +258,18 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                     {userStatus && userStatus === "Seller" ?
                         <div class="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
                             
-                            {transaction.is_buyer_paid === "1" ?
+                            {transaction.is_buyer_paid === "1" && transaction.buyer_payment_id ?
                                 <>
                                     <div className="text-center mb-5">
-                                        <h2 class="text-sm md:text-xl font-bold">Buyer has made the payment. Please confirm it</h2>
+                                        <h2 class="text-sm md:text-xl font-bold">Buyer has made the payment. Please upload your receipt and confirm the payment</h2>
                                     </div>
 
                                     <div className="mx-auto flex flex-wrap justify-center">
+                                        <label class="block text-gray-700 font-bold mb-2" for="image-upload">
+                                            Upload Receipt
+                                        </label>
+                                        <input class="appearance-none border-2 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" id="image-upload" type="file" onChange={handleImageChange} accept="image/*" />
+
                                         <button onClick={confirmPayment} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                             Confirm Payment
                                         </button>
@@ -219,9 +287,9 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                     
                         <div class="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
                                 
-                            {transaction.is_buyer_paid === "1" ?
+                            {transaction.is_buyer_paid === "1" && transaction.buyer_payment_id ?
                                 <div className="text-center mb-5">
-                                    <h2 class="text-sm md:text-xl font-bold">Please wait for the Seller to confirm the payment</h2>
+                                    <h2 class="text-sm md:text-xl font-bold">Please wait for the Seller to upload their receipt</h2>
                                 </div>
                             :
                                 <>
@@ -230,6 +298,12 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                                     </div>
 
                                     <div className="mx-auto flex flex-wrap justify-center">
+                                        
+                                        <label class="block text-gray-700 font-bold mb-2" for="image-upload">
+                                            Upload Receipt
+                                        </label>
+                                        <input class="appearance-none border-2 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" id="image-upload" type="file" onChange={handleImageChange} accept="image/*" />
+                                        
                                         <button onClick={payPayment} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                             Confirm Payment
                                         </button>

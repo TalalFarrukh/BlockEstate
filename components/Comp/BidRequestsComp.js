@@ -3,7 +3,7 @@ import { encrypt, decrypt } from "utils/crypt"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-const BidRequestsComp = ({ address, web3Api, apiKey, router }) => {
+const BidRequestsComp = ({ address, apiKey, router }) => {
 
     const [landId, setLandId] = useState(null)
 

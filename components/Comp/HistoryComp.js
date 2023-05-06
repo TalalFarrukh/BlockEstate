@@ -98,7 +98,7 @@ const HistoryComp = ({ address, web3Api, router, apiKey }) => {
                     <div className="bg-gray-700 rounded-lg shadow-lg text-white">
                         <div className="w-2/5/5 p-3 md:text-lg text-sm text-center">
                             <div className="mb-2">Seller: {buyHistory.seller.address}</div>
-                            <div className="mb-2">Price: {buyHistory.transaction.acceptedPrice}</div>
+                            <div className="mb-2">Price: {buyHistory.transaction.accepted_price}</div>
                             <div className="mb-4">Date: {buyHistory.date}</div>
 
                             <button onClick={e => generatePDF(buyHistory.seller, buyHistory.buyer, buyHistory.transaction, buyHistory.date)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">

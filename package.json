@@ -36,6 +36,7 @@
     "react-loader-spinner": "^5.3.4",
     "react-toastify": "^9.1.2",
     "run": "^1.4.0",
+    "tesseract.js": "^2.1.1",
     "uuidv4": "^6.2.13",
     "web3": "^1.8.1"
   },

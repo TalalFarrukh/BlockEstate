@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 const HomeMap = dynamic(() => import("../Map"), { ssr:false })
 
-const Home = ({ address, web3Api, apiKey }) => {
+const Home = ({ address, web3Api }) => {
 
     const [userLands, setUserLands] = useState([])
     const [otherUserLands, setOtherUserLands] = useState([])
