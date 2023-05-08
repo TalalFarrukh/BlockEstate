@@ -58,7 +58,7 @@ const MarketplaceComp = ({ address, web3Api, apiKey }) => {
 
         <div className="md:flex flex-wrap justify-between md:p-5 p-2">
             {landSale ? landSale.map(land => {return land ?
-                <LandSaleCard land={land} />
+                <LandSaleCard land={land} apiKey={apiKey} />
             : null})
             : null}
         </div>

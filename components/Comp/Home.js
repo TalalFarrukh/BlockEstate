@@ -13,15 +13,44 @@ const Home = ({ address, web3Api }) => {
     
           if(!address) return
     
-          const { landToken, web3 } = web3Api
+          const { landToken } = web3Api
           
           const eventTokenIds = await landToken.getPastEvents('Transfer', {
             filter: {
-              'to': address
+              'to': address,
             },
             fromBlock: 0,
             toBlock: 'latest'
           })
+    
+          const notOwnedTokenIds = await landToken.getPastEvents('Transfer', {
+            filter: {
+              'from': address,
+            },
+            fromBlock: 0,
+            toBlock: 'latest'
+          })
+          console.log(eventTokenIds)
+          const commonTokenIds = eventTokenIds.filter((event) => {
+            return !notOwnedTokenIds.some((notOwned) => notOwned.returnValues.tokenId === event.returnValues.tokenId && notOwned.blockNumber >= event.blockNumber) //&& notOwned.blockNumber < event.blockNumber 
+          })
+    
+          const lands = []
+          const promises = []
+    
+          commonTokenIds.forEach((tokenId) => {
+            promises.push(
+              landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
+                .then((landTokenURI) => {
+                  lands.push(JSON.parse(landTokenURI))
+                })
+            )
+          })
+          
+          Promise.all(promises)
+            .then(() => {
+              setUserLands(lands)
+            })
     
           const eventOtherTokenIds = await landToken.getPastEvents('Transfer', {
             filter: {
@@ -32,28 +61,12 @@ const Home = ({ address, web3Api }) => {
           })
     
           const eventFilterOtherTokenIds = eventOtherTokenIds.filter(event => {
-            return event.event === 'Transfer' && event.returnValues.to.toLowerCase() !== address.toLowerCase()
+            return !commonTokenIds.some((owned) => owned.returnValues.tokenId === event.returnValues.tokenId)
           })
     
           const otherLands = []
           const otherPromises = []
-          const lands = []
-          const promises = []
-          
-          eventTokenIds.forEach((tokenId) => {
-            promises.push(
-              landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))
-                .then((landTokenURI) => {
-                  lands.push(JSON.parse(landTokenURI))
-                })
-            )
-          })
-    
-          Promise.all(promises)
-            .then(() => {
-              setUserLands(lands)
-            })
-    
+  
           eventFilterOtherTokenIds.forEach((tokenId) => {
             otherPromises.push(
               landToken.tokenURI(parseInt(tokenId.returnValues.tokenId))

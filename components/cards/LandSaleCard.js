@@ -1,12 +1,38 @@
 import { useRouter } from "next/router"
+import { useState, useEffect } from "react"
 import { encrypt } from "utils/crypt"
 
 import dynamic from "next/dynamic"
 const MyMap = dynamic(() => import("../MyMap"), { ssr:false })
 
-const LandSaleCard = ({ land }) => {
+const LandSaleCard = ({ land, apiKey }) => {
 
     const router = useRouter()
+
+    const [userDetails, setUserDetails] = useState([])
+
+    useEffect(() => {
+        
+        const getOwnerDetails = async () => {
+            let address = land.address
+
+            const userResponse = await fetch("api/user/getUserDetails", {
+                method: "POST",
+                body: JSON.stringify({ address, apiKey }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            
+            const userData = await userResponse.json()
+            
+            if(!userData) return
+            setUserDetails(userData)
+        }
+
+        getOwnerDetails()
+
+    }, [])
 
   return (
     <div className="max-w-xl md:w-3/6 m-3 rounded-md overflow-hidden shadow-lg bg-gradient-to-r from-gray-800 via-slate-600 to-gray-600 text-white border-4 border-black">
@@ -27,6 +53,9 @@ const LandSaleCard = ({ land }) => {
                 </li>
                 <li>
                     Price: {land.price}
+                </li>
+                <li>
+                    Contact No: {userDetails.contact}
                 </li>
             </ul>
 

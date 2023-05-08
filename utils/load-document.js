@@ -6,13 +6,13 @@ const generatePDF = (seller, buyer, transaction, currentDate) => {
     doc.text(70, 20, 'AGREEMENT OF SALE')
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(10)
-    doc.text(10, 30, `This AGREEMENT TO SALE is made here at [City], on this day of ${currentDate}.`)
+    doc.text(10, 30, `This AGREEMENT TO SALE is made here at [City], on this day of ${currentDate ? currentDate : `Agreement Date`}.`)
     doc.setFont('helvetica', 'bold')
     doc.text(100, 40, 'BETWEEN')
     doc.setFont('helvetica', 'normal')
 
-    doc.text(10, 50, `Mr. / Mrs. ______${seller.firstName}_______ /o. ______${seller.lastName}______.`)
-    doc.text(10, 55, `Muslim, adult, holding CNIC No. _____${seller.cnic}_____ Resident of ______________________________________`)
+    doc.text(10, 50, `Mr. / Mrs. ______${seller ? seller.firstName : `Seller's First Name`}_______ /o. ______${seller ? seller.lastName : `Seller's Last Name`}______.`)
+    doc.text(10, 55, `Muslim, adult, holding CNIC No. _____${seller ? seller.cnic : `Seller's CNIC`}_____ Resident of ______________________________________`)
     doc.text(10, 60, '____________ [City], hereinafter called the SELLER of the ONE PART.')
 
     doc.setFont('helvetica', 'bold')
@@ -21,8 +21,8 @@ const generatePDF = (seller, buyer, transaction, currentDate) => {
 
     doc.setFont('helvetica', 'normal')
 
-    doc.text(10, 80, `Mr. / Mrs. _____${buyer.firstName}______ /o. _____${buyer.lastName}_____`)
-    doc.text(10, 85, `Muslim, adult, holding CNIC No. ____${buyer.cnic}____ Resident of _______________________________________`)
+    doc.text(10, 80, `Mr. / Mrs. _____${buyer ? buyer.firstName : `Buyer's First Name`}______ /o. _____${buyer ? buyer.lastName : `Buyer's Last Name`}_____`)
+    doc.text(10, 85, `Muslim, adult, holding CNIC No. ____${buyer ? buyer.cnic : `Buyer's CNIC`}____ Resident of _______________________________________`)
     doc.text(10, 90, '[City], hereinafter referred to as the PURCHASER of the OTHER PART [all the ')
     doc.text(10, 95, 'expression wherever context so permits shall mean and include their respective,heirs, executors administrators,')
     doc.text(10, 100, ' successors, assignors and the attorneys etc.]')
@@ -31,14 +31,14 @@ const generatePDF = (seller, buyer, transaction, currentDate) => {
     doc.text(10, 115, 'of ____________________________________________________________________. ')
 
 
-    doc.text(20, 130, `${seller.address}                ${buyer.address}`)
+    doc.text(20, 130, `${seller ? seller.address : `Seller's Wallet Address`}                ${buyer ? buyer.address : `Buyer's Wallet Address`}`)
     doc.setFont('helvetica', 'bold')
     doc.text(60, 135, 'SELLER                                                                          BUYER')
 
     doc.setFont('helvetica', 'normal')
 
     doc.text(10, 160, 'WHEREAS the SELLER agreed to sell/assign and the PURCHASER has agreed to purchase/acquire the said property')
-    doc.text(10, 165, `absolutely and forever, against a lump sum sale consideration of Rs. __${transaction.accepted_price}__ .`)
+    doc.text(10, 165, `absolutely and forever, against a lump sum sale consideration of Rs. __${transaction ? transaction.accepted_price : `Accepted Price`}__ .`)
 
     // doc.addPage()
 

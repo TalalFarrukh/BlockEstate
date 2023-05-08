@@ -26,7 +26,7 @@ const MyPropertiesComp = ({ address, web3Api, userDetails, apiKey }) => {
       })
 
       const commonTokenIds = eventTokenIds.filter((event) => {
-        return !notOwnedTokenIds.some((notOwned) => notOwned.returnValues.tokenId === event.returnValues.tokenId);
+        return !notOwnedTokenIds.some((notOwned) => notOwned.returnValues.tokenId === event.returnValues.tokenId && notOwned.blockNumber >= event.blockNumber)
       })      
 
       const lands = []

@@ -11,13 +11,13 @@ const Map = ({ userLands, otherUserLands }) => {
         
             {userLands ? userLands.map(shape => {return shape ? 
                 <Polygon pathOptions={{color:'purple'}} positions={shape.geometry.coordinates}>
-                    <Popup>Hello</Popup>
+                    <Popup>{shape.properties.name}</Popup>
                 </Polygon>
             : null}) : null}
 
             {otherUserLands ? otherUserLands.map(shape => {return shape ? 
                 <Polygon pathOptions={{color:'red'}} positions={shape.geometry.coordinates}>
-                    <Popup>I am someone else's land</Popup>
+                    <Popup>{shape.properties.name}</Popup>
                 </Polygon>
             : null}) : null}
 

@@ -49,16 +49,24 @@ const VerifyLandComp = ({ address, web3Api, userDetails, apiKey }) => {
     e.preventDefault()
 
     const { landToken } = web3Api
-    
-    const landJsonString = JSON.stringify(land)
-    const landTokenContract = await landToken.safeMint(address, landExistsId, landJsonString, {from:address})
 
-    if(landTokenContract) {
-      toast.success("Token generated!", {
+    const landJsonString = JSON.stringify(land)
+
+    try {
+      const landTokenContract = await landToken.safeMint(address, landExistsId, landJsonString, {from:address})
+  
+      if(landTokenContract) {
+        toast.success("Token generated!", {
+          position: toast.POSITION.BOTTOM_RIGHT
+        })
+        
+        setLandTokenExists(true)
+      }
+    }
+    catch (e) {
+      toast.error("Token already exists!", {
         position: toast.POSITION.BOTTOM_RIGHT
       })
-      
-      setLandTokenExists(true)
     }
     
   }

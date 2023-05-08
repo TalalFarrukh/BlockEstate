@@ -3,7 +3,7 @@ import { decrypt } from "utils/crypt"
 import generatePDF from "utils/load-document"
 import { Bounce, Flip, toast, ToastContainer, Zoom } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { createWorker } from "tesseract.js"
+import Tesseract from "tesseract.js"
 
 const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
@@ -187,60 +187,53 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
         
     }
 
-    const [ocr, setOcr] = useState("")
-    const [imageData, setImageData] = useState(null)
-
-    const worker = createWorker({
-        logger: async (m) => {
-            if(m.progress === 1 && m.status === "recognizing text") {
-                const idRegex = /ID#(\d+)/
-                
-                const paymentID = ocr.match(idRegex)[1]
-
-                let id = transaction.id
-                
-                const response = await fetch("api/transaction/uploadPaymentID", {
-                    method: "POST",
-                    body: JSON.stringify({ id, paymentID, userStatus, apiKey }),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-
-                const data = await response.json()
-                if(!data) return
-
-                toast.success(data.message, {
-                    position: toast.POSITION.BOTTOM_RIGHT
-                })
-            }
-        },
-    })
-
-    const convertImageToText = async () => {
-        if (!imageData) return
-        await worker.load()
-        await worker.loadLanguage("eng")
-        await worker.initialize("eng")
-        const {
-          data: { text },
-        } = await worker.recognize(imageData)
-        setOcr(text)
-    }
+    const [image, setImage] = useState(null)
+    const [text, setText] = useState(null)
 
     useEffect(() => {
-        convertImageToText()
-    }, [imageData])
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0]
-        if(!file)return
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          const imageDataUri = reader.result
-          setImageData(imageDataUri)
+        const doOCR = async () => {
+            if (!image) return
+            const result = await Tesseract.recognize(image)
+            setText(result.data.lines[4].text)
         }
-        reader.readAsDataURL(file)
+        doOCR()
+
+    }, [image])
+
+    useEffect(() => {
+
+        const doRegex = async () => {
+            const regex = /\d+/g
+            const numbers = text.match(regex)
+            const paymentID = numbers.length>1 ? numbers[1] : numbers[0]
+            
+            let id = transaction.id
+                
+            const response = await fetch("api/transaction/uploadPaymentID", {
+                method: "POST",
+                body: JSON.stringify({ id, paymentID, userStatus, apiKey }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            const data = await response.json()
+            if(!data) return
+
+            toast.success(data.message, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            })
+
+            setRefreshStatus(!refreshStatus)
+        }
+
+        text && doRegex()
+
+    }, [text])
+
+    const handleImageChange = (event) => {
+        setImage(URL.createObjectURL(event.target.files[0]))
     }
 
   return (
@@ -253,31 +246,31 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
         <div className="md:flex flex-wrap justify-between md:p-5 p-2">
 
-            {transaction ? transaction.is_status === "2" ?
+            {transaction && transaction.is_status === "2" ?
                 <>
                     {userStatus && userStatus === "Seller" ?
-                        <div class="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
+                        <div className="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
                             
                             {transaction.is_buyer_paid === "1" && transaction.buyer_payment_id ?
                                 <>
                                     <div className="text-center mb-5">
-                                        <h2 class="text-sm md:text-xl font-bold">Buyer has made the payment. Please upload your receipt and confirm the payment</h2>
+                                        <h2 className="text-sm md:text-xl font-bold">Buyer has made the payment. Please upload your receipt and confirm the payment</h2>
                                     </div>
 
                                     <div className="mx-auto flex flex-wrap justify-center">
-                                        <label class="block text-gray-700 font-bold mb-2" for="image-upload">
+                                        <label className="block text-gray-700 font-bold mb-2" htmlFor="image-upload">
                                             Upload Receipt
                                         </label>
-                                        <input class="appearance-none border-2 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" id="image-upload" type="file" onChange={handleImageChange} accept="image/*" />
+                                        <input className="appearance-none border-2 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" id="image-upload" type="file" onChange={handleImageChange} accept="image/*" />
 
-                                        <button onClick={confirmPayment} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        <button onClick={confirmPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                             Confirm Payment
                                         </button>
                                     </div>
                                 </>
                             :
                                 <div className="text-center mb-5">
-                                    <h2 class="text-sm md:text-xl font-bold">Wait for the Buyer to transfer you money</h2>
+                                    <h2 className="text-sm md:text-xl font-bold">Wait for the Buyer to transfer you money</h2>
                                 </div>
                             }            
                             
@@ -285,11 +278,11 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
                     : userStatus === "Buyer" ?
                     
-                        <div class="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
+                        <div className="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
                                 
                             {transaction.is_buyer_paid === "1" && transaction.buyer_payment_id ?
                                 <div className="text-center mb-5">
-                                    <h2 class="text-sm md:text-xl font-bold">Please wait for the Seller to upload their receipt</h2>
+                                    <h2 className="text-sm md:text-xl font-bold">Please wait for the Seller to upload their receipt</h2>
                                 </div>
                             :
                                 <>
@@ -299,12 +292,12 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
                                     <div className="mx-auto flex flex-wrap justify-center">
                                         
-                                        <label class="block text-gray-700 font-bold mb-2" for="image-upload">
+                                        <label className="block text-gray-700 font-bold mb-2" htmlFor="image-upload">
                                             Upload Receipt
                                         </label>
-                                        <input class="appearance-none border-2 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" id="image-upload" type="file" onChange={handleImageChange} accept="image/*" />
+                                        <input className="appearance-none border-2 border-black rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2" id="image-upload" type="file" onChange={handleImageChange} accept="image/*" />
                                         
-                                        <button onClick={payPayment} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        <button onClick={payPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                             Confirm Payment
                                         </button>
                                     </div>
@@ -315,49 +308,91 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                         </div>
                     : null}
                 </>
-            :
+            : transaction.is_status === "1" ?
                 <>
                     {userStatus && userStatus === "Seller" ?
-                        <div class="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
+                        <div className="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
                             <div className="text-center mb-5">
-                                <h2 class="text-sm md:text-xl font-bold">Buyer Address: {transaction.buyer_address}</h2>
+                                <h2 className="text-sm md:text-xl font-bold">Buyer Address: {transaction.buyer_address}</h2>
                             </div>
                             
                             <div className="mx-auto mb-5">
                                 <img className="w-12 md:w-24 h-12 md:h-24" src="https://via.placeholder.com/150" alt="square" />
                             </div>
                             <div className="mx-auto flex flex-wrap justify-center">
-                                <button onClick={e => generatePDF(seller, buyer, transaction, date)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
+                                <button onClick={e => generatePDF(null, null, null, null)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
                                     View PDF
                                 </button>
-                                <button onClick={signDocument} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
-                                    Sign Document
+
+                                {transaction.is_seller_signed !== "1" ?
+                                    <button onClick={signDocument} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        Sign Document
+                                    </button>
+                                : null}
+                            </div>
+                        </div>
+
+                    : userStatus === "Buyer" ?
+                    
+                        <div className="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
+                            <div className="text-center mb-5">
+                                <h2 className="text-sm md:text-xl font-bold">Seller Address: {transaction.seller_address}</h2>
+                            </div>
+                            
+                            <div className="mx-auto mb-5">
+                                <img className="w-12 md:w-24 h-12 md:h-24" src="https://via.placeholder.com/150" alt="square" />
+                            </div>
+                            <div className="mx-auto flex flex-wrap justify-center">
+                                <button onClick={e => generatePDF(null, null, null, null)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
+                                    View PDF
+                                </button>
+
+                                {transaction.is_buyer_signed !== "1" ?
+                                    <button onClick={signDocument} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                        Sign Document
+                                    </button>
+                                : null}
+                            </div>
+                        </div>
+                    : null}
+                </>
+            : 
+                <>
+                    {userStatus && userStatus === "Seller" ?
+                        <div className="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
+                            <div className="text-center mb-5">
+                                <h2 className="text-sm md:text-xl font-bold">Buyer Address: {transaction.buyer_address}</h2>
+                            </div>
+                            
+                            <div className="mx-auto mb-5">
+                                <img className="w-12 md:w-24 h-12 md:h-24" src="https://via.placeholder.com/150" alt="square" />
+                            </div>
+                            <div className="mx-auto flex flex-wrap justify-center">
+                                <button onClick={e => generatePDF(seller, buyer, transaction, date)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    View Final PDF
                                 </button>
                             </div>
                         </div>
 
                     : userStatus === "Buyer" ?
                     
-                        <div class="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
+                        <div className="flex flex-col justify-center mx-auto rounded-lg shadow-lg p-5 text-black border-solid border-2 border-slate-700">
                             <div className="text-center mb-5">
-                                <h2 class="text-sm md:text-xl font-bold">Seller Address: {transaction.seller_address}</h2>
+                                <h2 className="text-sm md:text-xl font-bold">Seller Address: {transaction.seller_address}</h2>
                             </div>
                             
                             <div className="mx-auto mb-5">
                                 <img className="w-12 md:w-24 h-12 md:h-24" src="https://via.placeholder.com/150" alt="square" />
                             </div>
                             <div className="mx-auto flex flex-wrap justify-center">
-                                <button onClick={e => generatePDF(seller, buyer, transaction, date)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
-                                    View PDF
-                                </button>
-                                <button onClick={signDocument} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
-                                    Sign Document
+                                <button onClick={e => generatePDF(seller, buyer, transaction, date)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                    View Final PDF
                                 </button>
                             </div>
                         </div>
                     : null}
                 </>
-            : null}
+            }
 
         </div>
 
