@@ -124,7 +124,7 @@ const Home = ({ address, web3Api }) => {
             </div>
             <div className="flex-1 p-4 text-center bg-gray-700 rounded-lg shadow-lg md:ml-3">
                 <h2 className="text-xl font-bold mb-4 text-white">Blockchain Explorer</h2>
-                <p className="text-white">You can view the Blockchain activity on the following website: <a className="font-bold" href="https://sepolia.etherscan.io/" target="_blank">https://sepolia.etherscan.io/</a></p>
+                <p className="text-white">You can view the Blockchain activity on the following website: <a className="font-bold" href="https://sepolia.etherscan.io/" rel="noreferrer" target="_blank">https://sepolia.etherscan.io/</a></p>
             </div>
         </div>
 
