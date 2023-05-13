@@ -19,7 +19,7 @@ const Home = ({ address, web3Api }) => {
             filter: {
               'to': address,
             },
-            fromBlock: 0,
+            fromBlock: 3477148,
             toBlock: 'latest'
           })
     
@@ -27,7 +27,7 @@ const Home = ({ address, web3Api }) => {
             filter: {
               'from': address,
             },
-            fromBlock: 0,
+            fromBlock: 3477148,
             toBlock: 'latest'
           })
           console.log(eventTokenIds)
@@ -56,7 +56,7 @@ const Home = ({ address, web3Api }) => {
             filter: {
               'from': '0x0000000000000000000000000000000000000000'
             },
-            fromBlock: 0,
+            fromBlock: 3477148,
             toBlock: 'latest'
           })
     
@@ -105,26 +105,26 @@ const Home = ({ address, web3Api }) => {
 
             <div className="flex flex-col justify-between md:w-2/5 md:mt-7 m-5">
                 <div className="bg-gray-700 rounded-lg shadow-lg p-4 mb-5 text-white">
-                {/* Card Content */}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla id erat ac risus ullamcorper congue. Nulla id erat ac risus ullamcorper congue.</div>
+                  <h1 className="text-md text-center font-bold">Verify Land</h1>
+                  This page allows users to authenticate and validate the ownership and legality of land records through blockchain technology.</div>
                 <div className="bg-gray-700 rounded-lg shadow-lg p-4 mb-5 text-white">
-                {/* Card Content */}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla id erat ac risus ullamcorper congue. Nulla id erat ac risus ullamcorper congue.</div>
+                  <h1 className="text-md text-center font-bold">Marketplace</h1>
+                  This page provides a platform for seamless buying and selling of land, connecting buyers and sellers directly through blockchain technology.</div>
                 <div className="bg-gray-700 rounded-lg shadow-lg p-4 mb-5 text-white">
-                {/* Card Content */}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla id erat ac risus ullamcorper congue. Nulla id erat ac risus ullamcorper congue.</div>
+                  <h1 className="text-md text-center font-bold">My Properties</h1>
+                  This page empowers users to effortlessly manage their land holdings by enabling them to list properties for sale, add or remove shared owners, and maintain complete control over their real estate portfolio.</div>
             </div>
 
         </div>
 
         <div className="flex flex-col md:flex-row m-5">
             <div className="flex-1 p-4 text-center bg-gray-700 rounded-lg shadow-lg md:mr-3 mb-3 md:mb-0">
-                <h2 className="text-xl font-bold mb-4 text-white">GIS</h2>
-                <p className="text-white">A geographic information system consists of integrated computer hardware and software that store, manage, analyze, edit, output, and visualize geographic data.</p>
-            </div>
-            <div className="flex-1 p-4 text-center bg-gray-700 rounded-lg shadow-lg md:ml-3">
                 <h2 className="text-xl font-bold mb-4 text-white">Blockchain</h2>
                 <p className="text-white">A blockchain is a type of distributed database or ledger which means the power to update a blockchain is distributed between the nodes, or participants, of a public or private computer network.</p>
+            </div>
+            <div className="flex-1 p-4 text-center bg-gray-700 rounded-lg shadow-lg md:ml-3">
+                <h2 className="text-xl font-bold mb-4 text-white">Blockchain Explorer</h2>
+                <p className="text-white">You can view the Blockchain activity on the following website: <a className="font-bold" href="https://sepolia.etherscan.io/" target="_blank">https://sepolia.etherscan.io/</a></p>
             </div>
         </div>
 

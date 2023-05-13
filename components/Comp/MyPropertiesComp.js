@@ -13,7 +13,7 @@ const MyPropertiesComp = ({ address, web3Api, userDetails, apiKey }) => {
         filter: {
           'to': address,
         },
-        fromBlock: 0,
+        fromBlock: 3477148,
         toBlock: 'latest'
       })
 
@@ -21,7 +21,7 @@ const MyPropertiesComp = ({ address, web3Api, userDetails, apiKey }) => {
         filter: {
           'from': address,
         },
-        fromBlock: 0,
+        fromBlock: 3477148,
         toBlock: 'latest'
       })
 

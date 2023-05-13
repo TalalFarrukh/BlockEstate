@@ -11,16 +11,16 @@
   "dependencies": {
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.15",
-    "@material-ui/core": "^4.12.4",
-    "@material-ui/icons": "^4.11.3",
     "@metamask/detect-provider": "^2.0.0",
     "@openzeppelin/contracts": "^4.8.0",
     "@prisma/client": "^4.9.0",
     "@truffle/contract": "^4.6.8",
+    "@truffle/hdwallet-provider": "^2.1.11",
     "bcryptjs": "^2.4.3",
     "caniuse-lite": "^1.0.30001481",
     "circular-json": "^0.5.9",
     "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.3",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.4",
     "jsonwebtoken": "^8.5.1",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
-    "prisma": "^4.9.0",
+    "prisma": "^4.13.0",
     "tailwindcss": "^3.2.4"
   }
 }

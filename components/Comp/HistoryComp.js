@@ -17,7 +17,7 @@ const HistoryComp = ({ address, web3Api, router, apiKey }) => {
                 filter: {
                   'to': address,
                 },
-                fromBlock: 0,
+                fromBlock: 3477148,
                 toBlock: 'latest'
             })
 
@@ -55,7 +55,7 @@ const HistoryComp = ({ address, web3Api, router, apiKey }) => {
                 filter: {
                   'from': address,
                 },
-                fromBlock: 0,
+                fromBlock: 3477148,
                 toBlock: 'latest'
             })
 
