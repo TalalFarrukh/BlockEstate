@@ -205,7 +205,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
                                     query: {
                                         landId: encrypt(userLand.land_id),
                                     }
-                                }, undefined, { shallow: true })
+                                })
                             }} className="block w-full rounded-md px-4 py-2 text-sm text-white hover:bg-gray-700">
                                 Bid Requests
                             </button>
@@ -257,7 +257,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
                             query: {
                                 id: encrypt(transactionId),
                             }
-                        }, undefined, { shallow: true })
+                        })
                     }} className="bg-yellow-600 hover:bg-yellow-400 text-white font-bold md:py-2 py-1 px-3 rounded focus:outline-none focus:shadow-outline w-3/4 m-2">
                         Continue Transaction
                     </button>

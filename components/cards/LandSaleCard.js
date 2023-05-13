@@ -69,7 +69,7 @@ const LandSaleCard = ({ land, apiKey }) => {
                             sellerAddress: encrypt(land.address),
                             askPrice: encrypt(land.price)
                         }
-                    }, undefined, { shallow: true })
+                    })
                 }}>
                     Buy
                 </button>

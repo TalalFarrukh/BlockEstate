@@ -71,7 +71,7 @@ const Layout = ({ children }) => {
     
         router.push({
           pathname: "/",
-        }, undefined, { shallow: true })
+        })
     
     }
     

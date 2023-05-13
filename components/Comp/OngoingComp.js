@@ -56,7 +56,7 @@ const OngoingComp = ({ address, router, apiKey }) => {
                         query: {
                             id: encrypt(bid.id),
                         }
-                    }, undefined, { shallow: true })
+                    })
                   }} className="rounded-lg bg-green-600 hover:bg-green-400 text-white mx-4 px-8 py-1 inline-block font-bold">Continue Transaction</button>
                 </div>
               </div>

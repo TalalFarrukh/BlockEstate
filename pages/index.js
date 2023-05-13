@@ -104,7 +104,7 @@ export default function Home() {
         query: {
           address
         }
-      }, undefined, { shallow: true })
+      })
     }
 
   }
@@ -175,7 +175,7 @@ export default function Home() {
           if(isRegistered === "2") {
             router.push({
               pathname: "Dashboard"
-            }, undefined, { shallow: true })
+            })
           }
           
         }
