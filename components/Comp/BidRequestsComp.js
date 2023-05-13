@@ -76,7 +76,7 @@ const BidRequestsComp = ({ address, apiKey, router }) => {
             query: {
                 id: encrypt(updateData.id)
             }
-        })
+        }, undefined, { shallow: true })
   
     }
   
