@@ -1,7 +1,7 @@
 import jsPDF from "jspdf"
 
 const generatePDF = (seller, buyer, transaction, currentDate, status) => {
-    var doc = new jsPDF();
+    var doc = new jsPDF()
     doc.setFont("helvetica", "bold")
     doc.text(70, 20, "AGREEMENT OF SALE")
     doc.setFont("helvetica", "normal")
