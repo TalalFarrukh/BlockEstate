@@ -30,7 +30,7 @@ const Home = ({ address, web3Api }) => {
             fromBlock: 3477148,
             toBlock: 'latest'
           })
-          console.log(eventTokenIds)
+          
           const commonTokenIds = eventTokenIds.filter((event) => {
             return !notOwnedTokenIds.some((notOwned) => notOwned.returnValues.tokenId === event.returnValues.tokenId && notOwned.blockNumber >= event.blockNumber) //&& notOwned.blockNumber < event.blockNumber 
           })
