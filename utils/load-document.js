@@ -4,8 +4,8 @@ const generatePDF = (seller, buyer, transaction, currentDate, status) => {
 
     const doc = new jsPDF()
     
-    doc.setFont("helvetica", "bold")
-    doc.text(70, 20, "AGREEMENT OF SALE")
+    // doc.setFont("helvetica", "bold")
+    // doc.text(70, 20, "AGREEMENT OF SALE")
     doc.setFont("helvetica", "normal")
     doc.setFontSize(10)
     doc.text(10, 30, `This AGREEMENT TO SALE is made here at [City], on this day of ${currentDate}.`)
