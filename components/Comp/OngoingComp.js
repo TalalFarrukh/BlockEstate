@@ -45,9 +45,9 @@ const OngoingComp = ({ address, router, apiKey }) => {
               <div className="bg-gray-700 rounded-lg shadow-lg text-white">
                 <div className="w-2/5/5 p-3 md:text-lg text-sm text-center">
                 {bid.seller_address === address.toLowerCase() ?
-                  <div className="mb-2">Buyer's Address: {bid.buyer_address}</div>
+                  <div className="mb-2">{`Buyer's Address`}: {bid.buyer_address}</div>
                 :
-                  <div className="mb-2">Seller's Address: {bid.seller_address}</div>
+                  <div className="mb-2">{`Seller's Address`}: {bid.seller_address}</div>
                 }
                 <div className="mb-4">Accepted Price: {bid.accepted_price}</div>
                   <button onClick={(e) => {

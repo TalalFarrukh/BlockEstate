@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import generatePDF from "utils/load-document"
 
-const HistoryComp = ({ address, web3Api, router, apiKey }) => {
+const HistoryComp = ({ address, web3Api }) => {
 
     const [soldHistoryLand, setSoldHistoryLand] = useState([])
 

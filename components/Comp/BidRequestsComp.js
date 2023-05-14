@@ -123,7 +123,7 @@ const BidRequestsComp = ({ address, apiKey, router }) => {
                     <div className="flex flex-col justify-between max-w-xl md:w-2/4 m-4">
                         <div className="bg-gray-700 rounded-lg shadow-lg p-2 text-white">
                             <div className="w-2/5/5 p-3 md:text-lg text-sm text-center">
-                                <div className="mb-2" style={{wordWrap: 'break-word'}}>Buyer's Address: {request.buyer_address}</div>  
+                                <div className="mb-2" style={{wordWrap: 'break-word'}}>{`Buyer's Address`}: {request.buyer_address}</div>  
                                 <div className="mb-4">Bid Price: {request.bid_price}</div>
                                 <button onClick={e => acceptBid(e, request)} className="rounded-lg bg-green-600 hover:bg-green-400 text-white mx-4 px-8 py-1 inline-block font-bold">Accept</button>
                                 <button onClick={e => rejectBid(e, request)} className="rounded-lg bg-red-600 hover:bg-red-400 text-white px-8 py-1 inline-block font-bold">Decline</button>
