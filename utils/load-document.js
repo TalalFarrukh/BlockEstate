@@ -1,6 +1,25 @@
 import jsPDF from 'jspdf'
 
 const generatePDF = (seller, buyer, transaction, currentDate) => {
+
+    if(!seller) {
+        seller.firstName = "First Name"
+        seller.lastName = "Last Name"
+        seller.cnic = "CNIC"
+        seller.address = "Seller Address"
+    }
+
+    if(!buyer) {
+        buyer.firstName = "First Name"
+        buyer.lastName = "Last Name"
+        buyer.cnic = "CNIC"
+        buyer.address = "Buyer Address"
+    }
+
+    if(!transaction) {
+        transaction.accepted_price = "Accepted Price"
+    }
+
     var doc = new jsPDF();
     doc.setFont('helvetica', 'bold')
     doc.text(70, 20, 'AGREEMENT OF SALE')
