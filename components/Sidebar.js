@@ -25,7 +25,7 @@ function Sidebar() {
             <Link href="/VerifyLand">Verify Land</Link>
           </li>
           <li className={`w-full rounded-lg text-center mb-4 ${isActive("/MyProperties")}`}>
-            <Link href="/MyProperties">My Properties</Link>
+            <Link href="/MyProperties">My Property</Link>
           </li>
           <li className={`w-full rounded-lg text-center mb-4 ${isActive("/Ongoing")}`}>
             <Link href="/Ongoing">On-going Transactions</Link>
