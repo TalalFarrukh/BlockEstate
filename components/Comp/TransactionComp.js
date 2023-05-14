@@ -320,7 +320,7 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                                 <img className="w-12 md:w-24 h-12 md:h-24" src="https://via.placeholder.com/150" alt="square" />
                             </div>
                             <div className="mx-auto flex flex-wrap justify-center">
-                                <button onClick={e => generatePDF(null, null, null, null)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
+                                <button onClick={e => generatePDF(seller, buyer, transaction, date, "Not Save")} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
                                     View PDF
                                 </button>
 
@@ -385,7 +385,7 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                                 <img className="w-12 md:w-24 h-12 md:h-24" src="https://via.placeholder.com/150" alt="square" />
                             </div>
                             <div className="mx-auto flex flex-wrap justify-center">
-                                <button onClick={e => generatePDF(seller, buyer, transaction, date)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                <button onClick={e => generatePDF(seller, buyer, transaction, date, "Save")} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                     View Final PDF
                                 </button>
                             </div>
