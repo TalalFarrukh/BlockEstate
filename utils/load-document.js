@@ -31,7 +31,7 @@ const generatePDF = (seller, buyer, transaction, currentDate, status) => {
     doc.text(10, 115, "of ____________________________________________________________________. ")
 
 
-    doc.text(20, 130, `${seller.address}                ${buyer.address}`)
+    doc.text(20, 130, `${status === "Save" ? seller.address : ''}                ${status === "Save" ? buyer.address : ''}`)
     doc.setFont("helvetica", "bold")
     doc.text(60, 135, "SELLER                                                                          BUYER")
 

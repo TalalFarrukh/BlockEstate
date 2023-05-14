@@ -101,7 +101,7 @@ const HistoryComp = ({ address, web3Api, router, apiKey }) => {
                             <div className="mb-2">Price: {buyHistory.transaction.accepted_price}</div>
                             <div className="mb-4">Date: {buyHistory.date}</div>
 
-                            <button onClick={e => generatePDF(buyHistory.seller, buyHistory.buyer, buyHistory.transaction, buyHistory.date)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
+                            <button onClick={e => generatePDF(buyHistory.seller, buyHistory.buyer, buyHistory.transaction, buyHistory.date, "Save")} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline mr-4">
                                 View Agreement
                             </button>
                         </div>
@@ -124,7 +124,7 @@ const HistoryComp = ({ address, web3Api, router, apiKey }) => {
                             <div className="mb-2">Price: {sellHistory.transaction.accepted_price}</div>
                             <div className="mb-4">Date: {sellHistory.date}</div>
 
-                            <button onClick={e => generatePDF(sellHistory.seller, sellHistory.buyer, sellHistory.transaction, sellHistory.date)} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button onClick={e => generatePDF(sellHistory.seller, sellHistory.buyer, sellHistory.transaction, sellHistory.date, "Save")} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                 View Agreement
                             </button>
                         </div>
