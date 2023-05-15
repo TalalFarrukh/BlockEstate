@@ -8,7 +8,7 @@ const Map = ({ userLands, otherUserLands }) => {
 
   return (
     <div>
-        <MapContainer center={[loc.coordinates.lng, loc.coordinates.lat]} zoom={13}>
+        <MapContainer center={[loc.coordinates.lat, loc.coordinates.lng]} zoom={13}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
