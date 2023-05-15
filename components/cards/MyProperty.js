@@ -104,7 +104,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
     }, [refreshStatus])
 
     const handlePriceDoubleClick = () => {
-        setIsEditingPrice(true)
+        if(!isTransaction && !landSaleStatus) setIsEditingPrice(true)
     }
 
     const handlePriceBlur = () => {
@@ -235,7 +235,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
                 :
                 (
                     <li onDoubleClick={handlePriceDoubleClick}>
-                        Price: {price} PKR
+                        Price: {price} PKR {!isTransaction && !landSaleStatus ? "(Double Click here to set the price)" : null}
                     </li>
                 )}
                 
