@@ -229,7 +229,7 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
             })
 
             setLoader(false)
-            setPaymentConfirm(false)
+            setPaymentConfirm(true)
             setRefreshStatus(!refreshStatus)
         }
 
@@ -239,7 +239,6 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
     const handleImageChange = (event) => {
         setLoader(true)
-        setPaymentConfirm(true)
         setImage(URL.createObjectURL(event.target.files[0]))
     }
 
@@ -279,9 +278,12 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                                             </div>
                                         : null}
 
-                                        <button onClick={confirmPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
-                                            Confirm Payment
-                                        </button>
+                                        {!paymentConfirm ?
+                                            <button onClick={confirmPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                                Confirm Payment
+                                            </button>
+                                        : null}
+                                        
                                     </div>
                                 </>
                             :
@@ -322,9 +324,11 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                                             </div>
                                         : null}
 
-                                        <button onClick={payPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
-                                            Confirm Payment
-                                        </button>
+                                        {!paymentConfirm ?
+                                            <button onClick={payPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
+                                                Confirm Payment
+                                            </button>
+                                        : null}
                                     </div>
                                 </>
                                 
