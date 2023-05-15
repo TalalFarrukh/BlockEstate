@@ -4,24 +4,24 @@ const generatePDF = (seller, buyer, transaction, currentDate, status) => {
 
     const doc = new jsPDF()
     
-    // doc.setFont("Times-Roman", "bold")
+    doc.setFont("helvetica", "bold")
     doc.text(70, 20, "AGREEMENT OF SALE")
-    // doc.setFont("Times-Roman", "normal")
+    doc.setFont("helvetica", "normal")
     doc.setFontSize(10)
     doc.text(10, 30, `This AGREEMENT TO SALE is made here at [City], on this day of ${currentDate}.`)
-    // doc.setFont("Times-Roman", "bold")
+    doc.setFont("helvetica", "bold")
     doc.text(100, 40, "BETWEEN")
-    // doc.setFont("Times-Roman", "normal")
+    doc.setFont("helvetica", "normal")
 
     doc.text(10, 50, `Mr. / Mrs. ______${seller.firstName}_______ /o. ______${seller.lastName}______.`)
     doc.text(10, 55, `Muslim, adult, holding CNIC No. _____${seller.cnic}_____ Resident of ______________________________________`)
     doc.text(10, 60, "____________ [City], hereinafter called the SELLER of the ONE PART.")
 
-    // doc.setFont("Times-Roman", "bold")
+    doc.setFont("helvetica", "bold")
 
     doc.text(105, 70, "A N D")
 
-    // doc.setFont("Times-Roman", "normal")
+    doc.setFont("helvetica", "normal")
 
     doc.text(10, 80, `Mr. / Mrs. _____${buyer.firstName}______ /o. _____${buyer.lastName}_____`)
     doc.text(10, 85, `Muslim, adult, holding CNIC No. ____${buyer.cnic}____ Resident of _______________________________________`)
@@ -34,19 +34,19 @@ const generatePDF = (seller, buyer, transaction, currentDate, status) => {
 
 
     doc.text(20, 130, `${status === "Save" ? seller.address : ''}                ${status === "Save" ? buyer.address : ''}`)
-    // doc.setFont("Times-Roman", "bold")
+    doc.setFont("helvetica", "bold")
     doc.text(60, 135, "SELLER                                                                          BUYER")
 
-    // doc.setFont("Times-Roman", "normal")
+    doc.setFont("helvetica", "normal")
 
     doc.text(10, 160, "WHEREAS the SELLER agreed to sell/assign and the PURCHASER has agreed to purchase/acquire the said property")
     doc.text(10, 165, `absolutely and forever, against a lump sum sale consideration of Rs. __${transaction.accepted_price}__ .`)
 
     // doc.addPage()
 
-    // doc.setFont("Times-Roman", "bold")
+    // doc.setFont("helvetica", "bold")
     // doc.text(10, 35, "THE OTHER TERMS AND CONDITIONS ARE AS UNDER:-")
-    // doc.setFont("Times-Roman", "normal")
+    // doc.setFont("helvetica", "normal")
     // doc.text(10, 40, "1. That in pursuance of above contract the SELLER has received a sum of Rs.________________ (Rupees _________________")
     // doc.text(10, 45, "only). The Payment Schedule is as under:-")
     // doc.text(10, 50, "a. Rs. _______________/- (Rupees ________________________________________ only) in Cash/vide Cheque /Pay ")
@@ -83,9 +83,9 @@ const generatePDF = (seller, buyer, transaction, currentDate, status) => {
 
 
     // doc.text(50, 225, "__________________________                  __________________________")
-    // doc.setFont("Times-Roman", "bold")
+    // doc.setFont("helvetica", "bold")
     // doc.text(60, 230, "           SELLER                                                    BUYER")
-    // doc.setFont("Times-Roman", "normal")
+    // doc.setFont("helvetica", "normal")
 
 
     // doc.text(10, 235, "8. That the SELLER hereby covenant that he is the rightful, legal and legitimate owner of the said property")
