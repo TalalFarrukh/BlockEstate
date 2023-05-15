@@ -235,7 +235,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
                 :
                 (
                     <li onDoubleClick={handlePriceDoubleClick}>
-                        Price: {price} PKR {!isTransaction && !landSaleStatus ? "(Double Click here to set the price)" : null}
+                        Price: {price} PKR {!isTransaction && !landSaleStatus ? "(Double Click here to set the price)" : "(Remove land from sale to set price again)"}
                     </li>
                 )}
                 

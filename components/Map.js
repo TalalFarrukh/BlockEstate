@@ -1,10 +1,14 @@
 import "leaflet/dist/leaflet.css"
 import { MapContainer, TileLayer, Polygon, Popup } from "react-leaflet"
+import useGeoLoc from "utils/useGeoLoc"
 
 const Map = ({ userLands, otherUserLands }) => {
+
+  const loc = useGeoLoc()
+
   return (
     <div>
-        <MapContainer center={[33.64498558968215, 72.98832287301876]} zoom={13}>
+        <MapContainer center={[loc.coordinates.lat, loc.coordinates.lng]} zoom={13}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
