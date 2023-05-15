@@ -219,7 +219,7 @@ const MyProperty = ({ userLand, address, landToken, cnic, apiKey }) => {
             <ul className="mb-4 ml-2.5">
                 <li>Address: {userLand.properties.name}</li>
                 <li>Type: {userLand.properties.type}</li>
-                <li>Area: 10,000 sq. ft.</li>
+                <li>Area: 10,000 m<sup>2</sup></li>
                 
                 {isEditingPrice ? (
                     <li>

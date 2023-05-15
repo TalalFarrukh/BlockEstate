@@ -49,7 +49,7 @@ const LandSaleCard = ({ land, apiKey }) => {
                     Type: {land.type}
                 </li>
                 <li>
-                    Area: {land.area}
+                    Area: {land.area} m<sup>2</sup>
                 </li>
                 <li>
                     Price: {land.price}
