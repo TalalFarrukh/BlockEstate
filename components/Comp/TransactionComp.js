@@ -278,7 +278,7 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                                             </div>
                                         : null}
 
-                                        {!paymentConfirm ?
+                                        {paymentConfirm ?
                                             <button onClick={confirmPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                                 Confirm Payment
                                             </button>
@@ -324,7 +324,7 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
                                             </div>
                                         : null}
 
-                                        {!paymentConfirm ?
+                                        {paymentConfirm ?
                                             <button onClick={payPayment} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline">
                                                 Confirm Payment
                                             </button>
