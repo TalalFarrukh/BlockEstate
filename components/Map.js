@@ -1,4 +1,5 @@
 import "leaflet/dist/leaflet.css"
+import { useState, useEffect } from "react"
 import { MapContainer, TileLayer, Polygon, Popup } from "react-leaflet"
 import useGeoLoc from "utils/useGeoLoc"
 
@@ -6,9 +7,24 @@ const Map = ({ userLands, otherUserLands }) => {
 
   const loc = useGeoLoc()
 
+  const [lat, setLat] = useState(33.6364439)
+  const [lng, setLng] = useState(72.9837597)
+
+  useEffect(() => {
+    const setCoordinates = () => {
+      if(loc.loaded && !loc.error) {
+        setLat(loc.coordinates.lat)
+        setLng(loc.coordinates.lng)
+      }
+    }
+
+    loc.loaded && setCoordinates()
+
+  }, [loc.loaded])
+
   return (
     <div>
-        <MapContainer center={[loc.coordinates.lat, loc.coordinates.lng]} zoom={13}>
+        <MapContainer center={[lat, lng]} zoom={13}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -26,8 +42,6 @@ const Map = ({ userLands, otherUserLands }) => {
             : null}) : null}
 
         </MapContainer>
-
-        
     </div>
   )
 }
