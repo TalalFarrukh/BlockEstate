@@ -123,25 +123,26 @@ const TransactionComp = ({ address, web3Api, userDetails, router, apiKey }) => {
 
         setLoader(true)
 
-        let landId = transaction.land_id
-        let sellerAddress = transaction.seller_address
-        let buyerAddress = transaction.buyer_address
-        let acceptedPrice = transaction.accepted_price
-    
-        let bidStatus = "3"
-
-        const updateBid = await fetch("api/transaction/updateBidStatus", {
-            method: "POST",
-            body: JSON.stringify({ landId, sellerAddress, buyerAddress, acceptedPrice, bidStatus, apiKey }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-
-        const updateData = await updateBid.json()
-        if(!updateData) return
-
         if(transaction.seller_payment_id === transaction.buyer_payment_id) {
+            
+            let landId = transaction.land_id
+            let sellerAddress = transaction.seller_address
+            let buyerAddress = transaction.buyer_address
+            let acceptedPrice = transaction.accepted_price
+        
+            let bidStatus = "3"
+    
+            const updateBid = await fetch("api/transaction/updateBidStatus", {
+                method: "POST",
+                body: JSON.stringify({ landId, sellerAddress, buyerAddress, acceptedPrice, bidStatus, apiKey }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+    
+            const updateData = await updateBid.json()
+            if(!updateData) return
+            
             const { landToken } = web3Api
 
             const documentData = {
